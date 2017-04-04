@@ -101,6 +101,11 @@ mcb:
     textchannel:
       usage: "textchannel <add|remove|list> <ID>"
       description: "dodaj, usuń, lub wyświetl listę kanałów tekstowych przypisanych do MCB"
+      invalid-tc: "Text channel `%s` is not a valid text channel."
+      added-tc: "Added text channel `%s` to the bound channels."
+      tc-not-bound: "Text channel `%s` is not bound to Minecraft"
+      last-tc: "Cannot remove textchannel `%s` because it's the last textchannel on the list"
+      removed-tc: "Removed text channel `%s` from the list"
       list:
         header: "Przypisane Kanały"
         guild_name: "Nazwa Gildii"
