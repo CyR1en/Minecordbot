@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: :Frame:">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Could not find :Frame:." />
+      <root url="jar://$PROJECT_DIR$/libs/Frame.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

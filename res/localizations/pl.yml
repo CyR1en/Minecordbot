@@ -1,0 +1,109 @@
+mc:
+  message:
+    login: "{player} dołączył do gry"
+    logout: "{player} opuścił gre"
+  deaths:
+    drowning: "{player} utonął"
+    suffocation: "{player} udusił się w ścianie"
+    suicide: "{player} popełnił samobójstwo"
+    fall: "{player} zbyt mocno uderzył w ziemię"
+    void: "{player} wypadł za mapę"
+    lava: "{player} próbował pływać w lawie"
+    fire: "{player} spłonął"
+    cactus: "{player} został zakłuty na śmierć"
+    pvp: "{player} został zabity przez {killer}"
+    wither: "{player} zosał zabity przez Withera"
+    anvil: "{player} został zmiażdżony przez kowadło"
+  mobs:
+    wolf: "{player} został zabity przez Wilkailka"
+    ocelot: "{player} został zabity przez Ocelota"
+    zombie: "{player} został zabity przez Zombie"
+    skeleton: "{player} został zastrzelony przez Szkieleta"
+    pigzombie: "{player} został zabity przez Świnie-Zombie"
+    spider: "{player} został zabity przez Pająka"
+    cavespider: "{player} został zabity przez Pająka jaskiniowego"
+    silverfish: "{player} został zabity przez Silverfish-a"
+    slime: "{player} został zabity przez Szlam"
+    creeper: "{player} wyleciał w powietrze"
+    enderman: "{player} został zabity przez Endermana"
+    ghast: "{player} został zabity przez Ghasta"
+    blaze: "{player} został zabity przez Płomyka"
+    enderdragon: "{player} został zabity przez Smoka Kresu"
+    wither: "{player} został zabity przez Withera"
+    witherskeleton: "{player} został zabity przez Mrocznego Szkieleta"
+    witch: "{player} został zabity przez Wiedźmę"
+mcb:
+  command:
+    no-perm-message: "Nie masz dostępu do tej komendy."
+    invalid-arguments: "błędny arguments."
+    invalid-tc: "invalid text channel for command."
+  commands:
+    reload:
+      usage: "reload"
+      description: "reload the config for MineCordBot"
+      reloaded: "MineCordBot config reloaded!"
+    eval:
+      usage: "eval <równanie>"
+      description: "Rozwiąż rówananie matematyczne"
+    mcmd:
+      usage: "mcmd <Komenda>"
+      description: "Wykonaj komendę na serwerze."
+    permission:
+      usage: "perm <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
+      description: "dodaj, usuń i sprawdź poziom uprawnień użytkownika."
+    setgame:
+      usage: "setgame <tytułgry>"
+      description: "ustaw grę bota."
+    setavatar:
+      usage: "setavatar <urlawatara>"
+      description: "ustaw awatar bota."
+    setusername:
+      usage: "setusername <username>"
+      description: "ustaw nazwę bota."
+    setnickname:
+       usage: "setnickname <nick>"
+      description: "ustaw nick bota."
+    ping:
+      usage: "ping"
+      description: "Sprawdź czas reakcji bot'a."
+    help:
+      usage: "help [komenda]"
+      description: "Pokaż listę komend bądź sposób użycia komendy."
+      too-much-args: "zbyd dużo argumentów."
+      no-such-command: "Nie ma takiej komendy."
+      list:
+        header: "Komendy MineCordBota"
+        info: "Komendy informacyjne"
+        fun: "Śmieszne Komendy"
+        help: "Komendy Pomocy"
+        mod: "Komendy Moderowania Serwera"
+        misc: "Różne Komendy"
+    list:
+      usage: "ls [aktualizować:true or false]"
+      description: "Lista wszysystkich graczy online."
+      list:
+        header: "Gracze Online"
+    info:
+      usage: "info"
+      description: "Informacje o bocie"
+      minfo:
+        generalinfo_header: "== Generalne Informacje =="
+        nonick: "Bot nie ma nicku."
+        version: "Wersje"
+        textchannel: "Kanały tekstowe"
+        voicechannel: "Kanały głosowe"
+        uptime: "Czas działania"
+        botinfo_header: "=== Informacje o Bocie ==="
+        clientid: "Id klienta bota"
+        botname: "Nazwa bota"
+        botnick: "Nick bota"
+        footer: "=== Więcej informacji ==="
+    textchannel:
+      usage: "textchannel <add|remove|list> <ID>"
+      description: "dodaj, usuń, lub wyświetl listę kanałów tekstowych przypisanych do MCB"
+      list:
+        header: "Przypisane Kanały"
+        guild_name: "Nazwa Gildii"
+        channel_name: "Nazwa Kanału"
+  messenger:
+    no-player: "Nie znaleziono gracza {player}."

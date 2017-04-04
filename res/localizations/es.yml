@@ -1,0 +1,106 @@
+mc:
+  message:
+      login: "&e{player} entró al juego"
+      logout: "&e{player} salió del juego"
+  channel:
+      players: "Hay &eConcurrent jugadores en este canal"
+      toggle-on: "El chat de &9Channel está ahora activado"
+      toggle-off: "El chat de &9Channel está ahora desactivado"
+      join: "&e{player} entró al canal"
+      leave: "&e{player} salió del canal"
+  deaths:
+      drowning: "&f{player} ahogado"
+      suffocation: "&f{player} asfixiado"
+      suicide: "&f{player} se suicido"
+      fall: "&f{player} a chocado contra el suelo"
+      void: "&f{player} se a caido del mapa"
+      lava: "&f{player} trató de nadar en la lava"
+      fire: "&f{player} se a quemado hasta Morir"
+      cactus: "&f{player} se a pinchado hasta la muerte"
+      pvp: "&f{player} fue asesinado por {killer}"
+      wither: "&f{player} withered away"
+      anvil: "&f{player} was squashed by a falling anvil"
+  monsters:
+      wolf: "&f{player} fue matado por un Lobo"
+      ocelot: "&f{player} fue matado por un Jaguar"
+      zombie: "&f{player} fue matado por un Zombie"
+      skeleton: "&f{player} fue matado por un Esqueleto"
+      pigzombie: "&f{player} fue matado por un Cerdo Zombie"
+      spider: "&f{player} fue matado por una Araña"
+      cavespider: "&f{player} fue matado por una Araña de cueva"
+      silverfish: "&f{player} fue matado por un Silverfish"
+      slime: "&f{player} fue matado por un Slime"
+      creeper: "&f{player} explotó"
+      enderman: "&f{player} fue matado por un Enderman"
+      ghast: "&f{player} fue matado por un Ghast"
+      blaze: "&f{player} fue matado por un Blaze"
+      enderdragon: "&f{player} fue matado por un Ender Dragon"
+      wither: "&f{player} fue matado por un Wither"
+      witherskeleton: "&f{player} fue matado por un Wither Skeleton"
+      witch: "&f{player} fue matado por un Witch"
+mcb:
+  command:
+    no-perm-message: "Lo siento, pero no tienes acceso a esta orden."
+    invalid-arguments: "Argumentos Invalidos."
+  commands:
+    reload:
+      usage: "reload"
+      description: "reload the config for MineCordBot"
+      reloaded: "MineCordBot config reloaded!"
+    eval:
+      usage: "eval <expression>"
+      description: "Solve a math expression"
+    mcmd:
+      usage: "mcmd <Minecraft Command>"
+      description: "Execute Minecraft commands from Discord."
+    permission:
+      usage: "perm <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
+      description: "add, remove permission to user and get what their permission level is."
+    setgame:
+      usage: "setgame <gametitle>"
+      description: "set your discord bot's game."
+    setavatar:
+      usage: "setavatar <imageurl>"
+      description: "set your discord bot's avatar."
+    setusername:
+      usage: "setusername <username>"
+      description: "set your discord bot's username."
+    setnickname:
+      usage: "setnickname <nickname>"
+      description: "set your discord bot's nickname."
+    ping:
+      usage: "ping"
+      description: "Conpruebe el tiempo de respuesta del bot."
+    help:
+      usage: "help [command]"
+      description: "Lista todos los comandos y muestra el uso de un comando."
+      too-much-args: "Usted ha entrado demasiados argumentos."
+      list:
+        header: "Comandos de MineCordBot"
+        info: "Comandos para Información"
+        fun: "Comandos Divertidos"
+        help: "Comandos para Ayuda"
+        mod: "Comandos de moderación del servidor"
+        misc: "Commands Varios"
+    list:
+      usage: "ls [update:true or false]"
+      description: "Lista todos los jugadores en línea en el servidor de Minecraft."
+      list:
+        header: "Jugadores en línea en el servidor de Minecraft"
+    info:
+      usage: "info"
+      description: "Conozca la información sobre MineCordBot y el bot"
+      minfo:
+        generalinfo_header: "Informacion General"
+        nonick: "Bot no tiene un apodo."
+        version: "Version"
+        textchannel: "Canales de texto"
+        voicechannel: "Canales de Voz"
+        uptime: "Tiempo de inicio"
+        botinfo_header: "Information del Bot"
+        clientid: "Bot ID del cliente"
+        botname: "Nombre del Bot"
+        botnick: "Apodo del Bot"
+        footer: "=== Mas Informacion ==="
+  messenger:
+    no-player: "{player} no pudo ser encontrado."
