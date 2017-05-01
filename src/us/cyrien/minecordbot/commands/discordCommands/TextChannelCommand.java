@@ -14,6 +14,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
+import us.cyrien.minecordbot.entity.User;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 import us.cyrien.minecordbot.utils.JsonUtils;
@@ -25,16 +26,32 @@ public class TextChannelCommand {
     @DPermission(PermissionLevel.LEVEL_3)
     public void command(@DMessageReceive MessageReceivedEvent e, @DCmd DiscordCommand command, @Text String s) {
         String[] args = s.split(" ");
-        if(checkArguments(e, command, args))
-        if (args[0].equalsIgnoreCase("list"))
-            command.sendMessageEmbed(e, generateListEmbed(e), 6 * args.length);
-        if (args[0].equalsIgnoreCase("add"))
-            addTextChannel(args[1], e, command);
-        if (args[0].equalsIgnoreCase("remove"))
-            removeTextChannel(args[1], e, command);
+        if (checkArguments(e, command, args)) {
+            if (args[0].equalsIgnoreCase("list"))
+                command.sendMessageEmbed(e, generateListEmbed(e), 6 * args.length);
+            else if(hasPermission(args, e)) {
+                if (args[0].equalsIgnoreCase("add"))
+                    addTextChannel(args[1], e, command);
+                if (args[0].equalsIgnoreCase("remove"))
+                    removeTextChannel(args[1], e, command);
+            } else {
+                command.sendMessageEmbed(e, command.noPermissionMessageEmbed(), 40);
+            }
+        }
     }
 
-    public boolean checkArguments(MessageReceivedEvent e, DiscordCommand command , String[] args) {
+    public boolean hasPermission(String[] args, MessageReceivedEvent e) {
+        User user = new User(e);
+        if (args.length != 0) {
+            if (user.getPermissionLevel() == PermissionLevel.OWNER)
+                return true;
+            if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove"))
+                return user.getPermissionLevel().ordinal() >= PermissionLevel.LEVEL_1.ordinal();
+        }
+        return true;
+    }
+
+    public boolean checkArguments(MessageReceivedEvent e, DiscordCommand command, String[] args) {
         if (args.length == 1) {
             if (!args[0].equalsIgnoreCase("list")) {
                 command.sendMessageEmbed(e, command.getInvalidHelpCard(e), 50);
@@ -67,7 +84,7 @@ public class TextChannelCommand {
                 String tcName = tc1.getName();
                 String str = Localization.getTranslatedMessage(path + "guild_name") + ": " + gName + "\n";
                 str += Localization.getTranslatedMessage(path + "channel_name") + ": " + tcName;
-                eb.addField( i++ + ". " + "[" + tc + "]" + ": ", str, false);
+                eb.addField(i++ + ". " + "[" + tc + "]" + ": ", str, false);
             }
         }
         return eb.build();
@@ -98,7 +115,7 @@ public class TextChannelCommand {
             command.sendMessage(e, String.format(response, textChannelID), 20);
             return;
         }
-        if(tcArray.length() == 1) {
+        if (tcArray.length() == 1) {
             response = Localization.getTranslatedMessage("mcb.commands.textchannel.last-tc");
             command.sendMessage(e, String.format(response, textChannelID), 20);
             return;

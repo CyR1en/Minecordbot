@@ -1,8 +1,8 @@
 package us.cyrien.minecordbot.enums;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import us.cyrien.minecordbot.entity.User;
 
-// FIXME: 3/30/2017 
 public enum DiscordPlaceHolders {
     CHANNEL {
         @Override
@@ -20,6 +20,19 @@ public enum DiscordPlaceHolders {
         @Override
         public String toString() {
             return mre.getAuthor().getName();
+        }
+    },
+    NAME {
+        @Override
+        public String toString() {
+            User user = new User(mre);
+            return user.getName();
+        }
+    },
+    ENAME{
+        @Override
+        public String toString() {
+            return mre.getMember().getEffectiveName();
         }
     };
 

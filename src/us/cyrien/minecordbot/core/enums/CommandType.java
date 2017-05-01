@@ -32,5 +32,11 @@ public enum CommandType {
         public String toString() {
             return Localization.getTranslatedMessage("mcb.commands.help.list.mod");
         }
+    },
+    SPECIAL {
+        @Override
+        public String toString() {
+            return Localization.getTranslatedMessage("mcb.commands.help.list.special");
+        }
     }
 }

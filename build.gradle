@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.0-SNAPSHOT'
+version '2.0.4'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
@@ -29,7 +29,7 @@ repositories {
     jcenter()
     mavenLocal()
     maven {
-        url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
     flatDir {
         dirs 'libs'
@@ -40,7 +40,6 @@ dependencies {
     compile 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
-    compile 'org.json:json:20160810'
 
     compile 'net.java.dev.jna:jna:4.2.2'
 
@@ -50,6 +49,7 @@ dependencies {
     }
     compile 'net.dv8tion:JDA:3.0.0_160'
     compile name: 'Frame'
+    compile name: 'PermissionsEx-1.23.4'
 }
 
 jar {
@@ -61,22 +61,23 @@ jar {
 }
 
 shadowJar {
-    classifier = 'ALPHA'
+    classifier = 'Shaded'
     dependencies {
         exclude(dependency('org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'))
         exclude(dependency('junit:junit:4.10'))
         exclude(dependency('javax.persistence:persistence-api:1.0'))
         exclude(dependency('com.google.guava:guava:18.0'))
         exclude(dependency('com.google.code.gson:gson:2.3.1'))
-        exclude(dependency('com.googlecode.json-simple:json-simple:1.1.1'))
         exclude(dependency('org.avaje:ebean:2.8.1'))
         exclude(dependency('net.md-5:bungeecord-chat:1.10-SNAPSHOT'))
         exclude(dependency('org.hamcrest:hamcrest-core:1.1'))
         exclude(dependency('org.yaml:snakeyaml:1.17'))
+        exclude(dependency(name: 'PermissionsEx-1.23.4'))
+        exclude(dependency('org.json:json:20160810'))
     }
-    relocate 'org.apache.commons.lang3', 'shadow.apache.org.commons.lang3'
+    relocate 'org.apache', 'shadow.org.apache'
+    relocate ('org.json', 'shadow.org.json')
 }
-
 
 build {
     dependsOn shadowJar

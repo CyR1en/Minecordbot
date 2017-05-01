@@ -24,8 +24,6 @@ public class PrefixParser {
             s.init(e);
             String pH = "{" + s.name().toLowerCase() + "}";
             String pH0 ="\\{" + s.name().toLowerCase() + "}";
-            System.out.println(prefix);
-            System.out.println(pH);
             if (prefix.contains(pH)) {
                 prefix = prefix.replaceAll(pH0, s.toString());
             }

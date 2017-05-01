@@ -39,16 +39,13 @@ mcb:
     invalid-tc: "Invalid text channel for command."
     no-alias: "There are no other alias for this command"
   commands:
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Search for images"
     reload:
       usage: "reload"
       description: "Reload the config for MineCordBot"
       reloaded: "Minecordbot config reloaded!"
     eval:
       usage: "eval <expression>"
-      description: "JavaScript eval()"
+      description: "Solve a math expression"
     mcmd:
       usage: "minecraftcommand <Minecraft Command>"
       description: "Execute Minecraft commands from Discord."
@@ -91,7 +88,6 @@ mcb:
         help: "Help Commands"
         mod: "Server Moderating Commands"
         misc: "Miscellaneous Commands"
-        special: "Special Command"
     list:
       usage: "list [update:true or false]"
       description: "list all online players on the minecraft server."

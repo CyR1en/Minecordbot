@@ -6,12 +6,19 @@ import io.github.hedgehog1029.frame.dispatcher.exception.IncorrectArgumentsExcep
 import io.github.hedgehog1029.frame.dispatcher.exception.NoPermissionException;
 import io.github.hedgehog1029.frame.loader.exception.InaccessibleMethodException;
 import io.github.hedgehog1029.frame.logger.Logger;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.annotation.DCmd;
 import us.cyrien.minecordbot.core.annotation.DMessageReceive;
+import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.exceptions.IllegalBeginningParameterException;
+import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.core.loader.DCommandMapping;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.entity.User;
@@ -22,16 +29,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-public class DCommandDiscpatcher {
-    private static DCommandDiscpatcher dispatcher;
+public class DCommandDispatcher {
+    private static DCommandDispatcher dispatcher;
     private static Collection<DiscordCommand> map;
 
-    public DCommandDiscpatcher() {
-    }
-
-    public static DCommandDiscpatcher getDispatcher() {
+    public static DCommandDispatcher getDispatcher() {
         if (dispatcher == null) {
-            dispatcher = new DCommandDiscpatcher();
+            dispatcher = new DCommandDispatcher();
         }
 
         return dispatcher;
@@ -42,12 +46,12 @@ public class DCommandDiscpatcher {
         getCommandMap().add(mcbCommandMapping);
     }
 
-    public final boolean dispatch(MessageReceivedEvent me, DCommandMapping command, String... oargs) throws IncorrectArgumentsException, NoPermissionException, IllegalBeginningParameterException {
+    public final boolean dispatch(MessageReceivedEvent me, DCommandMapping command, String... oargs) throws IncorrectArgumentsException, NoPermissionException, IllegalBeginningParameterException, IllegalTextChannelException {
         ArrayList<Object> params = new ArrayList();
         Parameter[] methodArgs = command.getMethod().getParameters();
         ArrayDeque<Parameter> parameters = new ArrayDeque(Arrays.asList(methodArgs));
         ArrayDeque args = new ArrayDeque(Arrays.asList(oargs));
-        if(methodArgs.length > 1) {
+        if (methodArgs.length > 1) {
             if (!isDCommand(methodArgs[0]) && !isMessageReceive(methodArgs[0])) {
                 throw new IllegalBeginningParameterException
                         ("First parameter of " + command.getMethod().getName() +
@@ -61,7 +65,6 @@ public class DCommandDiscpatcher {
         }
         while (!parameters.isEmpty()) {
             Parameter current = (Parameter) parameters.pop();
-            Minecordbot.DEBUG_LOGGER.info("CURRENT PARAMETER : " + current);
             if (args.peek() == null && isOptional(current)) {
                 params.add((Object) null);
             } else {
@@ -76,16 +79,15 @@ public class DCommandDiscpatcher {
                     if (isDCommand(current)) {
                         params.add(command);
                     } else if (args.peek() != null) {
-                        spl = (String)args.pop();
+                        spl = (String) args.pop();
                         List<DiscordCommand> mcbCmds = Minecordbot.getDiscordCommands();
-                        System.out.println(spl + "asjdioajsdijadasdasd");
-                        if(spl.equals("")) {
+                        if (spl.equals("")) {
                             params.add(null);
-                        } else if(ArrayListUtils.getIndexOf(spl, mcbCmds) == -1 && !spl.equals("")) {
+                        } else if (ArrayListUtils.getIndexOf(spl, mcbCmds) == -1) {
                             DiscordCommand tempCmd = new DCommandMapping(command.getCommand(), command.getMethod(), command.getContainer());
                             params.add(tempCmd.nullify(spl));
                         } else {
-                            DiscordCommand cmd = Minecordbot.getDiscordCommands().get(ArrayListUtils.getIndexOf(spl, mcbCmds ));
+                            DiscordCommand cmd = Minecordbot.getDiscordCommands().get(ArrayListUtils.getIndexOf(spl, mcbCmds));
                             params.add(cmd);
                         }
                     } else {
@@ -97,8 +99,10 @@ public class DCommandDiscpatcher {
                         args.forEach((a) -> {
                             builder.append(a).append(" ");
                         });
-                        params.add(builder.toString());
-                        break;
+                        if (!StringUtils.isBlank(builder.toString())) {
+                            params.add(builder.toString());
+                            break;
+                        }
                     }
                     params.add(args.pop());
                 } else if (subclassOf(Integer.TYPE, current)) {
@@ -122,25 +126,64 @@ public class DCommandDiscpatcher {
                 }
             }
         }
-        User sender = new User().setUser(me);
+        User sender = new User(me);
         PermissionLevel plevel = command.getPermission();
-        Minecordbot.DEBUG_LOGGER.info("SENDER PERMISSION LEVEL: " + sender.getPermissionLevel()); // FIXME: 3/25/2017
-        Minecordbot.DEBUG_LOGGER.info("COMMAND PERMISSION LEVEL: " + plevel); // FIXME: 3/25/2017
-        if (command.getPermission() != null && !new User().setUser(me).hasPermission(plevel)) {
-            Minecordbot.DEBUG_LOGGER.info("USER HAS NO PERMISSION"); // FIXME: 3/25/2017
+        command.setSender(sender);
+        boolean isBound;
+        boolean notNull = getBoundTextChannels(command.getCommandType(), me) != null;
+        if (notNull)
+            isBound = getBoundTextChannels(command.getCommandType(), me).contains(me.getTextChannel());
+        else
+            isBound = false;
+
+        if (plevel != null && !sender.hasPermission(plevel)) {
             throw new NoPermissionException();
+        } else if (!isBound && notNull) {
+            throw new IllegalTextChannelException(String.format("Textchannel %s is an invalid text channel for %s command", me.getTextChannel().toString(), command.getName()));
         } else {
-            command.setPermission(PermissionLevel.LEVEL_0);
-            Minecordbot.DEBUG_LOGGER.info("INVOKING COMMAND"); // FIXME: 3/25/2017
+            //command.setPermission(PermissionLevel.LEVEL_0);
             try {
                 command.invoke(params.toArray());
-                Minecordbot.DEBUG_LOGGER.info("SUCCESSFULLY INVOKED COMMAND"); // FIXME: 3/26/2017 
+                Minecordbot.LOGGER.info(String.format("%s(%s) Executed %s command at %s(%s)",
+                        me.getAuthor().getName(), me.getAuthor().getId(), command.getName(), me.getTextChannel().getName(), me.getTextChannel().getId()));
                 return true;
-            } catch (InaccessibleMethodException var11) {
+            } catch (InaccessibleMethodException ex) {
                 Logger.err("Could not invoke method for command " + command.getName() + "!");
-                var11.printStackTrace();
+                ex.printStackTrace();
                 return false;
             }
+        }
+    }
+
+    private List<TextChannel> getBoundTextChannels(CommandType commandType, MessageReceivedEvent e) {
+        JSONObject ctc = MCBConfig.getJSONObject("command_text_channel");
+        switch (commandType) {
+            case FUN:
+                return getValidTextChannelAsList(ctc.getJSONArray("fun"), e);
+            case MOD:
+                return getValidTextChannelAsList(ctc.getJSONArray("mod"), e);
+            case HELP:
+                return getValidTextChannelAsList(ctc.getJSONArray("help"), e);
+            case INFO:
+                return getValidTextChannelAsList(ctc.getJSONArray("info"), e);
+            case MISC:
+                return getValidTextChannelAsList(ctc.getJSONArray("misc"), e);
+            default:
+                return null;
+        }
+    }
+
+    private List<TextChannel> getValidTextChannelAsList(JSONArray arr, MessageReceivedEvent e) {
+        List<TextChannel> textChannels = new ArrayList<>();
+        for (Object o : arr) {
+            TextChannel tc = e.getJDA().getTextChannelById(String.valueOf(o));
+            if (tc != null)
+                textChannels.add(tc);
+        }
+        if (textChannels.size() == 0) {
+            return null;
+        } else {
+            return textChannels;
         }
     }
 

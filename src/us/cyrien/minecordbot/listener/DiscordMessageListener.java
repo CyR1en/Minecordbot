@@ -1,5 +1,6 @@
 package us.cyrien.minecordbot.listener;
 
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
@@ -21,18 +22,18 @@ public class DiscordMessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        Minecordbot.DEBUG_LOGGER.info("MESSAGE RECIEVED");
         boolean isCommand = event.getMessage().getContent().startsWith(MCBConfig.get("trigger"));
         boolean notSelf = !event.getMember().getUser().getId().equalsIgnoreCase(event.getJDA().getSelfUser().getId());
-        boolean bound = containsChannel(event.getTextChannel().getId());
+        TextChannel tc = event.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
+        boolean modChannel = tc != null && tc.equals(event.getTextChannel());
+        boolean bound = containsChannel(event.getTextChannel().getId()) || modChannel;
         if (isCommand && notSelf) {
-            Minecordbot.DEBUG_LOGGER.info("NOW HANDLING MESSAGE RECEIVE EVENT");
             mcb.handleCommand(event);
         } else {
-            if(bound && notSelf) {
+            if (bound && notSelf) {
                 String msg = event.getMessage().getContent();
                 String prefix = PrefixParser.parseDiscordPrefixes(MCBConfig.get("message_prefix_minecraft"), event);
-                messenger.sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + "" + ChatColor.WHITE + msg));
+                messenger.sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (MCBConfig.get("message_format") + msg)).trim());
             }
         }
     }

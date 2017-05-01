@@ -9,6 +9,7 @@ import us.cyrien.minecordbot.core.annotation.DCommand;
 import us.cyrien.minecordbot.core.annotation.DMessageReceive;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
+import us.cyrien.minecordbot.entity.User;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 
@@ -27,6 +28,7 @@ public class HelpCommand {
             String noSuchCommandResponse = Localization.getTranslatedMessage("mcb.commands.help.no-such-command");
             command.sendMessageEmbed(e, new EmbedBuilder().setTitle(String.format(noSuchCommandResponse, arg.getName()), null).build(), 15);
         } else {
+            arg.setSender(new User(e));
             command.sendMessageEmbed(e, arg.getHelpCard(e), 60);
         }
     }
@@ -35,12 +37,16 @@ public class HelpCommand {
         ebi.setThumbnail("https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
         ebi.setAuthor(Localization.getTranslatedMessage("mcb.commands.help.list.header"), null, "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
         String trigger = MCBConfig.get("trigger");
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i <= CommandType.values().length - 1; i++) {
             StringBuilder str = new StringBuilder();
-            for (DiscordCommand c : getAllCommandsOf(CommandType.values()[i])) {
-                str.append(trigger).append(c.getName()).append(" - ").append(c.getDescription()).append("\n");
+            if (getAllCommandsOf(CommandType.values()[i]).size() != 0) {
+                for (DiscordCommand c : getAllCommandsOf(CommandType.values()[i])) {
+                    str.append(trigger)
+                            .append(c.getName())
+                            .append(" - ").append(c.getDescription()).append("\n");
+                }
+                ebi.addField(" - " + CommandType.values()[i].toString(), str.toString(), false);
             }
-            ebi.addField(" - " + CommandType.values()[i].toString(), str.toString(), false);
         }
         return ebi.build();
     }

@@ -36,7 +36,7 @@ public class InfoCommand {
         String nickName = (Localization.getTranslatedMessage(path + "nonick"));
         if (e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname() != null)
             nickName = e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname();
-        String mcbInfo = "\n" + Localization.getTranslatedMessage(path + "version") + ": " + Bukkit.getPluginManager().getPlugin("Minecordbot").getDescription().getVersion() +
+        String mcbInfo = "\n" + Localization.getTranslatedMessage(path + "version") + ": " + Bukkit.getPluginManager().getPlugin("MineCordBot").getDescription().getVersion() +
                 "\n" + Localization.getTranslatedMessage(path + "textchannel") + ": " + textChannelCount +
                 "\n" + Localization.getTranslatedMessage(path + "voicechannel") + ": " + voiceChannelCount +
                 "\n" + Localization.getTranslatedMessage(path + "uptime") + ": " + Minecordbot.getUpTime();

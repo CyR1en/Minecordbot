@@ -12,14 +12,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.minecordbot.commands.discordCommands.*;
+import us.cyrien.minecordbot.commands.minecraftCommand.Dcmd;
+import us.cyrien.minecordbot.commands.minecraftCommand.Dme;
+import us.cyrien.minecordbot.commands.minecraftCommand.Reload;
 import us.cyrien.minecordbot.configuration.LocalizationFiles;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.DrocsidFrame;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.entity.Messenger;
 import us.cyrien.minecordbot.entity.UpTimer;
+import us.cyrien.minecordbot.event.BotReadyEvent;
+import us.cyrien.minecordbot.handle.Metrics;
+import us.cyrien.minecordbot.handle.Updater;
 import us.cyrien.minecordbot.listener.DiscordMessageListener;
 import us.cyrien.minecordbot.listener.MinecraftEventListener;
+import us.cyrien.minecordbot.listener.TabCompleteV2;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -37,6 +44,8 @@ public class Minecordbot extends JavaPlugin {
     private static UpTimer upTimer;
 
     private JDA jda;
+    private Updater updater;
+    private Metrics metrics;
 
     @Override
     public void onEnable() {
@@ -51,7 +60,6 @@ public class Minecordbot extends JavaPlugin {
             initDListener();
             initMListener();
         }
-        upTimer = new UpTimer();
     }
 
     //Framework stuff
@@ -87,16 +95,20 @@ public class Minecordbot extends JavaPlugin {
         }
     }
 
-    private void initMCmds() {
-
-    }
-
     private void initMListener() {
         registerMinecraftEventModule(new MinecraftEventListener(this));
+        registerMinecraftEventModule(new TabCompleteV2(this));
     }
 
     private void initDListener() {
         registerDiscordEventModule(new DiscordMessageListener(this));
+        registerDiscordEventModule(new BotReadyEvent(this));
+    }
+
+    private void initMCmds() {
+        registerMinecraftCommandModule(Dcmd.class);
+        registerMinecraftCommandModule(Dme.class);
+        registerMinecraftCommandModule(Reload.class);
     }
 
     private void initDCmds() {
@@ -106,12 +118,26 @@ public class Minecordbot extends JavaPlugin {
         registerDiscordCommandModule(TextChannelCommand.class);
         registerDiscordCommandModule(InfoCommand.class);
         registerDiscordCommandModule(ListCommand.class);
+        registerDiscordCommandModule(EvalCommand.class);
+        registerDiscordCommandModule(PermissionCommand.class);
+        registerDiscordCommandModule(SendMinecraftCommandCommand.class);
+        registerDiscordCommandModule(SetNicknameCommand.class);
+        registerDiscordCommandModule(SetUsernameCommand.class);
+        registerDiscordCommandModule(SetGameCommand.class);
+        registerDiscordCommandModule(SetAvatarCommand.class);
+        //registerDiscordCommandModule(ImageSearchCommand.class);
     }
 
     private void initInstances() {
         messenger = new Messenger(this);
          LocalizationFiles localizationFiles = new LocalizationFiles(this, true);
         instance = this;
+        upTimer = new UpTimer();
+        if (MCBConfig.get("auto_update"))
+            updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.DEFAULT, false);
+        else
+            updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
+        metrics = new Metrics(this);
     }
 
     //accessors and modifiers
@@ -143,11 +169,8 @@ public class Minecordbot extends JavaPlugin {
             String raw = mRE.getMessage().getContent();
             String noTrigger = raw.replaceAll(MCBConfig.get("trigger"), "");
             String head = noTrigger.split(" ")[0];
-            String[] strings = raw.replaceAll(MCBConfig.get("trigger") + head, "").trim().split(" ");
-            Minecordbot.DEBUG_LOGGER.info("COMMAND NAME : " + dc.getName()); // FIXME: 3/25/2017
-            Minecordbot.DEBUG_LOGGER.info("COMMAND ALIAS : " + dc.getAliases() + " --> " + head); // FIXME: 3/25/2017
+            String[] strings = raw.replaceAll(MCBConfig.get("trigger") + head, "").trim().split("\\s");
             if (dc.getAliases().contains(head) || dc.getName().equalsIgnoreCase(head)) {
-                Minecordbot.DEBUG_LOGGER.info("EXECUTING"); // FIXME: 3/25/2017
                 dc.execute(mRE, strings);
             }
         }

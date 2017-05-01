@@ -11,9 +11,9 @@ public class Localization {
 
 	private static YamlConfiguration getLocalization() {
 	    String loc = MCBConfig.get("localization");
-	    File f = new File(Bukkit.getPluginManager().getPlugin("Minecordbot").getDataFolder() + "/localizations/" + loc + ".yml");
+	    File f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder() + "/localizations/" + loc + ".yml");
 	    if(!f.exists())
-            f = new File(Bukkit.getPluginManager().getPlugin("Minecordbot").getDataFolder() + "/localizations/en.yml");
+            f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder()+ "localizations/en.yml");
         return YamlConfiguration.loadConfiguration(f);
     }
 

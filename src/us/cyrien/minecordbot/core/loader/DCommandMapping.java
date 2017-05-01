@@ -6,12 +6,11 @@ import io.github.hedgehog1029.frame.loader.exception.InaccessibleMethodException
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import us.cyrien.minecordbot.core.annotation.DCommand;
 import us.cyrien.minecordbot.core.annotation.DPermission;
-import us.cyrien.minecordbot.core.dispatcher.DCommandDiscpatcher;
+import us.cyrien.minecordbot.core.dispatcher.DCommandDispatcher;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.exceptions.IllegalBeginningParameterException;
+import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Localization;
-import us.cyrien.minecordbot.main.Minecordbot;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,13 +30,8 @@ public class DCommandMapping extends DiscordCommand {
         this.method = method;
         this.container = object;
 
-        setUsage(Localization.getTranslatedMessage(usage));
-        setDescription(Localization.getTranslatedMessage(description));
-
         if (method.isAnnotationPresent(DPermission.class)) {
-            Minecordbot.DEBUG_LOGGER.info("PERMISSION ANNOTATION FOUND");
             this.permission = method.getAnnotation(DPermission.class).value();
-            Minecordbot.DEBUG_LOGGER.info("COMMAND PERMISSION SET TO " + permission);
         } else if (method.isAnnotationPresent(DCommand.class)) {
             this.permission = PermissionLevel.LEVEL_0;
         }
@@ -45,6 +39,10 @@ public class DCommandMapping extends DiscordCommand {
 
     public DCommand getCommand() {
         return this.command;
+    }
+
+    public Object getContainer() {
+        return container;
     }
 
     public Method getMethod() {
@@ -57,6 +55,7 @@ public class DCommandMapping extends DiscordCommand {
 
         return aliases;
     }
+
     public void invoke(Object... args) throws InaccessibleMethodException {
         try {
             method.invoke(container, args);
@@ -66,23 +65,21 @@ public class DCommandMapping extends DiscordCommand {
         }
     }
 
-    public Object getContainer() {
-        return container;
-    }
-
     @Override
     public boolean execute(MessageReceivedEvent e, String[] strings) {
         try {
-            Minecordbot.DEBUG_LOGGER.info("DISCPATCHING"); // FIXME: 3/25/2017
-            return DCommandDiscpatcher.getDispatcher().dispatch(e, this, strings);
+            return DCommandDispatcher.getDispatcher().dispatch(e, this, strings);
         } catch (IncorrectArgumentsException var5) {
-            sendMessage(e, "`incorrect arguments`", 20);
+            sendMessageEmbed(e, invalidArgumentsMessageEmbed(), HELP_COMMAND_DURATION);
             return false;
         } catch (NoPermissionException var6) {
-            sendMessage(e, "`You have no permission`", 20);
+            sendMessageEmbed(e, noPermissionMessageEmbed(), 40);
             return false;
-        } catch (IllegalBeginningParameterException var7) {
-            var7.printStackTrace();
+        } catch (IllegalTextChannelException var7) {
+            sendMessageEmbed(e, invalidTcMessageEmbed(), 40);
+            return false;
+        } catch (IllegalBeginningParameterException var8) {
+            var8.printStackTrace();
             return false;
         }
     }

@@ -2,11 +2,13 @@ package us.cyrien.minecordbot.entity;
 
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
 import us.cyrien.minecordbot.configuration.MCBConfig;
+import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.main.Minecordbot;
 
 import java.util.concurrent.Executors;
@@ -80,8 +82,49 @@ public class Messenger {
         }
     }
 
+    public void sendMessageEmbedToDiscord(TextChannel textChannel, MessageEmbed message) {
+        textChannel.sendMessage(message).queue();
+    }
+
+    public void sendMessageToDiscord(TextChannel textchannel, String message) {
+        textchannel.sendMessage(message).queue();
+    }
+
+    //By ID stuff
+    public void sendMessageEmbedToDiscordByID(String id, MessageEmbed message) throws IllegalTextChannelException{
+        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        if(tc == null)
+            throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
+        tc.sendMessage(message).queue();
+    }
+
+    public void sendMessageToDiscordByID(String id, String message) throws IllegalTextChannelException {
+        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        if(tc == null)
+            throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
+        tc.sendMessage(message).queue();
+    }
+
+    public void sendTempMessageToDiscordByID(String id, String message, int duration) throws IllegalTextChannelException {
+        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        if(tc == null)
+            throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
+            msg.delete().queue();
+        }, duration, TimeUnit.SECONDS));
+    }
+
+    public void sendTempMessageEmbedToDiscordByID(String id, MessageEmbed message, int duration) throws IllegalTextChannelException {
+        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        if(tc == null)
+            throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
+            msg.delete().queue();
+        }, duration, TimeUnit.SECONDS));
+    }
+
     //Command Response
-    public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int length) {
+    public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int length)  {
         boolean tempResponse = MCBConfig.get("auto_delete_command_response");
         if (tempResponse)
             sendTempMessageEmbed(e, me, length);

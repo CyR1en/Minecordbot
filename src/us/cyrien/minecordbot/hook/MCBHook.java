@@ -9,12 +9,12 @@ public class MCBHook implements IPluginHook {
 
     @Override
     public boolean available() {
-        return Bukkit.getServer().getPluginManager().isPluginEnabled("Minecordbot");
+        return Bukkit.getServer().getPluginManager().isPluginEnabled("MineCordBot");
     }
 
     public Minecordbot getMinecordbot() {
         if(available())
-            return (Minecordbot) Bukkit.getPluginManager().getPlugin("WorldGuard");
+            return (Minecordbot) Bukkit.getPluginManager().getPlugin("MineCordBot");
         return null;
     }
 }
