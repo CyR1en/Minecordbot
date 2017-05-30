@@ -1,6 +1,5 @@
-# __MineCordBot__ <img src="https://www.spigotmc.org/data/resource_icons/30/30725.jpg?1477122936">  
+# ![MineCordBot](https://www.spigotmc.org/data/resource_icons/30/30725.jpg?1477122936) __MineCordBot__
 ## A Powerful Way to Bridge Minecraft and Discord
----
 ### Configurable, Simple, Easy
 
 [![Installation](https://lh3.googleusercontent.com/KgATtmS9q1GO4OGW9boqe9_lgDLTOMXUorx07LyQ1giqe8LlC9hFkHgmmK04O8-MGF2hZ7E0iBumLVpuEh1GfdFM-KXATRt0B1CahuOl5nKOKdnCloK3-jDaK_hKJc2C-MELF9qxX_qDfhW5I-bZ8hE3SOgp_RSaGyVtl7vWe2zXfevZgjlqjrXf54mDcKtBgvf4HPgc4u8TPhjjBtN9L14x59v1onhR14LwdFwVYEE0LnHuDMnW9kqPJSm3FpLUv4OmfW9peeD5Y5EO0N_4ABCO3DjWvZaJRoc3s40-eLKseWpYWfcuX3gYRlWmt0fN-jqFzH2oXdYr4EgiNkpaAfEWBNCSnOV9-LtRx9Jb_y6Wza44Sqk2pMA-hCkUTc_-GNUTaDFaIhHa_vbCIeaAsvyvb8CDF9HgVzZgbUFcqdMOVv0XeiwclqUK9ZqLWE0oF9EFMHy-aOfVJ9eblag8nR_BOaJ0np90DW8cNA7rCO50a19_Y7OHasnBeOhc-rIaawEW3AYt5o6yE2Jo02sbNQaUhcFXGXgL8JqljP3mqP_w7qryl7cajdrQ4277WzpYbH0GdCuMiUJ2PAUr5ErtrKEAy65omBK9nJ-QncAkdmgm4ba9KAoM=w190-h46-no)](https://www.cyrien.us/minecordbot/installation/)
