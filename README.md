@@ -25,8 +25,7 @@ __Supports:__ *SpigotAPI 1.7 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.
 - Fun commands (May help you do math home work)
 
 ---
-### Feel free to join the [Discord Server](https://dev.bukkit.org/linkout?remoteUrl=https://discord.gg/rEK5XmV)
+### Feel free to join the [Discord Server](https://discordapp.com/invite/rEK5XmV)
 Or...
 [Check out Auri](https://github.com/CyR1en/Project-Auri),
-[Report a Bug on BukkitDev](https://dev.bukkit.org/projects/minecordbot-bukkit/issues/create),
-[Buy Me A Pizza ![Donate](https://www.paypalobjects.com/webstatic/icon/pp32.png) ](https://www.paypal.com/donate/?token=IvEfKp3N4GimiS9nyODTtl8sD-TVddYEg3F4fIYfAiUM8fz-k_nraKS_XDfVhATqQa09cG)
+[Report a Bug on BukkitDev](https://dev.bukkit.org/projects/minecordbot-bukkit/issues/create)
