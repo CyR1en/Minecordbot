@@ -1,5 +1,8 @@
 package us.cyrien.minecordbot.enums;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.onarandombox.MultiverseCore.utils.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,7 +14,20 @@ public enum MinecraftPlaceHolder {
     WORLD {
         @Override
         public String toString() {
-            return e.getPlayer().getWorld().getName();
+            String world;
+            if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+                MultiverseCore mv = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+                WorldManager wm = new WorldManager(mv);
+                if (wm.isMVWorld(e.getPlayer().getWorld())) {
+                    MultiverseWorld mvw = wm.getMVWorld(e.getPlayer().getWorld());
+                    world = mvw.getAlias() == null ? mvw.getName() : mvw.getAlias();
+                } else {
+                    world = e.getPlayer().getWorld().getName();
+                }
+            } else {
+                world = e.getPlayer().getWorld().getName();
+            }
+            return world;
         }
     },
     SENDER {
@@ -20,7 +36,7 @@ public enum MinecraftPlaceHolder {
             return ChatColor.stripColor(e.getPlayer().getName());
         }
     },
-    NAME{
+    NAME {
         @Override
         public String toString() {
             return ChatColor.stripColor(e.getPlayer().getName());
@@ -33,16 +49,16 @@ public enum MinecraftPlaceHolder {
             return ChatColor.stripColor(p.getDisplayName());
         }
     },
-    RANK{
+    RANK {
         @Override
         public String toString() {
             PermissionUser user = PermissionsEx.getUser(e.getPlayer());
             String prefix;
-            if(Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")) {
+            if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")) {
                 prefix = user.getPrefix();
-                if(prefix.equals("")) {
+                if (prefix.equals("")) {
                     prefix = user.getSuffix();
-                    if(prefix.equals(""))
+                    if (prefix.equals(""))
                         prefix = "";
                 }
             } else {

@@ -20,16 +20,12 @@ public class SetGameCommand {
     @DCommand(aliases = {"setgame", "sg"}, usage = "mcb.commands.setgame.usage", desc = "mcb.commands.setgame.description", type = CommandType.MISC)
     @DPermission(PermissionLevel.LEVEL_2)
     public void command(@DMessageReceive MessageReceivedEvent e, @DCmd DiscordCommand command, @Text String arg) {
-        if (StringUtils.isBlank(arg)) {
-            command.sendMessageEmbed(e, command.getInvalidHelpCard(e), HELP_COMMAND_DURATION);
-            return;
-        }
         String[] args = arg.split("\\s");
         if (args.length == 0) {
             command.sendMessageEmbed(e, command.getInvalidHelpCard(e), HELP_COMMAND_DURATION);
             return;
         }
-        e.getJDA().getPresence().setGame(Game.of(arg));
+        e.getJDA().getPresence().setGame(StringUtils.isBlank(arg) ? null : Game.of(arg));
         String r = Localization.getTranslatedMessage("mcb.commands.setgame.changed");
         command.sendMessageEmbed(e, new EmbedBuilder().setColor(e.getGuild().getMember(e.getJDA().getSelfUser()).getColor()).setTitle(String.format(r, arg), null).build(), 30);
     }

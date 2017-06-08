@@ -23,8 +23,8 @@ public class PingCommand {
     }
 
     private void sendLatency(MessageReceivedEvent mre, Consumer<Message> consumer, DiscordCommand c) {
-        mre.getTextChannel().sendMessage("Pong...").queue(msg ->
-                msg.editMessage("Pong: `" + mre.getMessage().getCreationTime()
+        mre.getTextChannel().sendMessage("Ping...").queue(msg ->
+                msg.editMessage("Ping: `" + mre.getMessage().getCreationTime()
                         .until(msg.getCreationTime(), ChronoUnit.MILLIS) + " ms`").queue());
     }
 }

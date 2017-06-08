@@ -127,6 +127,8 @@ public class MCBConfig {
         map.put("localization", "en");
         map.put("message_format", "&7");
         map.put("text_channels", new String[]{"923823", "3232323"});
+        map.put("blocked_bots", new String[]{"bot id's of", "bots you want to prevent from message relays"});
+        map.put("blocked_command_prefix", new String[] {"bot command prefix", "that you want to prevent from message relay"});
         map.put("mod_channel", "place text channel id where you want to see messages with private message");
         map.put("permissions", perms);
         map.put("message_prefix_discord", "Minecraft {sender}:");

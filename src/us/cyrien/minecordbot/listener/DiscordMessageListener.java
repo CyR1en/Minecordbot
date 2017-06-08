@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot.listener;
 
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
@@ -27,15 +28,39 @@ public class DiscordMessageListener extends ListenerAdapter {
         TextChannel tc = event.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
         boolean modChannel = tc != null && tc.equals(event.getTextChannel());
         boolean bound = containsChannel(event.getTextChannel().getId()) || modChannel;
+        boolean blocked = prefixIsBlocked(event.getMessage().getContent()) || botIsBlocked(event.getAuthor().getId());
         if (isCommand && notSelf) {
             mcb.handleCommand(event);
         } else {
-            if (bound && notSelf) {
+            if (bound && notSelf && !blocked) {
                 String msg = event.getMessage().getContent();
                 String prefix = PrefixParser.parseDiscordPrefixes(MCBConfig.get("message_prefix_minecraft"), event);
                 messenger.sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (MCBConfig.get("message_format") + msg)).trim());
             }
         }
+    }
+
+    private boolean botIsBlocked(String id) {
+        JSONArray blockedB = MCBConfig.get("blocked_bots");
+        if(mcb.getJDA().getUserById(id) != null) {
+            User user = mcb.getJDA().getUserById(id);
+            if(user.isBot()) {
+                for (Object s : blockedB) {
+                    if (user.getId().equals(s.toString().trim()))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean prefixIsBlocked(String message) {
+        JSONArray blockedP = MCBConfig.get("blocked_command_prefix");
+        for(Object p : blockedP) {
+            if(message.startsWith(p.toString()))
+                return true;
+        }
+        return false;
     }
 
     private boolean containsChannel(String id) {

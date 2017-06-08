@@ -6,7 +6,7 @@
 [![Configuration](https://lh3.googleusercontent.com/m5ltYrlDr12GCxoy5CdreXcjIWx5QMDevF2gyvaF-luaUScPA4_2Xat3qpqg81sz3RUNKrQ4UOjZS7YfC7qqSFWgtGCcJKGIB0vhvc668Z3jxPcVEElKiD4cJ6SltTrzDPhptPd_pC1_1bPQrjaRn0IpHwhfxY-jIvimy8W_w86RLaBHKjWtgkRrJlmCBY6EghnECvMBOIDMd8KwRxD5pFRJbHqAvl_pFkuJVMHi-kmf6DyccKEX7W8y5UVy4GhHkfqTv-fDM9mts6b71eI8vRSP-8LGOpedfLpnML9iViUtXOPRdK2EAbpGMWxNvUnkE5B38226z7mggUbv1lxdz745kKLKBMoSNn5TPGScEcD-XTrVt_2iYNYulRRrMoeXqLiMQkYXTzskZGmOtjTjqAJ8cdcSH3u8flGrdiHqpcpDynXpSjsCxzkOQwVLbtbb-zzdAT_iWu5JNH7CN7pNzNBj2YLkmDJWhvvMAtknFHhHMpqz5nyyXd9eiGsJcprkQc74_zi3jhPrQAliqC5Nyl5En1fykMuXkdfW7e824WilUXZj1xVGYJbcoNCOXWb4o3ChjNxp9_ZJht5lx_DTd13nE3YVIpokxbK7VP9r3R25zN9QRkU1=w190-h46-no)](https://github.com/CyR1en/Minecordbot-v2/wiki/Configuration)
 [![Commands](https://lh3.googleusercontent.com/lJX-Lf8e-KNcqlCoJndSa9blfMOjI57TH9_TEMYW0RYlroocJzfXzYklfzxaAUHUFdvb8Y2E6m9djNC5wojYF52gYFUPG5uP3wJRJoqPm0H8uSkCBweWPFq8lEUKKawKtU9P8I5KMtOMs9cLr88uOxsgAWZpTGEJ7wV60xVzYpeQWS_2f-J9gG-JRe_KK-isv1qVqWomXFjY2CfN4owl2f7JPd3tH-JDCl0fVQaoFbrvheZAd5SB33M_uEP9nhzYSqQioCwY4qlUCuRorS5w3kXkefv2Sz9AYoVD4zT4g0NSX54qGcu3yxWnsvWQNigb-HMNOdYp17Sh2xSCAzJVHV58tlxdrD-8pJvMM1ZG5eIht-wc5O30gjbaPjI5RutAsFzl_g9IPHGZ8HTi-6ACvtUUytnVF-i0FHVHkA0EJWE-LpkO1i2nuETNZDKdRNITUa9UYAzcikPB30BwIXGRUIVVcmyK9bWfg0zfWD7qmq5gEBq_g01h4e-OKVWoIc8MN5BkjrxT8rM__eXUbjYGOGM8ifpmEzLZhcJddWRR8CCRM2DQsNNv2bBN_0-HtQI13X9kscWGwNKkWFcFhpu2HQox547e_ouevthRbiaZu6PquLAVXO8d=w190-h46-no)](https://github.com/CyR1en/Minecordbot-v2/wiki/Commands)
 
-__Supports:__ *SpigotAPI 1.7 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.5](https://dev.bukkit.org/projects/minecordbot-bukkit/files/2426990)*
+__Supports:__ *SpigotAPI 1.8 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.5](https://dev.bukkit.org/projects/minecordbot-bukkit/files/2426990)*
 
 ---
 ### __Features:__
@@ -20,7 +20,7 @@ __Supports:__ *SpigotAPI 1.7 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.
 - Sleek command response interface
 - Tab auto-completion for in-game mentions
 - Four levels of permissions
-- Fun commands (May help you do math home work)
+- Fun commands
 
 ---
 ### Feel free to join the Developer's [Discord Server](https://discordapp.com/invite/rEK5XmV) and check out [The Website](https://cyrien.us)
