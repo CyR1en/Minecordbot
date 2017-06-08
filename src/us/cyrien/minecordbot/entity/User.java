@@ -41,13 +41,13 @@ public class User {
                     switch (i) {
                         case 1:
                             permissionLevel = PermissionLevel.LEVEL_1;
-                            break;
+                            return;
                         case 2:
                             permissionLevel = PermissionLevel.LEVEL_2;
-                            break;
+                            return;
                         case 3:
                             permissionLevel = PermissionLevel.LEVEL_3;
-                            break;
+                            return;
                     }
             }
         }

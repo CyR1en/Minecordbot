@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.0.4'
+version '2.0.6'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
+    compile 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
 
@@ -48,6 +48,7 @@ dependencies {
         exclude group: 'junit', module: 'junit'
     }
     compile 'net.dv8tion:JDA:3.0.0_160'
+    compile name: 'mv'
     compile name: 'Frame'
     compile name: 'PermissionsEx-1.23.4'
 }
@@ -63,7 +64,7 @@ jar {
 shadowJar {
     classifier = 'Shaded'
     dependencies {
-        exclude(dependency('org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'))
+        exclude(dependency('org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'))
         exclude(dependency('junit:junit:4.10'))
         exclude(dependency('javax.persistence:persistence-api:1.0'))
         exclude(dependency('com.google.guava:guava:18.0'))
@@ -73,6 +74,7 @@ shadowJar {
         exclude(dependency('org.hamcrest:hamcrest-core:1.1'))
         exclude(dependency('org.yaml:snakeyaml:1.17'))
         exclude(dependency(name: 'PermissionsEx-1.23.4'))
+        exclude(dependency(name: 'mv'))
         exclude(dependency('org.json:json:20160810'))
     }
     relocate 'org.apache', 'shadow.org.apache'

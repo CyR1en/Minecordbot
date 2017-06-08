@@ -1,7 +1,11 @@
 package us.cyrien.minecordbot.enums;
 
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import us.cyrien.minecordbot.entity.User;
+
+import java.util.List;
 
 public enum DiscordPlaceHolders {
     CHANNEL {
@@ -28,6 +32,14 @@ public enum DiscordPlaceHolders {
             User user = new User(mre);
             return user.getName();
         }
+    },
+    ROLE {
+      @Override
+        public String toString() {
+          Member member = mre.getGuild().getMember(mre.getAuthor());
+          List<Role> roles = member.getRoles();
+          return roles.get(0).getName();
+      }
     },
     ENAME{
         @Override
