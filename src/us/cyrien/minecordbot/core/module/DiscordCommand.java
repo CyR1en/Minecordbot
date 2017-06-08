@@ -50,12 +50,12 @@ public abstract class DiscordCommand implements Comparable {
         return true;
     }
 
-    public void sendMessageEmbed(MessageReceivedEvent e, MessageEmbed me, int length) {
-        messenger.sendCommandEmbedResponse(e, me, length);
+    public void sendMessageEmbed(MessageReceivedEvent e, MessageEmbed me, int duration) {
+        messenger.sendCommandEmbedResponse(e, me, duration);
     }
 
-    public void sendMessage(MessageReceivedEvent e, String message, int length) {
-        messenger.sendCommandResponse(e, message, length);
+    public void sendMessage(MessageReceivedEvent e, String message, int duration) {
+        messenger.sendCommandResponse(e, message, duration);
     }
 
     public MessageEmbed getHelpCard(MessageReceivedEvent e) {

@@ -107,11 +107,6 @@ mcb:
         textchannel: "Learn'ed caligraphy"
         voicechannel: "Shanties"
         uptime: "Days at Sea"
-        botinfo_header: "=== Bot Info ==="
-        clientid: "Bot Client ID"
-        botname: "Bot Name"
-        botnick: "Bot Nickname"
-        footer: "=== More Info ==="
     textchannel:
       usage: "textchannel <add|remove|list> <ID>"
       description: "add, remove, or list runner boys hired by the First Mate"

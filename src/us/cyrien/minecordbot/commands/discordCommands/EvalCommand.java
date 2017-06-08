@@ -44,19 +44,5 @@ public class EvalCommand {
             eb.addField("Error:" + e1.getClass().getSimpleName(), e1.getCause().toString(), false);
             command.sendMessageEmbed(e, eb.build(), 120);
         }
-        /*
-        Expression ex = new Expression(arg);
-        EmbedBuilder eb = new EmbedBuilder();
-        boolean correctSyntax = ex.checkSyntax();
-        if (!correctSyntax) {
-            eb.setColor(new Color(217, 83, 79));
-            eb.addField("SYNTAX ERROR", ex.getErrorMessage(), false);
-            command.sendMessageEmbed(e, eb.build(), 120);
-        } else {
-            eb.setColor(e.getGuild().getMemberById(e.getJDA().getSelfUser().getId()).getColor());
-            eb.addField("Result", "(" + ex.getExpressionString() + ") = " + ex.calculate(), false);
-            command.sendMessageEmbed(e, eb.build(), 25);
-        }
-        */
     }
 }

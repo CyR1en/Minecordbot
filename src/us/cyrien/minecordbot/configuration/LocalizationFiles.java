@@ -19,6 +19,7 @@ public class LocalizationFiles {
         mcb = p;
         languages = new HashedMap<>();
         languages.put("en", new File(p.getDataFolder().toString() + "/localizations/en.yml"));
+        languages.put("en_s7", new File(p.getDataFolder().toString() + "/localizations/en_s7.yml"));
         languages.put("es", new File(p.getDataFolder().toString() + "/localizations/es.yml"));
         languages.put("pl", new File(p.getDataFolder().toString() + "/localizations/pl.yml"));
         languages.put("de", new File(p.getDataFolder().toString() + "/localizations/de.yml"));
