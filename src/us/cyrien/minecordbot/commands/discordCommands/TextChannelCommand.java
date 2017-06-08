@@ -17,7 +17,10 @@ import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.entity.User;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.utils.FinderUtil;
 import us.cyrien.minecordbot.utils.JsonUtils;
+
+import java.util.List;
 
 import static us.cyrien.minecordbot.core.module.DiscordCommand.HELP_COMMAND_DURATION;
 
@@ -90,42 +93,57 @@ public class TextChannelCommand {
         return eb.build();
     }
 
-    private void addTextChannel(String textChannelID, MessageReceivedEvent e, DiscordCommand command) {
+    private void addTextChannel(String arg, MessageReceivedEvent e, DiscordCommand command) {
         JSONArray tcArray = MCBConfig.get("text_channels");
         String response;
-        net.dv8tion.jda.core.entities.TextChannel c = e.getJDA().getTextChannelById(textChannelID);
-        if (c != null) {
-            tcArray.put(textChannelID);
-            MCBConfig.set("text_channels", tcArray);
+        boolean withID = e.getJDA().getTextChannelById(arg) != null;
+        if(withID) {
+            TextChannel tc = e.getJDA().getTextChannelById(arg);
+            if (tc != null) {
+                tcArray.put(arg);
+                MCBConfig.set("text_channels", tcArray);
+            } else {
+                response = Localization.getTranslatedMessage("mcb.commands.textchannel.invalid-tc");
+                command.sendMessage(e, String.format(response, arg), 10);
+                return;
+            }
         } else {
-            response = Localization.getTranslatedMessage("mcb.commands.textchannel.invalid-tc");
-            command.sendMessage(e, String.format(response, textChannelID), 10);
-            return;
+            List<TextChannel> result = FinderUtil.findTextChannel(arg, e.getGuild());
+            TextChannel tc = result.size() > 0 ? result.get(0): null;
+            if(tc != null) {
+                tcArray.put(tc.getId());
+                MCBConfig.set("text_channels", tcArray);
+            } else {
+                response = Localization.getTranslatedMessage("mcb.commands.textchannel.invalid-tc");
+                command.sendMessage(e, String.format(response, arg), 10);
+                return;
+            }
         }
         response = Localization.getTranslatedMessage("mcb.commands.textchannel.added-tc");
-        command.sendMessage(e, String.format(response, textChannelID), 10);
-        Minecordbot.LOGGER.info("Added text channel " + textChannelID);
+        command.sendMessage(e, String.format(response, arg), 10);
+        Minecordbot.LOGGER.info("Added text channel " + arg);
     }
 
-    private void removeTextChannel(String textChannelID, MessageReceivedEvent e, DiscordCommand command) {
+    private void removeTextChannel(String arg, MessageReceivedEvent e, DiscordCommand command) {
         JSONArray tcArray = MCBConfig.get("text_channels");
         String response;
-        if (!containsID(textChannelID)) {
+        boolean withID = e.getJDA().getTextChannelsByName(arg, true).size() > 0;
+        String tcID = withID ? arg : FinderUtil.findTextChannel(arg, e.getGuild()).get(0).getId();
+        if (!containsID(tcID)) {
             response = Localization.getTranslatedMessage("mcb.commands.textchannel.tc-not-bound");
-            command.sendMessage(e, String.format(response, textChannelID), 20);
+            command.sendMessage(e, String.format(response, arg), 20);
             return;
         }
         if (tcArray.length() == 1) {
             response = Localization.getTranslatedMessage("mcb.commands.textchannel.last-tc");
-            command.sendMessage(e, String.format(response, textChannelID), 20);
+            command.sendMessage(e, String.format(response, arg), 20);
             return;
         }
-        tcArray.remove(JsonUtils.indexOf(textChannelID,
-                tcArray));
+        tcArray.remove(JsonUtils.indexOf(tcID, tcArray));
         MCBConfig.set("text_channels", tcArray);
         response = Localization.getTranslatedMessage("mcb.commands.textchannel.removed-tc");
-        command.sendMessage(e, String.format(response, textChannelID), 10);
-        Minecordbot.LOGGER.info("Removed text channel " + textChannelID);
+        command.sendMessage(e, String.format(response, arg), 10);
+        Minecordbot.LOGGER.info("Removed text channel " + arg);
     }
 
     private boolean containsID(String textChannelID) {

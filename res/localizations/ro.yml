@@ -94,7 +94,7 @@ mcb:
         special: "Special Command"
     list:
       usage: "list [update:true or false]"
-      description: "list all online players on the minecraft server."
+      description: "list all online players on the Minecraft server."
       list:
         header: "Online Players on Minecraft server"
     info:

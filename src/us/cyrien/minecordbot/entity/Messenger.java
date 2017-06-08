@@ -50,18 +50,18 @@ public class Messenger {
         sendMessage(e, message, null);
     }
 
-    public void sendTempMessage(MessageReceivedEvent e, String message, int length) {
+    public void sendTempMessage(MessageReceivedEvent e, String message, int duration) {
         e.getTextChannel().sendMessage(message).queue(msg -> scheduler.schedule(() -> {
             msg.delete().queue();
             e.getMessage().delete().queue();
-        }, length, TimeUnit.SECONDS));
+        }, duration, TimeUnit.SECONDS));
     }
 
-    public void sendTempMessageEmbed(MessageReceivedEvent e, MessageEmbed me, int length) {
+    public void sendTempMessageEmbed(MessageReceivedEvent e, MessageEmbed me, int duration) {
         e.getTextChannel().sendMessage(me).queue(msg -> scheduler.schedule(() -> {
             msg.delete().queue();
             e.getMessage().delete().queue();
-        }, length, TimeUnit.SECONDS));
+        }, duration, TimeUnit.SECONDS));
     }
 
     public void sendMessageToAllBoundChannel(String message) {
@@ -124,18 +124,18 @@ public class Messenger {
     }
 
     //Command Response
-    public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int length)  {
+    public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int duration)  {
         boolean tempResponse = MCBConfig.get("auto_delete_command_response");
         if (tempResponse)
-            sendTempMessageEmbed(e, me, length);
+            sendTempMessageEmbed(e, me, duration);
         else
             sendMessageEmbed(e, me);
     }
 
-    public void sendCommandResponse(MessageReceivedEvent e, String message, int length) {
+    public void sendCommandResponse(MessageReceivedEvent e, String message, int duration) {
         boolean tempResponse = MCBConfig.get("auto_delete_command_response");
         if (tempResponse)
-            sendTempMessage(e, message, length);
+            sendTempMessage(e, message, duration);
         else
             sendMessage(e, message);
     }
