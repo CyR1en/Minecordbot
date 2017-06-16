@@ -18,6 +18,7 @@ import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.utils.FinderUtil;
 
 import static us.cyrien.minecordbot.core.module.DiscordCommand.HELP_COMMAND_DURATION;
 
@@ -83,9 +84,9 @@ public class PermissionCommand {
         return true;
     }
 
-    private void addPerm(int permLevel, String id, MessageReceivedEvent e) {
+    private void addPerm(int permLevel, String arg, MessageReceivedEvent e) {
         JSONArray pl = MCBConfig.getJSONObject("permissions").getJSONArray("level_" + permLevel);
-        Member member = e.getGuild().getMember(e.getJDA().getUserById(id));
+        Member member = e.getGuild().getMember(e.getJDA().getUserById(arg));
         String response;
         if (member != null) {
             pl.put(member.getUser().getId());
@@ -94,12 +95,12 @@ public class PermissionCommand {
             MCBConfig.save();
         } else {
             response = Localization.getTranslatedMessage("mcb.commands.permission.user-not-found");
-            command.sendMessage(e, String.format(response, id), 30);
+            command.sendMessage(e, String.format(response, arg), 30);
             return;
         }
         response = Localization.getTranslatedMessage("mcb.commands.permission.added-perm");
-        command.sendMessage(e, String.format(response, id, permLevel), 30);
-        Minecordbot.LOGGER.info("Added User " + id + " to permission level_" + permLevel);
+        command.sendMessage(e, String.format(response, arg, permLevel), 30);
+        Minecordbot.LOGGER.info("Added User " + arg + " to permission level_" + permLevel);
     }
 
     private void removePerm(String id, MessageReceivedEvent e) {
