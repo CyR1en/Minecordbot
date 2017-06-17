@@ -26,4 +26,4 @@ __Supports:__ *BukkitAPI 1.8 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.
 ---
 ### You can also...  
 * [Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone
-* [Visit Cyrein.us](https://cyrein.us) - For the ocasional blogpost or announcement
+* [Visit Cyrien.us](https://cyrein.us) - For the ocasional blogpost or announcement
