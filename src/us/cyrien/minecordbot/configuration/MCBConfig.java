@@ -99,7 +99,7 @@ public class MCBConfig {
         return configPath;
     }
 
-    private static JSONObject getDefault() {
+    public static JSONObject getDefault() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         JSONObject perms = new JSONObject();
         perms.put("level_1", new String[]{"12332131231231"});
@@ -135,6 +135,7 @@ public class MCBConfig {
         map.put("message_prefix_minecraft", "Discord {sender}:");
         map.put("broadcasts", broadcast);
         map.put("command_text_channel", ctc);
+        map.put("default_game", "set bot's default game");
         return new JSONObject(map);
 
     }
