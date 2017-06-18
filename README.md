@@ -1,4 +1,4 @@
-# ![MineCordBot](https://www.spigotmc.org/data/resource_icons/30/30725.jpg?1477122936) __MineCordBot__
+# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__
 ## A Powerful Way to Bridge Minecraft and Discord
 ### Configurable, Simple, Easy
 
