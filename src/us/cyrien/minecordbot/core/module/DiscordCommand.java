@@ -28,6 +28,7 @@ public abstract class DiscordCommand implements Comparable {
     private Messenger messenger;
     private CommandType commandType;
     private boolean nullified;
+    private Minecordbot mcb;
 
     protected DiscordCommand(String name, String description, String usageMessage, List<String> aliases, CommandType commandType) {
         this.name = name;
@@ -35,8 +36,9 @@ public abstract class DiscordCommand implements Comparable {
         this.usage = Localization.getTranslatedMessage(usageMessage);
         this.aliases = aliases;
         this.commandType = commandType;
-        messenger = Minecordbot.getMessenger();
+        this.messenger = Minecordbot.getMessenger();
         this.nullified = false;
+        this.mcb = Minecordbot.getInstance();
     }
 
     public abstract boolean execute(MessageReceivedEvent var1, String[] var2);
@@ -74,6 +76,10 @@ public abstract class DiscordCommand implements Comparable {
         PermissionLevel sp = user.getPermissionLevel();
         eb.addField("Permission", "Required Level: " + rp + "\nYour Level: " + sp, false);
         return eb.build();
+    }
+
+    public Minecordbot getMCB() {
+        return mcb;
     }
 
     public MessageEmbed getInvalidHelpCard(MessageReceivedEvent e) {

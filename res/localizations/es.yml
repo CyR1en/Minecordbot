@@ -43,6 +43,12 @@ mcb:
     no-perm-message: "Lo siento, pero no tienes acceso a esta orden."
     invalid-arguments: "Argumentos Invalidos."
   commands:
+    settrigger:
+      usage: "settrigger <new trigger>"
+      description: "set a command trigger for the bot."
+    shutdown:
+      usage: "shutdown"
+      descripptionn: "Shut down the bot."
     reload:
       usage: "reload"
       description: "reload the config for MineCordBot"

@@ -39,6 +39,12 @@ mcb:
     invalid-tc: "Invalid text channel for command."
     no-alias: "There are no other alias for this command"
   commands:
+    settrigger:
+      usage: "settrigger <new trigger>"
+      description: "set a command trigger for the bot."
+    shutdown:
+      usage: "shutdown"
+      descripptionn: "Shut down the bot."
     imagesearch:
       usage: "imagesearch <query>"
       description: "Search for images"

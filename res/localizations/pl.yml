@@ -38,6 +38,12 @@ mcb:
     invalid-arguments: "błędny arguments."
     invalid-tc: "invalid text channel for command."
   commands:
+    settrigger:
+      usage: "settrigger <new trigger>"
+      description: "set a command trigger for the bot."
+    shutdown:
+      usage: "shutdown"
+      descripptionn: "Shut down the bot."
     reload:
       usage: "reload"
       description: "reload the config for MineCordBot"
