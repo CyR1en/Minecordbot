@@ -39,7 +39,7 @@ mcb:
     invalid-tc: "błędny kanał dla tej komendy."
   commands:
     settrigger:
-      usage: "settrigger <new trigger>"
+      usage: "settrigger <nowy trigger>"
       description: "ustaw nowy trigger dla komendy bota."
     shutdown:
       usage: "wyłącz"
