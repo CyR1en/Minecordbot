@@ -3,8 +3,12 @@ package us.cyrien.minecordbot.event;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.util.StringUtil;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.main.Minecordbot;
+
+import java.util.Objects;
 
 public class BotReadyEvent extends ListenerAdapter {
 
@@ -16,6 +20,12 @@ public class BotReadyEvent extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        event.getJDA().getPresence().setGame(Game.of("Type " + MCBConfig.get("trigger") + "help"));
+        Game game = Game.of("Type " + MCBConfig.get("trigger") + "help");
+        if(!Objects.equals(MCBConfig.get("default_game"), MCBConfig.getDefault().get("default_game")) && !StringUtils.isBlank(MCBConfig.get("default_game"))) {
+            String sGame = MCBConfig.get("default_game");
+            if(sGame != null)
+                game = Game.of(sGame);
+        }
+        event.getJDA().getPresence().setGame(game);
     }
 }

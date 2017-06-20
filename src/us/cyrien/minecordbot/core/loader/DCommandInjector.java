@@ -13,11 +13,10 @@ public class DCommandInjector implements Injector {
 
     public void inject(Class<?> c, Object instance) {
         Method[] methods = c.getDeclaredMethods();
-        Method[] var4 = methods;
         int var5 = methods.length;
 
-        for(int var6 = 0; var6 < var5; ++var6) {
-            Method method = var4[var6];
+        for(int i = 0; i < var5; ++i) {
+            Method method = methods[i];
             if(method.isAnnotationPresent(DCommand.class)) {
                 DCommand details = method.getAnnotation(DCommand.class);
                 DCommandDispatcher.getDispatcher().registerCommand(details, method, instance);

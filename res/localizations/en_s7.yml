@@ -39,6 +39,12 @@ mcb:
     invalid-tc: "Yer usin' th' wrong chat."
     no-alias: "Ya betta' use me propper name, boy!"
   commands:
+    settrigger:
+      usage: "settrigger <new trigger>"
+      description: "set a command trigger for the bot."
+    shutdown:
+      usage: "shutdown"
+      descripptionn: "Shut down the bot."
     imagesearch:
       usage: "imagesearch <query>"
       description: "Sail for portraits"

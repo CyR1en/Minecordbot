@@ -37,7 +37,6 @@ public class DCommandDispatcher {
         if (dispatcher == null) {
             dispatcher = new DCommandDispatcher();
         }
-
         return dispatcher;
     }
 

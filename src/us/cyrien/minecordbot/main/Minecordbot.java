@@ -35,7 +35,6 @@ import java.util.List;
 
 public class Minecordbot extends JavaPlugin {
 
-    public static final SimpleLog DEBUG_LOGGER = SimpleLog.getLog("MCB-DEBUG");
     public static final SimpleLog LOGGER = SimpleLog.getLog("MCB");
 
     private static List<DiscordCommand> discordCommands;
@@ -60,6 +59,15 @@ public class Minecordbot extends JavaPlugin {
             initDListener();
             initMListener();
         }
+    }
+
+    @Override
+    public void onDisable() {
+        shutdown();
+    }
+
+    public void shutdown() {
+        jda.shutdown();
     }
 
     //Framework stuff
@@ -125,6 +133,7 @@ public class Minecordbot extends JavaPlugin {
         registerDiscordCommandModule(SetUsernameCommand.class);
         registerDiscordCommandModule(SetGameCommand.class);
         registerDiscordCommandModule(SetAvatarCommand.class);
+        registerDiscordCommandModule(ShutDownCommand.class);
         //registerDiscordCommandModule(ImageSearchCommand.class);
     }
 
@@ -162,10 +171,10 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public void handleCommand(MessageReceivedEvent mRE) {
-        Iterator var1 = discordCommands.iterator();
+        Iterator cmdIterator = discordCommands.iterator();
 
-        while (var1.hasNext()) {
-            DiscordCommand dc = (DiscordCommand) var1.next();
+        while (cmdIterator.hasNext()) {
+            DiscordCommand dc = (DiscordCommand) cmdIterator.next();
             String raw = mRE.getMessage().getContent();
             String noTrigger = raw.replaceAll(MCBConfig.get("trigger"), "");
             String head = noTrigger.split(" ")[0];
