@@ -41,13 +41,13 @@ mcb:
   commands:
     settrigger:
       usage: "settrigger <new trigger>"
-      description: "set a command trigger for the bot."
+      description: "Fetch me some new gun powd'r - can't fire this grapeshot w'thout it."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
+      descripptionn: "Batt'n down th' hatches and drop th' anchor."
     imagesearch:
       usage: "imagesearch <query>"
-      description: "Sail for portraits"
+      description: "Have ye first mate check th' parlour for a portrait o' me mum."
     reload:
       usage: "reload"
       description: "Rearm thy mattie."
