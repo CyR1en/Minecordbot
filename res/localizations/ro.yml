@@ -45,9 +45,6 @@ mcb:
     shutdown:
       usage: "shutdown"
       description: "închide bot-ul."
-    imagesearch:
-      usage: "imagesearch <întrebare>"
-      description: "caută imagini."
     reload:
       usage: "reload"
       description: "reîncarcă configurația pentru MineCordBot."
@@ -132,3 +129,4 @@ mcb:
         channel_name: "Numele Canalului"
   messenger:
     no-player: "Jucătorul {player} nu poate fi găsit."
+    
