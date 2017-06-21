@@ -44,7 +44,7 @@ mcb:
       description: "set a command trigger for the bot."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
+      description: "Shut down the bot."
     imagesearch:
       usage: "imagesearch <query>"
       description: "Search for images"
