@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.utils.SimpleLog;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.minecordbot.commands.discordCommands.*;
@@ -24,6 +25,7 @@ import us.cyrien.minecordbot.entity.UpTimer;
 import us.cyrien.minecordbot.event.BotReadyEvent;
 import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.handle.Updater;
+import us.cyrien.minecordbot.listener.AfkListener;
 import us.cyrien.minecordbot.listener.DiscordMessageListener;
 import us.cyrien.minecordbot.listener.MinecraftEventListener;
 import us.cyrien.minecordbot.listener.TabCompleteV2;
@@ -43,6 +45,7 @@ public class Minecordbot extends JavaPlugin {
     private static UpTimer upTimer;
 
     private JDA jda;
+    private ArrayList<Player> AFKPlayers;
     private Updater updater;
     private Metrics metrics;
 
@@ -106,6 +109,7 @@ public class Minecordbot extends JavaPlugin {
     private void initMListener() {
         registerMinecraftEventModule(new MinecraftEventListener(this));
         registerMinecraftEventModule(new TabCompleteV2(this));
+        registerMinecraftEventModule(new AfkListener(this));
     }
 
     private void initDListener() {
@@ -148,6 +152,7 @@ public class Minecordbot extends JavaPlugin {
         else
             updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
         metrics = new Metrics(this);
+        AFKPlayers = new ArrayList<>();
     }
 
     //accessors and modifiers
@@ -157,6 +162,10 @@ public class Minecordbot extends JavaPlugin {
 
     public JDA getJDA() {
         return jda;
+    }
+
+    public ArrayList<Player> getAFKPlayers() {
+        return AFKPlayers;
     }
 
     public static Messenger getMessenger() {
