@@ -45,9 +45,6 @@ mcb:
     shutdown:
       usage: "shutdown"
       descripptionn: "Shut down the bot."
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Sail for portraits"
     reload:
       usage: "reload"
       description: "Rearm thy mattie."
