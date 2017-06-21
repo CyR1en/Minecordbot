@@ -45,9 +45,6 @@ mcb:
     shutdown:
       usage: "shutdown"
       descripptionn: "Shut down the bot."
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Search for images"
     reload:
       usage: "reload"
       description: "Reload the config for MineCordBot"
