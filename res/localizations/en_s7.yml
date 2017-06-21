@@ -45,9 +45,6 @@ mcb:
     shutdown:
       usage: "shutdown"
       description: "Batt'n down th' hatches and drop th' anchor."
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Have ye first mate check th' parlour for a portrait o' me mum."
     reload:
       usage: "reload"
       description: "Rearm thy mattie."
