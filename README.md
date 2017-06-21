@@ -27,3 +27,7 @@ __Supports:__ *BukkitAPI 1.8 - 1.11*  |  __Current Version:__ *[MineCordBot 2.0.
 [![Auri](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/auri_16.png) Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone  
 [![Discord](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/discord-d_16.png) Join the Discord](https://discord.gg/bETVHje) - Talk with the developers and other server admins  
 [![Website](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/globe_16.png) Visit Cyrien.us](https://cyrien.us) - For the ocasional blogpost or announcement  
+
+---
+__Third-Party Licenses__  
+_Minecordbot relies on some third-party applications to provide certain functions. Full licenses are available in the `/libs/licenses/` directory of the source code archives and in the [repository](https://github.com/CyR1en/Minecordbot-v2/tree/master/libs/licenses) in .txt format._
