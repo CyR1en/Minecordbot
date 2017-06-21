@@ -41,10 +41,10 @@ mcb:
   commands:
     settrigger:
       usage: "settrigger <new trigger>"
-      description: "set a command trigger for the bot."
+      description: "Fetch me some new gun powd'r - can't fire this grapeshot w'thout it."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
+      description: "Batt'n down th' hatches and drop th' anchor."
     reload:
       usage: "reload"
       description: "Rearm thy mattie."

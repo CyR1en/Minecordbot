@@ -134,6 +134,7 @@ public class Minecordbot extends JavaPlugin {
         registerDiscordCommandModule(SetGameCommand.class);
         registerDiscordCommandModule(SetAvatarCommand.class);
         registerDiscordCommandModule(ShutDownCommand.class);
+        registerDiscordCommandModule(SetTrigger.class);
         //registerDiscordCommandModule(ImageSearchCommand.class);
     }
 

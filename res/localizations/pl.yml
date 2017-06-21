@@ -43,7 +43,7 @@ mcb:
       description: "ustaw nowy trigger dla komendy bota."
     shutdown:
       usage: "wyłącz"
-      descripptionn: "Wyłącz bota."
+      description: "Wyłącz bota."
     reload:
       usage: "reload"
       description: "przeładuj konfing dla MineCordBota"

@@ -44,7 +44,7 @@ mcb:
       description: "set a command trigger for the bot."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
+      description: "Shut down the bot."
     reload:
       usage: "reload"
       description: "Reload the config for MineCordBot"
