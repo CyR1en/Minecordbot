@@ -53,7 +53,7 @@ public class PermissionCommand {
         }
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("remove")) {
-                if (e.getGuild().getMemberById(args[1]) == null) {
+                if (e.getGuild().getMemberById(args[1]) == null && FinderUtil.findMember(args[1], e.getGuild()).size() == 0) {
                     if (args[0].equalsIgnoreCase("get"))
                         command.sendMessageEmbed(e, getHelp(e), HELP_COMMAND_DURATION);
                     else
@@ -64,7 +64,8 @@ public class PermissionCommand {
                 command.sendMessageEmbed(e, removeHelp(e), HELP_COMMAND_DURATION);
                 return false;
             }
-            if (e.getJDA().getUserById(args[1]) == null)
+            if (e.getGuild().getMemberById(args[1]) == null && FinderUtil.findMember(args[1], e.getGuild()).size() == 0)
+                command.sendMessageEmbed(e, playerNotFound(), HELP_COMMAND_DURATION);
                 return false;
         }
         if (args.length == 3) {
@@ -78,15 +79,17 @@ public class PermissionCommand {
                 command.sendMessageEmbed(e, addHelp(e), HELP_COMMAND_DURATION);
                 return false;
             }
-            if (e.getJDA().getUserById(args[2]) == null)
+            if (e.getGuild().getMemberById(args[2]) == null && FinderUtil.findMember(args[2], e.getGuild()).size() == 0) {
+                command.sendMessageEmbed(e, playerNotFound(), HELP_COMMAND_DURATION);
                 return false;
+            }
         }
         return true;
     }
 
     private void addPerm(int permLevel, String arg, MessageReceivedEvent e) {
         JSONArray pl = MCBConfig.getJSONObject("permissions").getJSONArray("level_" + permLevel);
-        Member member = e.getGuild().getMember(e.getJDA().getUserById(arg));
+        Member member = FinderUtil.findMember(arg, e.getGuild()).get(0);
         String response;
         if (member != null) {
             pl.put(member.getUser().getId());
@@ -103,8 +106,8 @@ public class PermissionCommand {
         Minecordbot.LOGGER.info("Added User " + arg + " to permission level_" + permLevel);
     }
 
-    private void removePerm(String id, MessageReceivedEvent e) {
-        User user = e.getJDA().getUserById(id);
+    private void removePerm(String arg, MessageReceivedEvent e) {
+        User user = FinderUtil.findMember(arg, e.getGuild()).get(0).getUser();
         if (getPermissionLevel(user.getId()) == PermissionLevel.LEVEL_0) {
             command.sendMessage(e, "No permission to be removed from `" + user.getId() + "`", 30);
             return;
@@ -114,16 +117,16 @@ public class PermissionCommand {
         String response;
         if (pl.length() == 1) {
             response = Localization.getTranslatedMessage("mcb.commands.permission.last-user");
-            command.sendMessage(e, String.format(response, id, permLevel.toString().toLowerCase()), 30);
+            command.sendMessage(e, String.format(response, arg, permLevel.toString().toLowerCase()), 30);
             return;
         }
-        pl.remove(getIndex(pl, id));
+        pl.remove(getIndex(pl, arg));
         MCBConfig.getJSONObject("permissions").remove("level_" + permLevel.ordinal());
         MCBConfig.getJSONObject("permissions").put("level_" + permLevel.ordinal(), pl);
         MCBConfig.save();
         response = Localization.getTranslatedMessage("mcb.commands.permission.remove-perm");
-        command.sendMessage(e, String.format(response, permLevel.toString().toLowerCase(), id), 30);
-        Minecordbot.LOGGER.info("Removed User " + id + " to permission " + permLevel);
+        command.sendMessage(e, String.format(response, permLevel.toString().toLowerCase(), arg), 30);
+        Minecordbot.LOGGER.info("Removed User " + arg + " to permission " + permLevel);
     }
 
     private String getPerm(String id) {
@@ -179,6 +182,12 @@ public class PermissionCommand {
         EmbedBuilder eb = new EmbedBuilder(command.getInvalidHelpCard(e));
         eb.clearFields();
         eb.addField("Usage:", MCBConfig.get("trigger") + " <remove> <userID>", false);
+        return eb.build();
+    }
+
+    private MessageEmbed playerNotFound() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle(Localization.getTranslatedMessage("messenger.no-player"), null);
         return eb.build();
     }
 }
