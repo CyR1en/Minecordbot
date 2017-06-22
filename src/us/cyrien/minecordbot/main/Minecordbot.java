@@ -109,7 +109,7 @@ public class Minecordbot extends JavaPlugin {
     private void initMListener() {
         registerMinecraftEventModule(new MinecraftEventListener(this));
         registerMinecraftEventModule(new TabCompleteV2(this));
-        registerMinecraftEventModule(new AfkListener(this));
+        //registerMinecraftEventModule(new AfkListener(this));
     }
 
     private void initDListener() {
