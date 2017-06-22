@@ -15,9 +15,13 @@ public class Dme {
     @Command(aliases = "dme", usage = "/dme <action>", desc = "/me command but for discord.")
     @Permission("minecordbot.dme")
     public void command(@Sender CommandSender sender, @Text String arg) {
-        Player p = (Player) sender;
-        for(Player pl : Bukkit.getServer().getOnlinePlayers())
-            pl.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5* " + "&r" + p.getDisplayName() + " &5" + arg));
-        new Messenger(Minecordbot.getInstance()).sendMessageToAllBoundChannel("**" + p.getName() + "** " + "_" + arg + "_");
+        if(sender instanceof  Player) {
+            Player p = (Player) sender;
+            for (Player pl : Bukkit.getServer().getOnlinePlayers())
+                pl.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5* " + "&r" + p.getDisplayName() + " &5" + arg));
+            new Messenger(Minecordbot.getInstance()).sendMessageToAllBoundChannel("**" + p.getName() + "** " + "_" + arg + "_");
+        } else {
+            sender.sendMessage("Only players can do that execute /dme command");
+        }
     }
 }
