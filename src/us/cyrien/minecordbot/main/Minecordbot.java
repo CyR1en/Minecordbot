@@ -54,7 +54,7 @@ public class Minecordbot extends JavaPlugin {
         discordCommands = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
         Bukkit.getScheduler().runTaskLater(this, DrocsidFrame::main, 1L);
-        if(initConfig()) {
+        if (initConfig()) {
             initJDA();
             initInstances();
             initDCmds();
@@ -70,7 +70,8 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public void shutdown() {
-        jda.shutdown();
+        if (jda != null)
+            jda.shutdown();
     }
 
     //Framework stuff
@@ -79,7 +80,7 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public void registerMinecraftEventModule(Listener listener) {
-       Bukkit.getPluginManager().registerEvents(listener, this);
+        Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
     public void registerDiscordEventModule(ListenerAdapter la) {
@@ -144,7 +145,7 @@ public class Minecordbot extends JavaPlugin {
 
     private void initInstances() {
         messenger = new Messenger(this);
-         LocalizationFiles localizationFiles = new LocalizationFiles(this, true);
+        LocalizationFiles localizationFiles = new LocalizationFiles(this, true);
         instance = this;
         upTimer = new UpTimer();
         if (MCBConfig.get("auto_update"))
