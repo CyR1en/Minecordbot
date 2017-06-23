@@ -28,7 +28,6 @@ public class EvalCommand {
             command.sendMessageEmbed(e, command.getInvalidHelpCard(e), HELP_COMMAND_DURATION);
             return;
         }
-
         ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("Nashorn");
         scriptEngine.put("event", e);
         scriptEngine.put("jda", e.getJDA());

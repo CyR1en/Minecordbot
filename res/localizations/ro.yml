@@ -56,7 +56,7 @@ mcb:
       usage: "minecraftcommand <Comandă de Minecraft>"
       description: "Execută comenzi de Minecraft prin Discord."
     permission:
-      usage: "permission <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
+      usage: "permission <set> <user> <level> | permission <get> <user>"
       description: "adaugă, șterge permisie unui utilizator si arată ce nivel de permisie are."
       user-not-found: "Utilizatorul cu `%s` nu poate fi găsit."
       added-perm: "Utilizatorul `%s` are acum nivelul_%s de permisie."

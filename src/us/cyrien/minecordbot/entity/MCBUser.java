@@ -1,21 +1,30 @@
 package us.cyrien.minecordbot.entity;
 
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 
-public class User {
+public class MCBUser {
 
     private String name;
     private String nick;
     private String Id;
     private PermissionLevel permissionLevel;
 
-    public User(MessageReceivedEvent e) {
+    public MCBUser(MessageReceivedEvent e) {
         name = e.getAuthor().getName();
         nick = e.getMember().getNickname();
         Id = e.getAuthor().getId();
+        setPermLevel();
+    }
+
+    public MCBUser(User user, Guild guild) {
+        name = user.getName();
+        nick = guild.getMember(user).getNickname();
+        Id = user.getId();
         setPermLevel();
     }
 

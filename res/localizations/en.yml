@@ -56,7 +56,7 @@ mcb:
       usage: "minecraftcommand <Minecraft Command>"
       description: "Execute Minecraft commands from Discord."
     permission:
-      usage: "permission <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
+      usage: "permission <set> <user> <level> | permission <get> <user>"
       description: "Add, remove permission to user, and get what their permission level is."
       user-not-found: "User with `%s` cannot be found."
       added-perm: "User `%s` now has a level_%s Permission."

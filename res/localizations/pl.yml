@@ -55,8 +55,13 @@ mcb:
       usage: "mcmd <Komenda>"
       description: "Wykonaj komendę na serwerze."
     permission:
-      usage: "perm <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
-      description: "dodaj, usuń i sprawdź poziom uprawnień użytkownika."
+      usage: "permission <set> <user> <level> | permission <get> <user>"
+      description: "Add, remove permission to user, and get what their permission level is."
+      user-not-found: "User with `%s` cannot be found."
+      added-perm: "User `%s` now has a level_%s Permission."
+      last-user: "Cannot remove user `%s` because it's the last user on the permission list `%s`"
+      remove-perm: "Removed `%s` permission from `%s`"
+      get-perm: "User `%s` has a `%s` permission."
     setgame:
       usage: "setgame <tytułgry>"
       description: "ustaw grę bota."

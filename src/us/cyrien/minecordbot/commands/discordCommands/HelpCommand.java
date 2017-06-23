@@ -9,7 +9,7 @@ import us.cyrien.minecordbot.core.annotation.DCommand;
 import us.cyrien.minecordbot.core.annotation.DMessageReceive;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.entity.User;
+import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 
@@ -28,7 +28,7 @@ public class HelpCommand {
             String noSuchCommandResponse = Localization.getTranslatedMessage("mcb.commands.help.no-such-command");
             command.sendMessageEmbed(e, new EmbedBuilder().setTitle(String.format(noSuchCommandResponse, arg.getName()), null).build(), 15);
         } else {
-            arg.setSender(new User(e));
+            arg.setSender(new MCBUser(e));
             command.sendMessageEmbed(e, arg.getHelpCard(e), 60);
         }
     }

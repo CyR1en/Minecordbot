@@ -2,7 +2,8 @@ package us.cyrien.minecordbot.commands.discordCommands;
 
 import io.github.hedgehog1029.frame.annotations.Text;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,6 +17,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
+import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 import us.cyrien.minecordbot.utils.FinderUtil;
@@ -33,81 +35,86 @@ public class PermissionCommand {
         this.command = command;
         if (checkArguments(e, args)) {
             switch (args[0]) {
-                case "add":
-                    addPerm(Integer.parseInt(args[1]), args[2], e);
-                    break;
-                case "remove":
-                    removePerm(args[1], e);
+                case "set":
+                    set(e, args[1], args[2]);
                     break;
                 case "get":
-                    command.sendMessage(e, getPerm(args[1]), 15);
+                    User user = FinderUtil.findMember(args[1], e.getGuild()) == null ?
+                            e.getJDA().getUserById(args[1]) : FinderUtil.findMember(args[1], e.getGuild()).get(0).getUser();
+                    command.sendMessage(e, getPerm(user, e.getGuild()), 15);
                     break;
             }
         }
     }
 
-    public boolean checkArguments(MessageReceivedEvent e, String[] args) {
+    private boolean checkArguments(MessageReceivedEvent e, String[] args) {
         if (args.length == 0 || args.length > 3 || args.length == 1) {
             command.sendMessageEmbed(e, command.getInvalidHelpCard(e), HELP_COMMAND_DURATION);
             return false;
         }
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("remove")) {
+            if (args[0].equalsIgnoreCase("get")) {
                 if (e.getGuild().getMemberById(args[1]) == null && FinderUtil.findMember(args[1], e.getGuild()).size() == 0) {
-                    if (args[0].equalsIgnoreCase("get"))
-                        command.sendMessageEmbed(e, getHelp(e), HELP_COMMAND_DURATION);
-                    else
-                        command.sendMessageEmbed(e, removeHelp(e), HELP_COMMAND_DURATION);
+                    String response = Localization.getTranslatedMessage("mcb.commands.permission.user-not-found");
+                    command.sendMessage(e, String.format(response, args[1]), 30);
                     return false;
                 }
             } else {
-                command.sendMessageEmbed(e, removeHelp(e), HELP_COMMAND_DURATION);
+                command.sendMessageEmbed(e, getHelp(e), HELP_COMMAND_DURATION);
                 return false;
             }
-            if (e.getGuild().getMemberById(args[1]) == null && FinderUtil.findMember(args[1], e.getGuild()).size() == 0)
-                command.sendMessageEmbed(e, playerNotFound(), HELP_COMMAND_DURATION);
-                return false;
         }
         if (args.length == 3) {
-            if (args[0].equalsIgnoreCase("add")) {
-                int permLvl = Integer.parseInt(args[1]);
+            if (args[0].equalsIgnoreCase("set")) {
+                int permLvl;
+                try {
+                    permLvl = Integer.parseInt(args[2]);
+                } catch (NumberFormatException ne) {
+                    command.sendMessageEmbed(e, getHelp(e), HELP_COMMAND_DURATION);
+                    return false;
+                }
                 if (permLvl < 0 || permLvl > 3) {
-                    command.sendMessageEmbed(e, addHelp(e), HELP_COMMAND_DURATION);
+                    command.sendMessageEmbed(e, setHelp(e), HELP_COMMAND_DURATION);
+                    return false;
+                }
+                if (e.getGuild().getMemberById(args[1]) == null && FinderUtil.findMember(args[1], e.getGuild()).size() == 0) {
+                    String response = Localization.getTranslatedMessage("mcb.commands.permission.user-not-found");
+                    command.sendMessage(e, String.format(response, args[1]), 30);
                     return false;
                 }
             } else {
-                command.sendMessageEmbed(e, addHelp(e), HELP_COMMAND_DURATION);
-                return false;
-            }
-            if (e.getGuild().getMemberById(args[2]) == null && FinderUtil.findMember(args[2], e.getGuild()).size() == 0) {
-                command.sendMessageEmbed(e, playerNotFound(), HELP_COMMAND_DURATION);
+                command.sendMessageEmbed(e, setHelp(e), HELP_COMMAND_DURATION);
                 return false;
             }
         }
         return true;
     }
 
-    private void addPerm(int permLevel, String arg, MessageReceivedEvent e) {
-        JSONArray pl = MCBConfig.getJSONObject("permissions").getJSONArray("level_" + permLevel);
-        Member member = FinderUtil.findMember(arg, e.getGuild()).get(0);
-        String response;
-        if (member != null) {
-            pl.put(member.getUser().getId());
-            MCBConfig.getJSONObject("permissions").remove("level_" + permLevel);
-            MCBConfig.getJSONObject("permissions").put("level_" + permLevel, pl);
-            MCBConfig.save();
+    private void set(MessageReceivedEvent e, String arg1, String arg2) {
+        User user = FinderUtil.findMember(arg1, e.getGuild()) == null ?
+                e.getJDA().getUserById(arg1) : FinderUtil.findMember(arg1, e.getGuild()).get(0).getUser();
+        MCBUser u = new MCBUser(user, e.getGuild());
+        if (u.getPermissionLevel().ordinal() > 0) {
+            removePerm(user, e);
+            addPerm(Integer.parseInt(arg2), user, e);
         } else {
-            response = Localization.getTranslatedMessage("mcb.commands.permission.user-not-found");
-            command.sendMessage(e, String.format(response, arg), 30);
-            return;
+            addPerm(Integer.parseInt(arg2), user, e);
         }
-        response = Localization.getTranslatedMessage("mcb.commands.permission.added-perm");
-        command.sendMessage(e, String.format(response, arg, permLevel), 30);
-        Minecordbot.LOGGER.info("Added User " + arg + " to permission level_" + permLevel);
     }
 
-    private void removePerm(String arg, MessageReceivedEvent e) {
-        User user = FinderUtil.findMember(arg, e.getGuild()).get(0).getUser();
+    private void addPerm(int permLevel, User user, MessageReceivedEvent e) {
+        JSONArray pl = MCBConfig.getJSONObject("permissions").getJSONArray("level_" + permLevel);
+        String response;
+        pl.put(user.getId());
+        MCBConfig.getJSONObject("permissions").remove("level_" + permLevel);
+        MCBConfig.getJSONObject("permissions").put("level_" + permLevel, pl);
+        MCBConfig.save();
+        response = Localization.getTranslatedMessage("mcb.commands.permission.added-perm");
+        command.sendMessage(e, String.format(response, user.getName(), permLevel), 30);
+        Minecordbot.LOGGER.info("Added user " + user.getName() + " to permission level_" + permLevel);
+    }
+
+    private void removePerm(User user, MessageReceivedEvent e) {
         if (getPermissionLevel(user.getId()) == PermissionLevel.LEVEL_0) {
             command.sendMessage(e, "No permission to be removed from `" + user.getId() + "`", 30);
             return;
@@ -117,27 +124,27 @@ public class PermissionCommand {
         String response;
         if (pl.length() == 1) {
             response = Localization.getTranslatedMessage("mcb.commands.permission.last-user");
-            command.sendMessage(e, String.format(response, arg, permLevel.toString().toLowerCase()), 30);
+            command.sendMessage(e, String.format(response, user.getName(), permLevel.toString().toLowerCase()), 30);
             return;
         }
-        pl.remove(getIndex(pl, arg));
+        pl.remove(getIndex(pl, user.getId()));
         MCBConfig.getJSONObject("permissions").remove("level_" + permLevel.ordinal());
         MCBConfig.getJSONObject("permissions").put("level_" + permLevel.ordinal(), pl);
         MCBConfig.save();
         response = Localization.getTranslatedMessage("mcb.commands.permission.remove-perm");
-        command.sendMessage(e, String.format(response, permLevel.toString().toLowerCase(), arg), 30);
-        Minecordbot.LOGGER.info("Removed User " + arg + " to permission " + permLevel);
+        command.sendMessage(e, String.format(response, permLevel.toString().toLowerCase(), user.getName()), 30);
+        Minecordbot.LOGGER.info("Removed user " + user.getName() + " to permission " + permLevel);
     }
 
-    private String getPerm(String id) {
-        PermissionLevel level = getPermissionLevel(id);
-        return String.format(Localization.getTranslatedMessage("mcb.commands.permission.get-perm"), id, level.toString().toLowerCase());
+    private String getPerm(User u, Guild g) {
+        MCBUser mcbUser = new MCBUser(u, g);
+        return String.format(Localization.getTranslatedMessage("mcb.commands.permission.get-perm"), mcbUser.getName(), mcbUser.getPermissionLevel().toString().toLowerCase());
     }
 
     private int getIndex(JSONArray jsonArray, Object obj) {
         int i = 0;
-        for(Object o : jsonArray) {
-            if(o.equals(obj))
+        for (Object o : jsonArray) {
+            if (o.equals(obj))
                 return i;
             i++;
         }
@@ -171,23 +178,11 @@ public class PermissionCommand {
         return eb.build();
     }
 
-    private MessageEmbed addHelp(MessageReceivedEvent e) {
+    private MessageEmbed setHelp(MessageReceivedEvent e) {
         EmbedBuilder eb = new EmbedBuilder(command.getInvalidHelpCard(e));
         eb.clearFields();
-        eb.addField("Usage:", MCBConfig.get("trigger") + " <add> <permLevel> <userID>", false);
+        eb.addField("Usage:", MCBConfig.get("trigger") + " <set> <user> <level>", false);
         return eb.build();
     }
 
-    private MessageEmbed removeHelp(MessageReceivedEvent e) {
-        EmbedBuilder eb = new EmbedBuilder(command.getInvalidHelpCard(e));
-        eb.clearFields();
-        eb.addField("Usage:", MCBConfig.get("trigger") + " <remove> <userID>", false);
-        return eb.build();
-    }
-
-    private MessageEmbed playerNotFound() {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(Localization.getTranslatedMessage("messenger.no-player"), null);
-        return eb.build();
-    }
 }

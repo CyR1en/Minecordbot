@@ -43,10 +43,14 @@ public class ArrayListUtils {
 
     public static int getIndexOf(String str, List<DiscordCommand> list) {
         ListIterator<DiscordCommand> it = list.listIterator();
-        while (it.hasNext())
-            if (it.next().getName().equalsIgnoreCase(str)) {
+        while (it.hasNext()) {
+            DiscordCommand dc = it.next();
+            if (dc.getName().equalsIgnoreCase(str)) {
+                return it.nextIndex() - 1;
+            } else if (dc.getAliases().contains(str)) {
                 return it.nextIndex() - 1;
             }
+        }
         return -1;
     }
 }
