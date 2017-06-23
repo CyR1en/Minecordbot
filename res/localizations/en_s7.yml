@@ -56,7 +56,7 @@ mcb:
       usage: "minecraftcommand <Minecraft Command>"
       description: "Fire th' ship's cannons, First Mate Minecord!."
     permission:
-      usage: "permission <set> <user> <level> | permission <get> <user>"
+      usage: "permission <set> <crew> <station> | permission <get> <crew>"
       description: "Restation sailors and query their station."
       user-not-found: "Sailor with `%s` cannot be found."
       added-perm: "Sailor `%s` now has a level_%s station."
