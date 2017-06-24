@@ -44,10 +44,7 @@ mcb:
       description: "set a command trigger for the bot."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Search for images"
+      description: "Shut down the bot."
     reload:
       usage: "reload"
       description: "Reload the config for MineCordBot"
@@ -59,8 +56,8 @@ mcb:
       usage: "minecraftcommand <Minecraft Command>"
       description: "Execute Minecraft commands from Discord."
     permission:
-      usage: "permission <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
-      description: "add, remove permission to user, and get what their permission level is."
+      usage: "permission <set> <user> <level> | permission <get> <user>"
+      description: "Add, remove permission to user, and get what their permission level is."
       user-not-found: "User with `%s` cannot be found."
       added-perm: "User `%s` now has a level_%s Permission."
       last-user: "Cannot remove user `%s` because it's the last user on the permission list `%s`"

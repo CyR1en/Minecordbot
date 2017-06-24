@@ -136,6 +136,7 @@ public class MCBConfig {
         map.put("broadcasts", broadcast);
         map.put("command_text_channel", ctc);
         map.put("default_game", "set bot's default game");
+        map.put("afk_timer", 300);
         return new JSONObject(map);
 
     }

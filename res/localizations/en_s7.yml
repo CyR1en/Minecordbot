@@ -41,13 +41,10 @@ mcb:
   commands:
     settrigger:
       usage: "settrigger <new trigger>"
-      description: "set a command trigger for the bot."
+      description: "Fetch me some new gun powd'r - can't fire this grapeshot w'thout it."
     shutdown:
       usage: "shutdown"
-      descripptionn: "Shut down the bot."
-    imagesearch:
-      usage: "imagesearch <query>"
-      description: "Sail for portraits"
+      description: "Batt'n down th' hatches and drop th' anchor."
     reload:
       usage: "reload"
       description: "Rearm thy mattie."
@@ -59,9 +56,9 @@ mcb:
       usage: "minecraftcommand <Minecraft Command>"
       description: "Fire th' ship's cannons, First Mate Minecord!."
     permission:
-      usage: "permission <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
+      usage: "permission <set> <crew> <station> | permission <get> <crew>"
       description: "Restation sailors and query their station."
-      user-not-found: "Sailor with `%s` cannot be found."
+      user-not-found: "Crew member `%s` ain't on th'ship. Were they marooned?"
       added-perm: "Sailor `%s` now has a level_%s station."
       last-user: "Cannot remove sailor `%s` because they be the last crew member on the manifest `%s`"
       remove-perm: "Removed `%s` station from `%s`"

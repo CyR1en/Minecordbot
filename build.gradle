@@ -76,6 +76,8 @@ shadowJar {
         exclude(dependency(name: 'PermissionsEx-1.23.4'))
         exclude(dependency(name: 'mv'))
         exclude(dependency('org.json:json:20160810'))
+        exclude(dependency('commons-lang:commons-lang:2.6'))
+        exclude(dependency('com.googecode.json-simple:json-simple:1.1.1'))
     }
     relocate 'org.apache', 'shadow.org.apache'
     relocate ('org.json', 'shadow.org.json')

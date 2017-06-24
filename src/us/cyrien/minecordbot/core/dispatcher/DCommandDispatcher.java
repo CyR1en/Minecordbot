@@ -21,7 +21,7 @@ import us.cyrien.minecordbot.core.exceptions.IllegalBeginningParameterException;
 import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.core.loader.DCommandMapping;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.entity.User;
+import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.main.Minecordbot;
 import us.cyrien.minecordbot.utils.ArrayListUtils;
 
@@ -125,7 +125,7 @@ public class DCommandDispatcher {
                 }
             }
         }
-        User sender = new User(me);
+        MCBUser sender = new MCBUser(me);
         PermissionLevel plevel = command.getPermission();
         command.setSender(sender);
         boolean isBound;

@@ -28,7 +28,6 @@ public class EvalCommand {
             command.sendMessageEmbed(e, command.getInvalidHelpCard(e), HELP_COMMAND_DURATION);
             return;
         }
-
         ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("Nashorn");
         scriptEngine.put("event", e);
         scriptEngine.put("jda", e.getJDA());
@@ -36,8 +35,10 @@ public class EvalCommand {
         scriptEngine.put("channel", e.getTextChannel());
         EmbedBuilder eb = new EmbedBuilder();
         try {
+            Object result = scriptEngine.eval(arg.trim());
+            Object response = result == null ? "Script evaluated successfully" : result;
             eb.setColor(e.getGuild().getMemberById(e.getJDA().getSelfUser().getId()).getColor());
-            eb.addField("Result:", "" + scriptEngine.eval(arg.trim()), false);
+            eb.addField("Result:", "" + response, false);
             command.sendMessageEmbed(e, eb.build(), 50);
         } catch (Exception e1) {
             eb.setColor(e.getGuild().getMemberById(e.getJDA().getSelfUser().getId()).getColor());

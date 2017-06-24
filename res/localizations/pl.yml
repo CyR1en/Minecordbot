@@ -43,7 +43,7 @@ mcb:
       description: "ustaw nowy trigger dla komendy bota."
     shutdown:
       usage: "wyłącz"
-      descripptionn: "Wyłącz bota."
+      description: "Wyłącz bota."
     reload:
       usage: "reload"
       description: "przeładuj konfing dla MineCordBota"
@@ -55,8 +55,13 @@ mcb:
       usage: "mcmd <Komenda>"
       description: "Wykonaj komendę na serwerze."
     permission:
-      usage: "perm <add> <perm level> <userID> \n perm <remove> <userID> \n perm <get> <userID>"
-      description: "dodaj, usuń i sprawdź poziom uprawnień użytkownika."
+      usage: "permission <set> <użytkownik> <poziom> | permission <get> <użytkownik>"
+      description: "Dodaj, usuń uprawnienia użytkownika, i sprawdź ich poziom uprawnień."
+      user-not-found: "Użytkownik `%s` nie został znaleziony."
+      added-perm: "Użytkownik `%s` teraz ma poziom level_%s uprawnień."
+      last-user: "Nie można usunąć użytkownika `%s` poniewarz jest ostatnim z poziomem uprawnień `%s`"
+      remove-perm: "Usunięto uprawnienie `%s` z `%s`"
+      get-perm: "Użytkownik `%s` ma poziom uprawnień `%s`."
     setgame:
       usage: "setgame <tytułgry>"
       description: "ustaw grę bota."

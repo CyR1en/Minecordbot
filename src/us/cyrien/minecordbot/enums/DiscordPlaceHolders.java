@@ -3,7 +3,7 @@ package us.cyrien.minecordbot.enums;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import us.cyrien.minecordbot.entity.User;
+import us.cyrien.minecordbot.entity.MCBUser;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public enum DiscordPlaceHolders {
     NAME {
         @Override
         public String toString() {
-            User user = new User(mre);
+            MCBUser user = new MCBUser(mre);
             return user.getName();
         }
     },

@@ -6,8 +6,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
+import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.entity.Messenger;
-import us.cyrien.minecordbot.entity.User;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 
@@ -24,7 +24,7 @@ public abstract class DiscordCommand implements Comparable {
     protected String usage;
     protected PermissionLevel permission;
 
-    private User sender;
+    private MCBUser sender;
     private Messenger messenger;
     private CommandType commandType;
     private boolean nullified;
@@ -71,7 +71,7 @@ public abstract class DiscordCommand implements Comparable {
             r = this.getAliases().toString().replaceAll("\\[", "").replaceAll("]", "");
         eb.addField("Description", getDescription(), false);
         eb.addField("Alias", r, false);
-        User user = getSender();
+        MCBUser user = getSender();
         PermissionLevel rp = this.getPermission();
         PermissionLevel sp = user.getPermissionLevel();
         eb.addField("Permission", "Required Level: " + rp + "\nYour Level: " + sp, false);
@@ -146,7 +146,7 @@ public abstract class DiscordCommand implements Comparable {
         return this.usage;
     }
 
-    public User getSender() {
+    public MCBUser getSender() {
         return sender;
     }
 
@@ -179,7 +179,7 @@ public abstract class DiscordCommand implements Comparable {
         return this;
     }
 
-    public DiscordCommand setSender(User sender) {
+    public DiscordCommand setSender(MCBUser sender) {
         this.sender = sender;
         return this;
     }

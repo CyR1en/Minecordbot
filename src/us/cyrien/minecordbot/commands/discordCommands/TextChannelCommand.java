@@ -14,7 +14,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.entity.User;
+import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.main.Localization;
 import us.cyrien.minecordbot.main.Minecordbot;
 import us.cyrien.minecordbot.utils.FinderUtil;
@@ -44,7 +44,7 @@ public class TextChannelCommand {
     }
 
     public boolean hasPermission(String[] args, MessageReceivedEvent e) {
-        User user = new User(e);
+        MCBUser user = new MCBUser(e);
         if (args.length != 0) {
             if (user.getPermissionLevel() == PermissionLevel.OWNER)
                 return true;
