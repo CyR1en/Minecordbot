@@ -52,9 +52,9 @@ public enum MinecraftPlaceHolder {
     RANK {
         @Override
         public String toString() {
-            PermissionUser user = PermissionsEx.getUser(e.getPlayer());
             String prefix;
             if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")) {
+                PermissionUser user = PermissionsEx.getUser(e.getPlayer());
                 prefix = user.getPrefix();
                 if (prefix.equals("")) {
                     prefix = user.getSuffix();
