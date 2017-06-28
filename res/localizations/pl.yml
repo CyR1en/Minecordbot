@@ -73,7 +73,7 @@ mcb:
       description: "ustaw nazwę bota."
     setnickname:
        usage: "setnickname <nick>"
-      description: "ustaw nick bota."
+       description: "ustaw nick bota."
     ping:
       usage: "ping"
       description: "Sprawdź czas reakcji bot'a."
