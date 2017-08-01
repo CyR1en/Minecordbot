@@ -11,7 +11,6 @@ import net.dv8tion.jda.core.utils.SimpleLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.minecordbot.commands.discordCommands.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.Dcmd;
@@ -26,7 +25,6 @@ import us.cyrien.minecordbot.entity.UpTimer;
 import us.cyrien.minecordbot.event.BotReadyEvent;
 import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.handle.Updater;
-import us.cyrien.minecordbot.listener.AfkListener;
 import us.cyrien.minecordbot.listener.DiscordMessageListener;
 import us.cyrien.minecordbot.listener.MinecraftEventListener;
 import us.cyrien.minecordbot.listener.TabCompleteV2;
@@ -39,6 +37,7 @@ import java.util.List;
 public class Minecordbot extends JavaPlugin {
 
     public static final SimpleLog LOGGER = SimpleLog.getLog("MCB");
+
 
     private static List<DiscordCommand> discordCommands;
     private static Minecordbot instance;

@@ -35,7 +35,8 @@ public class HelpCommand {
 
     private MessageEmbed listCommands(EmbedBuilder ebi) {
         ebi.setThumbnail("https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
-        ebi.setAuthor(Localization.getTranslatedMessage("mcb.commands.help.list.header"), null, "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
+        ebi.setAuthor(Localization.getTranslatedMessage("mcb.commands.help.list.header"), null,
+                "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
         String trigger = MCBConfig.get("trigger");
         for (int i = 0; i <= CommandType.values().length - 1; i++) {
             StringBuilder str = new StringBuilder();

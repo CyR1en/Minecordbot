@@ -7,17 +7,21 @@ import org.json.JSONObject;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 
+import java.util.UUID;
+
 public class MCBUser {
 
     private String name;
     private String nick;
     private String Id;
     private PermissionLevel permissionLevel;
+    private UUID mcUUID;
 
     public MCBUser(MessageReceivedEvent e) {
         name = e.getAuthor().getName();
         nick = e.getMember().getNickname();
         Id = e.getAuthor().getId();
+        mcUUID = null;
         setPermLevel();
     }
 
@@ -33,6 +37,14 @@ public class MCBUser {
             return true;
         else
             return this.getPermissionLevel().ordinal() >= level.ordinal();
+    }
+
+    public UUID getMcUUID() {
+        return mcUUID;
+    }
+
+    public void setMcUUID(UUID uuid) {
+        mcUUID = uuid;
     }
 
     private void setPermLevel() {

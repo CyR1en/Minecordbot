@@ -3,12 +3,12 @@ package us.cyrien.minecordbot.enums;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 public enum MinecraftPlaceHolder {
     WORLD {
@@ -53,14 +53,10 @@ public enum MinecraftPlaceHolder {
         @Override
         public String toString() {
             String prefix;
-            if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")) {
-                PermissionUser user = PermissionsEx.getUser(e.getPlayer());
-                prefix = user.getPrefix();
-                if (prefix.equals("")) {
-                    prefix = user.getSuffix();
-                    if (prefix.equals(""))
-                        prefix = "";
-                }
+            if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+                RegisteredServiceProvider<Permission> rgP = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+                Permission vaultPerm = rgP.getProvider();
+                prefix = vaultPerm.getPrimaryGroup(e.getPlayer());
             } else {
                 prefix = "";
             }
