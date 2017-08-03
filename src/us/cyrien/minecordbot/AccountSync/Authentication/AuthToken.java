@@ -65,18 +65,6 @@ public class AuthToken implements Comparable {
         return token;
     }
 
-    public boolean authenticateToken(AuthToken token) {
-        if (!compareToken(token))
-            return false;
-        if (token.isEncrypted())
-            decryptToken(token);
-        if (this.isEncrypted())
-            decryptToken(this);
-        String[] token1 = token.toString().split(".");
-        String[] token0 = this.toString().split(".");
-        return (token0[0].equals(token1[0]) && token0[2].equals(token1[2]));
-    }
-
     private AuthToken encryptToken(AuthToken token) {
         if (!token.isEncrypted())
             try {
@@ -111,6 +99,18 @@ public class AuthToken implements Comparable {
                 e.printStackTrace();
             }
         return token;
+    }
+
+    public boolean authenticateToken(AuthToken token) {
+        if (!compareToken(token))
+            return false;
+        if (token.isEncrypted())
+            decryptToken(token);
+        if (this.isEncrypted())
+            decryptToken(this);
+        String[] token1 = token.toString().split(".");
+        String[] token0 = this.toString().split(".");
+        return (token0[0].equals(token1[0]) && token0[2].equals(token1[2]));
     }
 
     private void setEncrypted(boolean b) {

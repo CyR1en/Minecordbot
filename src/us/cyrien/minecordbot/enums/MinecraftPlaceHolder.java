@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.enums;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +25,9 @@ public enum MinecraftPlaceHolder {
                 } else {
                     world = e.getPlayer().getWorld().getName();
                 }
+            } else if(Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+                Chat c = rgC.getProvider();
+                world = c.getPlayerPrefix(e.getPlayer());
             } else {
                 world = e.getPlayer().getWorld().getName();
             }
@@ -54,7 +58,6 @@ public enum MinecraftPlaceHolder {
         public String toString() {
             String prefix;
             if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-                RegisteredServiceProvider<Permission> rgP = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
                 Permission vaultPerm = rgP.getProvider();
                 prefix = vaultPerm.getPrimaryGroup(e.getPlayer());
             } else {
@@ -66,6 +69,8 @@ public enum MinecraftPlaceHolder {
     };
 
     private static AsyncPlayerChatEvent e;
+    RegisteredServiceProvider<Permission> rgP = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+    RegisteredServiceProvider<Chat> rgC = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
 
     public void init(AsyncPlayerChatEvent e) {
         MinecraftPlaceHolder.e = e;

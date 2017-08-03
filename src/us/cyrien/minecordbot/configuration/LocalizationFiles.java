@@ -24,6 +24,7 @@ public class LocalizationFiles {
         languages.put("pl", new File(p.getDataFolder().toString() + "/localizations/pl.yml"));
         languages.put("de", new File(p.getDataFolder().toString() + "/localizations/de.yml"));
         languages.put("ro", new File(p.getDataFolder().toString() + "/localizations/ro.yml"));
+        languages.put("fr", new File(p.getDataFolder().toString() + "/localizations/fr.yml"));
         for (String key : languages.keySet()) {
             if (copy) {
                 saveResource(p, "localizations/" + key + ".yml", true);
