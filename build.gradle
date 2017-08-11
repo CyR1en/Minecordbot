@@ -13,17 +13,6 @@ mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-        resources {
-            srcDir 'res'
-        }
-    }
-}
-
 repositories {
     mavenCentral()
     jcenter()

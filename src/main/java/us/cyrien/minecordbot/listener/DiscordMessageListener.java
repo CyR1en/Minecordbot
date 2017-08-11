@@ -1,5 +1,6 @@
 package us.cyrien.minecordbot.listener;
 
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -23,19 +24,21 @@ public class DiscordMessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        boolean isCommand = event.getMessage().getContent().startsWith(MCBConfig.get("trigger"));
-        boolean notSelf = !event.getMember().getUser().getId().equalsIgnoreCase(event.getJDA().getSelfUser().getId());
-        TextChannel tc = event.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
-        boolean modChannel = tc != null && tc.equals(event.getTextChannel());
-        boolean bound = containsChannel(event.getTextChannel().getId()) || modChannel;
-        boolean blocked = prefixIsBlocked(event.getMessage().getContent()) || botIsBlocked(event.getAuthor().getId());
-        if (isCommand && notSelf) {
-            mcb.handleCommand(event);
-        } else {
-            if (bound && notSelf && !blocked) {
-                String msg = event.getMessage().getContent();
-                String prefix = PrefixParser.parseDiscordPrefixes(MCBConfig.get("message_prefix_minecraft"), event);
-                messenger.sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (MCBConfig.get("message_format") + msg)).trim());
+        if(event.getChannelType() != ChannelType.PRIVATE) {
+            boolean isCommand = event.getMessage().getContent().startsWith(MCBConfig.get("trigger"));
+            boolean notSelf = !event.getMember().getUser().getId().equalsIgnoreCase(event.getJDA().getSelfUser().getId());
+            TextChannel tc = event.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
+            boolean modChannel = tc != null && tc.equals(event.getTextChannel());
+            boolean bound = containsChannel(event.getTextChannel().getId()) || modChannel;
+            boolean blocked = prefixIsBlocked(event.getMessage().getContent()) || botIsBlocked(event.getAuthor().getId());
+            if (isCommand && notSelf) {
+                mcb.handleCommand(event);
+            } else {
+                if (bound && notSelf && !blocked) {
+                    String msg = event.getMessage().getContent();
+                    String prefix = PrefixParser.parseDiscordPrefixes(MCBConfig.get("message_prefix_minecraft"), event);
+                    messenger.sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (MCBConfig.get("message_format") + msg)).trim());
+                }
             }
         }
     }

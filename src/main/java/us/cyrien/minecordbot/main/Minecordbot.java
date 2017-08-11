@@ -12,10 +12,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.cyrien.minecordbot.AccountSync.AuthManager;
 import us.cyrien.minecordbot.commands.discordCommands.*;
-import us.cyrien.minecordbot.commands.minecraftCommand.Dcmd;
-import us.cyrien.minecordbot.commands.minecraftCommand.Dme;
-import us.cyrien.minecordbot.commands.minecraftCommand.Reload;
+import us.cyrien.minecordbot.commands.minecraftCommand.*;
 import us.cyrien.minecordbot.configuration.LocalizationFiles;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.DrocsidFrame;
@@ -42,6 +41,7 @@ public class Minecordbot extends JavaPlugin {
     private static List<DiscordCommand> discordCommands;
     private static Minecordbot instance;
     private static Messenger messenger;
+    private static AuthManager authManager;
     private static UpTimer upTimer;
 
     private JDA jda;
@@ -51,6 +51,7 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        authManager = new AuthManager();
         discordCommands = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
         Bukkit.getScheduler().runTaskLater(this, DrocsidFrame::main, 1L);
@@ -121,7 +122,9 @@ public class Minecordbot extends JavaPlugin {
     private void initMCmds() {
         registerMinecraftCommandModule(Dcmd.class);
         registerMinecraftCommandModule(Dme.class);
-        registerMinecraftCommandModule(Reload.class);
+        registerMinecraftCommandModule(MCBCommand.class);
+        registerMinecraftCommandModule(DSync.class);
+        registerMinecraftCommandModule(DConfirm.class);
     }
 
     private void initDCmds() {
@@ -172,6 +175,8 @@ public class Minecordbot extends JavaPlugin {
     public static Messenger getMessenger() {
         return messenger;
     }
+
+    public static AuthManager getAuthManager() { return authManager; }
 
     public static Minecordbot getInstance() {
         return instance;

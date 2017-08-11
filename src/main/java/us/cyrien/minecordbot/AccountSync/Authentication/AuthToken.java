@@ -3,6 +3,10 @@ package us.cyrien.minecordbot.AccountSync.Authentication;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import us.cyrien.minecordbot.AccountSync.exceptions.IIllegalAuthTokenFormatException;
+import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmKeyException;
+import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmRequesterException;
+import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmSessionIDException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,13 +26,23 @@ public class AuthToken implements Comparable {
 
     private Cipher cipher;
     private boolean encrypted;
-    private final String key = RandomStringUtils.randomAlphanumeric(16);
+    private final String key = RandomStringUtils.randomAlphanumeric(32);
     private final Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
 
     public AuthToken(Player mcAcc, String authID) {
+        try {
+            cipher = Cipher.getInstance("AES");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        }
         this.mcAcc = mcAcc;
         this.authID = authID;
         token = generateToken();
+    }
+
+    public AuthToken(String token) throws IIllegalAuthTokenFormatException {
         try {
             cipher = Cipher.getInstance("AES");
         } catch (NoSuchAlgorithmException e) {
@@ -36,39 +50,31 @@ public class AuthToken implements Comparable {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
-    }
-
-    public AuthToken(String token) {
-        encrypted = true;
+        encrypted = false;
         this.token = token;
         AuthToken sudoToken = new AuthToken(null, null);
         sudoToken.setToken(token);
-        this.decryptToken(sudoToken);
-        String[] splitToken = sudoToken.token.split(".");
+        //this.decryptToken(sudoToken);
+        String[] splitToken = sudoToken.getToken().toString().split("\\.");
         if(splitToken.length == 3) {
             mcAcc = Bukkit.getPlayer(UUID.fromString(splitToken[0]));
             authID = splitToken[2];
-        }
-        try {
-            cipher = Cipher.getInstance("AES");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+        } else {
+            throw new IIllegalAuthTokenFormatException();
         }
     }
 
     private String generateToken() {
-        token = mcAcc != null ? mcAcc.getUniqueId().toString() + "." + RandomStringUtils.randomAlphanumeric(16) + "." + authID :
-                UUID.randomUUID().toString() + "." + RandomStringUtils.randomAlphanumeric(16) + "." + authID;
-        encryptToken(this);
+        token = mcAcc != null ? mcAcc.getUniqueId().toString() + "." + RandomStringUtils.randomAlphanumeric(32) + "." + authID :
+                UUID.randomUUID().toString() + "." + RandomStringUtils.randomAlphanumeric(32) + "." + authID;
+        //encryptToken(this);
         return token;
     }
 
     private AuthToken encryptToken(AuthToken token) {
         if (!token.isEncrypted())
             try {
-                cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+                token.getCipher().init(Cipher.ENCRYPT_MODE, aesKey);
                 byte[] encryptedToken = cipher.doFinal(token.toString().getBytes());
                 token.setEncrypted(encrypted);
                 token.setToken(new String(encryptedToken));
@@ -86,7 +92,7 @@ public class AuthToken implements Comparable {
     private AuthToken decryptToken(AuthToken token) {
         if (token.encrypted)
             try {
-                cipher.init(Cipher.DECRYPT_MODE, aesKey);
+                token.getCipher().init(Cipher.DECRYPT_MODE, aesKey);
                 String decrypted = new String(cipher.doFinal(token.toString().getBytes()));
                 token.setToken(decrypted);
                 token.setEncrypted(false);
@@ -101,16 +107,23 @@ public class AuthToken implements Comparable {
         return token;
     }
 
-    public boolean authenticateToken(AuthToken token) {
+    public boolean authenticateToken(AuthToken token) throws IllegalConfirmRequesterException, IllegalConfirmKeyException, IllegalConfirmSessionIDException {
         if (!compareToken(token))
             return false;
         if (token.isEncrypted())
-            decryptToken(token);
+            token.decryptToken(token);
         if (this.isEncrypted())
-            decryptToken(this);
-        String[] token1 = token.toString().split(".");
-        String[] token0 = this.toString().split(".");
-        return (token0[0].equals(token1[0]) && token0[2].equals(token1[2]));
+            this.decryptToken(this);
+        String[] token1 = token.toString().split("\\.");
+        String[] token0 = this.toString().split("\\.");
+        if(!token0[0].equals(token1[0])) {
+            throw new IllegalConfirmRequesterException();
+        } else if (!token0[1].equals(token1[1])) {
+            throw new IllegalConfirmKeyException();
+        } else if (!token0[2].equals(token1[2])) {
+            throw new IllegalConfirmSessionIDException();
+        }
+        return true;
     }
 
     private void setEncrypted(boolean b) {
@@ -135,6 +148,18 @@ public class AuthToken implements Comparable {
 
     public String toString() {
         return token;
+    }
+
+    public Player getMcAcc() {
+        return mcAcc;
+    }
+
+    public String getAuthID() {
+        return authID;
+    }
+
+    public Cipher getCipher() {
+        return cipher;
     }
 
     @Override

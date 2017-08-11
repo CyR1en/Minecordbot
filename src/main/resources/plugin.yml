@@ -15,3 +15,6 @@ permissions:
     minecordbot.dme:
         description: Allow user to express themselves to discord and minecraft.
         default: op
+    minecordbot.discordsync:
+        description: Allow user to sync their Discord account to their Minecraft account.
+        default: op

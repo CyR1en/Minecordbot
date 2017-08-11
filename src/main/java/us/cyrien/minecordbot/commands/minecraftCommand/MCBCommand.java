@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 
-public class Reload {
+public class MCBCommand {
     @Command(aliases = {"minecordbot", "mcb"}, usage = "do /minecordbot help", desc = "")
     @Permission("minecordbot.reload")
     public void command(@Sender CommandSender commandSender, String s) {
@@ -22,10 +22,13 @@ public class Reload {
     }
 
     public boolean help(CommandSender cs) {
-        cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&l=== MineCordBot Help ==="));
-        cs.sendMessage("/minecordbot reload");
+        cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&l=== MineCordBot Commands ==="));
         cs.sendMessage("/dme <action>");
         cs.sendMessage("/dcmd <action>");
+        cs.sendMessage("/dsync <discord ID>");
+        cs.sendMessage("/dconfirm <verification code>");
+        cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&0&7do \"/<command> help\" for more \n detailed command help"));
+        cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&l==========================="));
         return false;
     }
 }
