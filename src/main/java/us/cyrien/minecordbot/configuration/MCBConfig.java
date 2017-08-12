@@ -2,7 +2,7 @@ package us.cyrien.minecordbot.configuration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import us.cyrien.minecordbot.AccountSync.Database;
+import us.cyrien.minecordbot.accountSync.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 
-public class MCBConfig extends Database {
+public class MCBConfig {
 
     private static final Path configPath = Paths.get("plugins/MineCordBot/config.json");
     private static JSONObject config;

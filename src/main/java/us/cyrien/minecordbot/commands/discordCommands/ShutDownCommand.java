@@ -8,7 +8,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 public class ShutDownCommand {
     @DCommand(aliases = "halt", usage = "mcb.commands.shutdown.usage", desc = "mcb.commands.shutdown.description", type = CommandType.MOD)

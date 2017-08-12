@@ -9,9 +9,9 @@ import net.dv8tion.jda.core.entities.User;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.cyrien.minecordbot.AccountSync.Authentication.AuthSession;
-import us.cyrien.minecordbot.AccountSync.Authentication.AuthToken;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.accountSync.Authentication.AuthSession;
+import us.cyrien.minecordbot.accountSync.Authentication.AuthToken;
+import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.utils.FinderUtil;
 
 public class DSync {
@@ -26,7 +26,6 @@ public class DSync {
         }
         if (dUser == null)
             dUser = FinderUtil.findMember(discordID, jda.getSelfUser().getMutualGuilds().get(0)).get(0).getUser();
-
         if (dUser != null) {
             PrivateChannel uPrivateChannel = dUser.openPrivateChannel().complete();
             AuthSession authSession = new AuthSession((Player) commandSender, dUser);

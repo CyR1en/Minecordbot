@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.entity;
+package us.cyrien.minecordbot.chat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.Conversation;

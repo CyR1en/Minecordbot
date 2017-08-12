@@ -11,8 +11,8 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.entity.DiscordCommandSender;
-import us.cyrien.minecordbot.entity.DiscordConsoleCommandSender;
+import us.cyrien.minecordbot.chat.DiscordCommandSender;
+import us.cyrien.minecordbot.chat.DiscordConsoleCommandSender;
 
 import static us.cyrien.minecordbot.core.module.DiscordCommand.HELP_COMMAND_DURATION;
 

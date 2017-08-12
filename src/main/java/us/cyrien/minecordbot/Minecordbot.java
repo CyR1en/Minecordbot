@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.main;
+package us.cyrien.minecordbot;
 
 import io.github.hedgehog1029.frame.Frame;
 import net.dv8tion.jda.core.AccountType;
@@ -12,14 +12,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.cyrien.minecordbot.AccountSync.AuthManager;
+import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
+import us.cyrien.minecordbot.accountSync.Database;
+import us.cyrien.minecordbot.accountSync.listener.UserConnectionListener;
 import us.cyrien.minecordbot.commands.discordCommands.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
-import us.cyrien.minecordbot.configuration.LocalizationFiles;
+import us.cyrien.minecordbot.localization.LocalizationFiles;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.DrocsidFrame;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.entity.Messenger;
+import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.entity.UpTimer;
 import us.cyrien.minecordbot.event.BotReadyEvent;
 import us.cyrien.minecordbot.handle.Metrics;
@@ -35,8 +37,7 @@ import java.util.List;
 
 public class Minecordbot extends JavaPlugin {
 
-    public static final SimpleLog LOGGER = SimpleLog.getLog("MCB");
-
+    public static final SimpleLog LOGGER = SimpleLog.getLog("Minecordbot");
 
     private static List<DiscordCommand> discordCommands;
     private static Minecordbot instance;
@@ -55,6 +56,7 @@ public class Minecordbot extends JavaPlugin {
         discordCommands = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
         Bukkit.getScheduler().runTaskLater(this, DrocsidFrame::main, 1L);
+        initDatabase();
         if (initConfig()) {
             initJDA();
             initInstances();
@@ -96,8 +98,12 @@ public class Minecordbot extends JavaPlugin {
     private boolean initConfig() {
         boolean initialized = MCBConfig.load();
         if (!initialized)
-            SimpleLog.getLog("Minecordbot").warn("MCB config generated, please populate all fields before restarting");
+            LOGGER.warn("MCB config generated, please populate all fields before restarting");
         return initialized;
+    }
+
+    private void initDatabase() {
+        Database.load();
     }
 
     private void initJDA() {
@@ -111,6 +117,7 @@ public class Minecordbot extends JavaPlugin {
     private void initMListener() {
         registerMinecraftEventModule(new MinecraftEventListener(this));
         registerMinecraftEventModule(new TabCompleteV2(this));
+        registerMinecraftEventModule(new UserConnectionListener());
         //registerMinecraftEventModule(new AfkListener(this));
     }
 
@@ -188,7 +195,6 @@ public class Minecordbot extends JavaPlugin {
 
     public void handleCommand(MessageReceivedEvent mRE) {
         Iterator cmdIterator = discordCommands.iterator();
-
         while (cmdIterator.hasNext()) {
             DiscordCommand dc = (DiscordCommand) cmdIterator.next();
             String raw = mRE.getMessage().getContent();

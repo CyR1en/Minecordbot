@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.entity;
+package us.cyrien.minecordbot.chat;
 
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.json.JSONArray;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

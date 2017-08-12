@@ -4,9 +4,8 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.util.StringUtil;
 import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.util.Objects;
 

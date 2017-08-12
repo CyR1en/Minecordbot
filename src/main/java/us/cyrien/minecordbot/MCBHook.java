@@ -1,8 +1,8 @@
-package us.cyrien.minecordbot.hook;
+package us.cyrien.minecordbot;
 
 import io.github.hedgehog1029.frame.hook.IPluginHook;
 import org.bukkit.Bukkit;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 
 public class MCBHook implements IPluginHook {

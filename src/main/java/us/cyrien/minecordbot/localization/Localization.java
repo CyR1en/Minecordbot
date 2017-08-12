@@ -1,8 +1,9 @@
-package us.cyrien.minecordbot.main;
+package us.cyrien.minecordbot.localization;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.cyrien.minecordbot.configuration.MCBConfig;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.io.File;
 

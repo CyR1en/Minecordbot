@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.AccountSync;
+package us.cyrien.minecordbot.accountSync;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +24,7 @@ public class Database {
         }
         save();
     }
+
 
     @SuppressWarnings("unchecked")
     public static <T> T get(String key) {
@@ -71,6 +72,7 @@ public class Database {
         try {
             JSONObject def = getDefault();
             if (!exists) {
+                Files.createDirectories(Paths.get("plugins/MineCordBot/Users"));
                 new File(String.valueOf(filePath)).createNewFile();
                 Files.write(filePath, def.toString(4).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
             } else {
@@ -98,7 +100,7 @@ public class Database {
     }
 
     public static JSONObject getDefault() {
-
-        return new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        return jsonObject;
     }
 }

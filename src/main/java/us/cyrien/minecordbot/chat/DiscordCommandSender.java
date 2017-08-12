@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.entity;
+package us.cyrien.minecordbot.chat;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.Bukkit;

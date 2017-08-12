@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.json.JSONArray;
 import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.util.ArrayList;
 import java.util.List;

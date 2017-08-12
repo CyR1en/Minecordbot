@@ -7,9 +7,9 @@ import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.entity.MCBUser;
-import us.cyrien.minecordbot.entity.Messenger;
-import us.cyrien.minecordbot.main.Localization;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.localization.Localization;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.awt.*;
 import java.util.List;

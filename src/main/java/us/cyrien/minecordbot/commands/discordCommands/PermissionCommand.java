@@ -3,7 +3,6 @@ package us.cyrien.minecordbot.commands.discordCommands;
 import io.github.hedgehog1029.frame.annotations.Text;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -18,8 +17,8 @@ import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.entity.MCBUser;
-import us.cyrien.minecordbot.main.Localization;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.localization.Localization;
+import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.utils.FinderUtil;
 
 import static us.cyrien.minecordbot.core.module.DiscordCommand.HELP_COMMAND_DURATION;

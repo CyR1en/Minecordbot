@@ -12,7 +12,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Localization;
+import us.cyrien.minecordbot.localization.Localization;
 
 public class SetNicknameCommand {
     @DCommand(aliases = {"setnickname", "setnick", "sn"}, usage = "mcb.commands.setnickname.usage", desc = "mcb.commands.setnickname.description", type = CommandType.MISC)

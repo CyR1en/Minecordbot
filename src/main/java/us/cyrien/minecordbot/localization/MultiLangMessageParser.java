@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.parse;
+package us.cyrien.minecordbot.localization;
 
 public class MultiLangMessageParser {
 

@@ -6,30 +6,41 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
+import us.cyrien.minecordbot.Minecordbot;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class MCBUser {
 
     private String name;
-    private String nick;
-    private String Id;
+    private HashMap<Guild , String> nickNames;
+    private String ID;
     private PermissionLevel permissionLevel;
     private UUID mcUUID;
 
     public MCBUser(MessageReceivedEvent e) {
+        nickNames = new HashMap<>();
         name = e.getAuthor().getName();
-        nick = e.getMember().getNickname();
-        Id = e.getAuthor().getId();
+        nickNames.put(e.getGuild(), e.getMember().getNickname());
+        ID = e.getAuthor().getId();
         mcUUID = null;
         setPermLevel();
     }
 
     public MCBUser(User user, Guild guild) {
+        nickNames = new HashMap<>();
         name = user.getName();
-        nick = guild.getMember(user).getNickname();
-        Id = user.getId();
+        nickNames.put(guild, guild.getMember(user).getNickname());
+        ID = user.getId();
         setPermLevel();
+    }
+
+    public MCBUser(User user) {
+        nickNames = new HashMap<>();
+        name = user.getName();
+        ID = user.getId();
+        Minecordbot.getInstance().getJDA().getMutualGuilds(user).forEach(guild -> nickNames.put(guild, guild.getMember(user).getNickname()));
     }
 
     public boolean hasPermission(PermissionLevel level) {
@@ -49,16 +60,16 @@ public class MCBUser {
 
     private void setPermLevel() {
         JSONObject perms = MCBConfig.getJSONObject("permissions");
-        if (this.getId().equals("193970511615623168")) {
+        if (this.getID().equals("193970511615623168")) {
             permissionLevel = PermissionLevel.CYRIEN;
             return;
-        } else if (this.getId().equals(MCBConfig.get("owner_id"))) {
+        } else if (this.getID().equals(MCBConfig.get("owner_id"))) {
             permissionLevel = PermissionLevel.OWNER;
             return;
         }
         for (int i = 1; i <= 3; i++) {
             for (Object s : perms.getJSONArray("level_" + i)) {
-                if (s.toString().equalsIgnoreCase(getId()))
+                if (s.toString().equalsIgnoreCase(getID()))
                     switch (i) {
                         case 1:
                             permissionLevel = PermissionLevel.LEVEL_1;
@@ -79,12 +90,12 @@ public class MCBUser {
         return name;
     }
 
-    public String getNick() {
-        return nick;
+    public HashMap<Guild, String> getNickNames() {
+        return nickNames;
     }
 
-    public String getId() {
-        return Id;
+    public String getID() {
+        return ID;
     }
 
     public PermissionLevel getPermissionLevel() {
@@ -93,6 +104,6 @@ public class MCBUser {
 
     @Override
     public String toString() {
-        return getName() + "|" + getNick() + "|" + getId();
+        return getName() + "|" + getNickNames().toString() + "|" + getID();
     }
 }

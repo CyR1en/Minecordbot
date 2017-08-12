@@ -22,7 +22,7 @@ import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.core.loader.DCommandMapping;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.entity.MCBUser;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.utils.ArrayListUtils;
 
 import java.lang.reflect.Method;

@@ -1,10 +1,10 @@
-package us.cyrien.minecordbot.AccountSync.exceptions;
+package us.cyrien.minecordbot.accountSync.exceptions;
 
 public class IllegalConfirmRequesterException extends Exception{
     String msg;
 
     public IllegalConfirmRequesterException() {
-        msg = "Confirm requester did not match MCBSync verification code requester";
+        msg = "Confirm requester did not match MCBSync's verification code requester";
     }
 
 

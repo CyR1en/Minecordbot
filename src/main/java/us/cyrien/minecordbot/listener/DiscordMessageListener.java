@@ -8,9 +8,9 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
 import org.json.JSONArray;
 import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.entity.Messenger;
-import us.cyrien.minecordbot.main.Minecordbot;
-import us.cyrien.minecordbot.parse.PrefixParser;
+import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class DiscordMessageListener extends ListenerAdapter {
 

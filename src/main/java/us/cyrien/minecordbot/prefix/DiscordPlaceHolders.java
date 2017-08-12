@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.enums;
+package us.cyrien.minecordbot.prefix;
 
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;

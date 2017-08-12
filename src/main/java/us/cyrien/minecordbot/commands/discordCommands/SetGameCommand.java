@@ -12,7 +12,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Localization;
+import us.cyrien.minecordbot.localization.Localization;
 
 import static us.cyrien.minecordbot.core.module.DiscordCommand.HELP_COMMAND_DURATION;
 

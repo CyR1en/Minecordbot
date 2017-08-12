@@ -1,11 +1,11 @@
-package us.cyrien.minecordbot.AccountSync.exceptions;
+package us.cyrien.minecordbot.accountSync.exceptions;
 
 public class IllegalConfirmSessionIDException extends Exception {
 
     String msg;
 
     public IllegalConfirmSessionIDException() {
-        msg = "Confirm requester did not match MCBSync verification code session id";
+        msg = "Confirm session id did not match MCBSync's verification code session id";
     }
 
 

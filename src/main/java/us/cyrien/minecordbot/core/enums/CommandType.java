@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.core.enums;
 
-import us.cyrien.minecordbot.main.Localization;
+import us.cyrien.minecordbot.localization.Localization;
 
 public enum CommandType {
     MISC {

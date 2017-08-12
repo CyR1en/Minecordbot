@@ -10,7 +10,7 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Localization;
+import us.cyrien.minecordbot.localization.Localization;
 
 public class ReloadCommand {
     @DCommand(aliases = {"reload", "rl"}, usage = "mcb.commands.reload.usage", desc = "mcb.commands.reload.description", type = CommandType.MOD)

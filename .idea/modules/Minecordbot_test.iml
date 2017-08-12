@@ -11,7 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Minecordbot_main" />
-    <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.1" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20170516" level="project" />

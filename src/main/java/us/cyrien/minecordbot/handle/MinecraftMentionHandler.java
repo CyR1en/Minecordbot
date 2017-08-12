@@ -2,7 +2,7 @@ package us.cyrien.minecordbot.handle;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.enums;
+package us.cyrien.minecordbot.prefix;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;

@@ -1,8 +1,8 @@
-package us.cyrien.minecordbot.configuration;
+package us.cyrien.minecordbot.localization;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.bukkit.configuration.file.YamlConfiguration;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.io.File;
 import java.io.FileOutputStream;

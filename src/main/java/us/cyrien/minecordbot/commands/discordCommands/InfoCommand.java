@@ -14,8 +14,8 @@ import us.cyrien.minecordbot.core.annotation.DPermission;
 import us.cyrien.minecordbot.core.enums.CommandType;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
 import us.cyrien.minecordbot.core.module.DiscordCommand;
-import us.cyrien.minecordbot.main.Localization;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.localization.Localization;
+import us.cyrien.minecordbot.Minecordbot;
 
 public class InfoCommand {
     @DCommand(aliases = "info", usage = "mcb.commands.info.usage", desc = "mcb.commands.info.description", type = CommandType.INFO)

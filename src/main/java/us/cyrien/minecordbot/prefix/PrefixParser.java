@@ -1,9 +1,7 @@
-package us.cyrien.minecordbot.parse;
+package us.cyrien.minecordbot.prefix;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import us.cyrien.minecordbot.enums.DiscordPlaceHolders;
-import us.cyrien.minecordbot.enums.MinecraftPlaceHolder;
 
 public class PrefixParser {
 

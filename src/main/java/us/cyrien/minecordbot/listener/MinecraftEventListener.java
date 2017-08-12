@@ -14,12 +14,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.entity.Messenger;
+import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.handle.MinecraftMentionHandler;
-import us.cyrien.minecordbot.main.Localization;
-import us.cyrien.minecordbot.main.Minecordbot;
-import us.cyrien.minecordbot.parse.MultiLangMessageParser;
-import us.cyrien.minecordbot.parse.PrefixParser;
+import us.cyrien.minecordbot.localization.Localization;
+import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.localization.MultiLangMessageParser;
+import us.cyrien.minecordbot.prefix.PrefixParser;
 
 import java.awt.*;
 

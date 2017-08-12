@@ -1,10 +1,9 @@
-package us.cyrien.minecordbot.entity;
+package us.cyrien.minecordbot.chat;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;

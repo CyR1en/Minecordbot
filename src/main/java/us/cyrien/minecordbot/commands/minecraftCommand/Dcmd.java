@@ -6,8 +6,8 @@ import io.github.hedgehog1029.frame.annotations.Sender;
 import io.github.hedgehog1029.frame.annotations.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import us.cyrien.minecordbot.entity.Messenger;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.Minecordbot;
 
 public class Dcmd {
     @Command(aliases = "dcmd", usage = "/dcmd <discord command>", desc = "Do discord commands from minecraft")

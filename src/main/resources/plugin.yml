@@ -3,7 +3,7 @@ version: 2.1.0
 author: CyRien
 description: Discord bot that bridge chat from minecraft to discord
 
-main: us.cyrien.minecordbot.main.Minecordbot
+main: us.cyrien.minecordbot.Minecordbot
 
 permissions:
     minecordbot.reload:

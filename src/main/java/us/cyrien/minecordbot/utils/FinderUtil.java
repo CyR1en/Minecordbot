@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot.utils;
 
 import net.dv8tion.jda.core.entities.*;
+import us.cyrien.minecordbot.Minecordbot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,6 +71,17 @@ public class FinderUtil {
         if (!startswith.isEmpty())
             return startswith;
         return contains;
+    }
+
+    public static Member findMember(String query) {
+        List<Guild> guilds = Minecordbot.getInstance().getJDA().getGuilds();
+        List<Member> members;
+        for(Guild guild : guilds) {
+            members = findMember(query, guild);
+            if(members.size() > 0)
+                return members.get(0);
+        }
+        return null;
     }
 
     public static List<VoiceChannel> findVoiceChannel(String query, Guild guild) {

@@ -1,20 +1,26 @@
-package us.cyrien.minecordbot.AccountSync.Authentication;
+package us.cyrien.minecordbot.accountSync.Authentication;
 
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.utils.SimpleLog;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import us.cyrien.minecordbot.AccountSync.AuthManager;
-import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmKeyException;
-import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmRequesterException;
-import us.cyrien.minecordbot.AccountSync.exceptions.IllegalConfirmSessionIDException;
-import us.cyrien.minecordbot.main.Minecordbot;
+import org.json.JSONObject;
+import us.cyrien.minecordbot.accountSync.Database;
+import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmKeyException;
+import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmRequesterException;
+import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmSessionIDException;
+import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.entity.MCBUser;
+import us.cyrien.minecordbot.entity.MCUser;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class AuthSession {
+
+    public static final SimpleLog SYNC_LOGGER = SimpleLog.getLog("MCBSync");
 
     private enum Status {
         PENDING,
@@ -29,7 +35,7 @@ public class AuthSession {
     private Status status;
     private AuthManager authManager;
 
-    private final String sessionID = RandomStringUtils.randomNumeric(32);
+    private final String sessionID = RandomStringUtils.randomNumeric(6);
 
     public AuthSession(Player mcAcc, User discordAcc, AuthManager authManager) {
         this.MCAcc = mcAcc;
@@ -78,13 +84,13 @@ public class AuthSession {
             try {
                 authenticated = authToken.authenticateToken(token);
             } catch (IllegalConfirmRequesterException illegalConfirmRequester) {
-                sender.sendMessage("&6[MCBSync] &c" + illegalConfirmRequester.getMsg());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmRequester.getMsg()));
                 System.out.println(illegalConfirmRequester.getMsg());
             } catch (IllegalConfirmKeyException illegalConfirmKey) {
-                sender.sendMessage("&6[MCBSync] &c" + illegalConfirmKey.getMsg());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmKey.getMsg()));
                 System.out.println(illegalConfirmKey.getMsg());
             } catch (IllegalConfirmSessionIDException illegalConfirmSessionID) {
-                sender.sendMessage("&6[MCBSync] &c" + illegalConfirmSessionID.getMsg());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmSessionID.getMsg()));
                 System.out.println(illegalConfirmSessionID.getMsg());
             }
         } else {
@@ -94,11 +100,15 @@ public class AuthSession {
                 sender.sendMessage("&6[MCBSync] &c" + illegalConfirmRequester.getMsg());
             }
         }
-        status = authenticated == true ?  Status.APPROVED : Status.DENIED;
+        status = authenticated ?  Status.APPROVED : Status.DENIED;
         if(status == Status.APPROVED) {
             getMCAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &aapproved!"));
-            authManager.removeSession(this.getSessionID());
             System.out.println("Authentication Approved");
+            MCUser mcUser = new MCUser(sender);
+            MCBUser mcbUser = new MCBUser(authManager.getSession(this.getSessionID()).getDiscordAcc());
+            mcUser.setMcbUser(mcbUser);
+            Database.set(mcUser.getPlayer().getUniqueId().toString(), new JSONObject(mcUser.getDataAsMap()));
+            authManager.removeSession(this.getSessionID());
         } else {
             getMCAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &cdenied!"));
             authManager.removeSession(this.getSessionID());

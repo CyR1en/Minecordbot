@@ -8,8 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.cyrien.minecordbot.entity.Messenger;
-import us.cyrien.minecordbot.main.Minecordbot;
+import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.Minecordbot;
 
 public class Dme {
     @Command(aliases = "dme", usage = "/dme <action>", desc = "/me command but for discord.")
