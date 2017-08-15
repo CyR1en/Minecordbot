@@ -19,9 +19,6 @@ public class UserConnectionListener implements Listener {
         } else if (!data.get(DataKey.MC_USERNAME.toString()).equals(event.getPlayer().getName())) {
             data.put(DataKey.MC_USERNAME.toString(), event.getPlayer().getName());
             Database.set(event.getPlayer().getUniqueId().toString(), new JSONObject(data));
-        } else if (!data.get(DataKey.DISCORD_USERNAME.toString()).equals("Not Synced yet") && !data.get(DataKey.DISCORD_USERNAME.toString()).equals(mcUser.getMcbUser().getName())) {
-            data.put(DataKey.DISCORD_USERNAME.toString(), mcUser.getMcbUser().getName());
-            Database.set(event.getPlayer().getUniqueId().toString(), new JSONObject(data));
         }
     }
 }

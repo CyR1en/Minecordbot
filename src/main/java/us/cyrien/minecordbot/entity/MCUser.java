@@ -21,6 +21,8 @@ public class MCUser {
         this.mcbUser = mcbUser;
     }
 
+
+
     public void setMcbUser(MCBUser mcbUser) {
         this.mcbUser = mcbUser;
     }

@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.accountSync.Authentication;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerQuitEvent;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmKeyException;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmRequesterException;
@@ -13,6 +14,11 @@ public class AuthToken implements Comparable {
     private Player mcAcc;
     private String sessionID;
 
+    public AuthToken(String sessionID, Player mcAcc) {
+        this.sessionID = sessionID;
+        this.mcAcc = mcAcc;
+        token = generateToken();
+    }
 
     public AuthToken(Player mcAcc, AuthSession authSession) {
         this.sessionID = authSession.getSessionID();
@@ -24,7 +30,7 @@ public class AuthToken implements Comparable {
         AuthManager authManager = Minecordbot.getAuthManager();
         AuthSession authSession = authManager.getSession(token);
         this.mcAcc = mcAcc;
-        this.token = authSession.getAuthToken().toString();
+        this.token = token;
         this.sessionID = authSession.getSessionID();
     }
 

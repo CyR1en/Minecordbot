@@ -3,6 +3,8 @@ package us.cyrien.minecordbot.entity;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.json.JSONObject;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.core.enums.PermissionLevel;
@@ -41,6 +43,10 @@ public class MCBUser {
         name = user.getName();
         ID = user.getId();
         Minecordbot.getInstance().getJDA().getMutualGuilds(user).forEach(guild -> nickNames.put(guild, guild.getMember(user).getNickname()));
+    }
+
+    public Player parseAsPlayer() {
+        return Bukkit.getPlayer()
     }
 
     public boolean hasPermission(PermissionLevel level) {

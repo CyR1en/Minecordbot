@@ -33,6 +33,7 @@ dependencies {
     compile 'org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
+    compile 'com.jagrosh:JDA-Utilities:1.4'
 
     compile 'net.java.dev.jna:jna:4.2.2'
 

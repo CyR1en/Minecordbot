@@ -13,6 +13,7 @@
     <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.jagrosh:JDA-Utilities:1.4" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20170516" level="project" />
     <orderEntry type="library" name="Gradle: com.mashape.unirest:unirest-java:1.4.9" level="project" />
     <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.2.0_239" level="project" />
@@ -39,7 +40,7 @@
     <orderEntry type="library" name="Gradle: net.java.dev.jna:jna:4.4.0" level="project" />
     <orderEntry type="library" name="Gradle: com.neovisionaries:nv-websocket-client:2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: :mv:" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.natrolite:vault-api:1.6.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: :PermissionsEx-1.23.4:" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.natrolite:vault-api:1.6.1" level="project" />
   </component>
 </module>

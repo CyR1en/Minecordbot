@@ -1,15 +1,15 @@
 package us.cyrien.minecordbot;
 
+import com.jagrosh.jdautilities.waiter.EventWaiter;
 import io.github.hedgehog1029.frame.Frame;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.utils.SimpleLog;
+import net.dv8tion.jda.core.events.ShutdownEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
@@ -31,6 +31,7 @@ import us.cyrien.minecordbot.listener.MinecraftEventListener;
 import us.cyrien.minecordbot.listener.TabCompleteV2;
 
 import javax.security.auth.login.LoginException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,14 +45,15 @@ public class Minecordbot extends JavaPlugin {
     private static Messenger messenger;
     private static AuthManager authManager;
     private static UpTimer upTimer;
+    private static EventWaiter eventWaiter;
 
     private JDA jda;
-    private ArrayList<Player> AFKPlayers;
     private Updater updater;
     private Metrics metrics;
 
     @Override
     public void onEnable() {
+        eventWaiter = new EventWaiter();
         authManager = new AuthManager();
         discordCommands = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
@@ -69,12 +71,11 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        shutdown();
+      shutdown();
     }
 
     public void shutdown() {
-        if (jda != null)
-            jda.shutdown();
+        if (jda != null) jda.shutdown();
     }
 
     //Framework stuff
@@ -86,9 +87,10 @@ public class Minecordbot extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
-    public void registerDiscordEventModule(ListenerAdapter la) {
-        jda.addEventListener(la);
+    public void registerDiscordEventModule(Object... listener) {
+        jda.addEventListener(listener);
     }
+
 
     public void registerDiscordCommandModule(Class module) {
         DrocsidFrame.addModule(module);
@@ -98,7 +100,7 @@ public class Minecordbot extends JavaPlugin {
     private boolean initConfig() {
         boolean initialized = MCBConfig.load();
         if (!initialized)
-            LOGGER.warn("MCB config generated, please populate all fields before restarting");
+            LOGGER.warn("MCB data generated, please populate all fields before restarting");
         return initialized;
     }
 
@@ -124,6 +126,7 @@ public class Minecordbot extends JavaPlugin {
     private void initDListener() {
         registerDiscordEventModule(new DiscordMessageListener(this));
         registerDiscordEventModule(new BotReadyEvent(this));
+        registerDiscordEventModule(eventWaiter);
     }
 
     private void initMCmds() {
@@ -163,7 +166,6 @@ public class Minecordbot extends JavaPlugin {
         else
             updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
         metrics = new Metrics(this);
-        AFKPlayers = new ArrayList<>();
     }
 
     //accessors and modifiers
@@ -173,10 +175,6 @@ public class Minecordbot extends JavaPlugin {
 
     public JDA getJDA() {
         return jda;
-    }
-
-    public ArrayList<Player> getAFKPlayers() {
-        return AFKPlayers;
     }
 
     public static Messenger getMessenger() {
@@ -191,6 +189,10 @@ public class Minecordbot extends JavaPlugin {
 
     public static String getUpTime() {
         return upTimer.getCurrentUptime();
+    }
+
+    public static EventWaiter getEventWaiter() {
+        return eventWaiter;
     }
 
     public void handleCommand(MessageReceivedEvent mRE) {

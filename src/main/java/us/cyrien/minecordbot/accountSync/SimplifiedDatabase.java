@@ -11,29 +11,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class Database {
+public class SimplifiedDatabase extends Database {
 
-    private static final Path filePath = Paths.get("plugins/MineCordBot/Users/Accounts.json");
-    private static JSONObject data;
+    private static final Path filePath = Paths.get("plugins/MineCordBot/Users/Simplified-Accounts.json");
+    protected static JSONObject config;
 
     public static void set(String key, Object val) {
         if (val == null) {
-            data.remove(key);
-            SimplifiedDatabase.set(key, val);
+            config.remove(key);
         } else {
-            data.put(key, val);
-            JSONObject object = (JSONObject) val;
-            Object s = object.get(DataKey.DISCORD_ID.toString());
-            SimplifiedDatabase.set(key, s);
+            config.put(key, val);
         }
         save();
     }
 
+
     @SuppressWarnings("unchecked")
     public static <T> T get(String key) {
-        if (data.has(key)) {
+        if (config.has(key)) {
             try {
-                return (T) data.get(key);
+                return (T) config.get(key);
             } catch (JSONException | ClassCastException ignored) {
             }
         }
@@ -44,19 +41,19 @@ public class Database {
         T obj = get(key);
         if (obj == null) {
             obj = def;
-            data.put(key, def);
+            config.put(key, def);
             save();
         }
         return obj;
     }
 
     public static JSONObject getJSONObject(String key) {
-        return data.getJSONObject(key);
+        return config.getJSONObject(key);
     }
 
     public static void reload() {
         try {
-            data = new JSONObject(new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8));
+            config = new JSONObject(new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,7 +62,7 @@ public class Database {
 
     public static void save() {
         try {
-            Files.write(filePath, data.toString(4).getBytes(StandardCharsets.UTF_8));
+            Files.write(filePath, config.toString(4).getBytes(StandardCharsets.UTF_8));
         } catch (IOException ignored) {
         }
     }
@@ -79,10 +76,10 @@ public class Database {
                 new File(String.valueOf(filePath)).createNewFile();
                 Files.write(filePath, def.toString(4).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
             } else {
-                data = new JSONObject(new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8));
+                config = new JSONObject(new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8));
                 for (String key : def.keySet()) {
-                    if (!data.has(key)) {
-                        data.put(key, def.get(key));
+                    if (!config.has(key)) {
+                        config.put(key, def.get(key));
                         exists = false;
                     }
                 }
@@ -91,19 +88,14 @@ public class Database {
                 }
             }
         } catch (IOException ex) {
-            System.err.println("Error reading/writing data file: ");
+            System.err.println("Error reading /writing data file: ");
             ex.printStackTrace();
             return false;
         }
-        SimplifiedDatabase.load();
         return exists;
     }
 
-    public static JSONObject getData() {
-        return data;
-    }
-
-    public static  Path getConfigPath() {
+    public Path getConfigPath() {
         return filePath;
     }
 
@@ -112,3 +104,4 @@ public class Database {
         return jsonObject;
     }
 }
+

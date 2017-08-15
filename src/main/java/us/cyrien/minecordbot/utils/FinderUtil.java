@@ -1,9 +1,14 @@
 package us.cyrien.minecordbot.utils;
 
 import net.dv8tion.jda.core.entities.*;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.accountSync.SimplifiedDatabase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +19,10 @@ public class FinderUtil {
         if (query.matches("<#\\d+>")) {
             id = query.replaceAll("<#(\\d+)>", "$1");
             TextChannel tc = guild.getJDA().getTextChannelById(id);
+            if (tc != null && tc.getGuild().equals(guild))
+                return Collections.singletonList(tc);
+        } else if (StringUtils.isNumeric(query)) {
+            TextChannel tc = guild.getJDA().getTextChannelById(query);
             if (tc != null && tc.getGuild().equals(guild))
                 return Collections.singletonList(tc);
         }
@@ -48,6 +57,10 @@ public class FinderUtil {
             Member member = guild.getMemberById(id);
             if (member != null && member.getGuild().equals(guild))
                 return Collections.singletonList(member);
+        } else if (StringUtils.isNumeric(query)) {
+            Member member = guild.getMemberById(query);
+            if (member != null && member.getGuild().equals(guild))
+                return Collections.singletonList(member);
         }
         ArrayList<Member> exact = new ArrayList<>();
         ArrayList<Member> wrongcase = new ArrayList<>();
@@ -76,12 +89,19 @@ public class FinderUtil {
     public static Member findMember(String query) {
         List<Guild> guilds = Minecordbot.getInstance().getJDA().getGuilds();
         List<Member> members;
-        for(Guild guild : guilds) {
+        for (Guild guild : guilds) {
             members = findMember(query, guild);
-            if(members.size() > 0)
+            if (members.size() > 0)
                 return members.get(0);
         }
         return null;
+    }
+
+    public static Player findPlayerInDatabase(String discordID) {
+        Iterator<String> it =  SimplifiedDatabase.getData().keys();
+        while(it.hasNext()) {
+
+        }
     }
 
     public static List<VoiceChannel> findVoiceChannel(String query, Guild guild) {

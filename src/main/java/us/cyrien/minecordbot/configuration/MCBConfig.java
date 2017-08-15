@@ -89,7 +89,7 @@ public class MCBConfig {
                 }
             }
         } catch (IOException ex) {
-            System.err.println("Error reading/writing config file: ");
+            System.err.println("Error reading/writing data file: ");
             ex.printStackTrace();
             return false;
         }

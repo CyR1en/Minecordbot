@@ -20,38 +20,29 @@ import java.util.concurrent.TimeUnit;
 
 public class AuthSession {
 
-    public static final SimpleLog SYNC_LOGGER = SimpleLog.getLog("MCBSync");
+    public static final long SYNC_TIMEOUT = 5;
 
-    private enum Status {
-        PENDING,
-        APPROVED,
-        DENIED,
-        CANCELLED
-    }
+    private final SimpleLog syncLogger = SimpleLog.getLog("MCBSync");
 
-    private Player MCAcc;
+    private Player mcAcc;
     private User DiscordAcc;
     private AuthToken authToken;
     private Status status;
     private AuthManager authManager;
+    private ScheduledExecutorService scheduler;
 
     private final String sessionID = RandomStringUtils.randomNumeric(6);
 
     public AuthSession(Player mcAcc, User discordAcc, AuthManager authManager) {
-        this.MCAcc = mcAcc;
+        this.mcAcc = mcAcc;
         this.DiscordAcc = discordAcc;
         this.authManager = authManager;
-        authToken = new AuthToken(mcAcc, sessionID);
-        status = Status.PENDING;
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.schedule(() -> {
-            if(status == Status.PENDING) {
-                status = Status.CANCELLED;
-                mcAcc.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &cAccount sync cancelled!"));
-            }
-            scheduler.shutdownNow();
-        }, 2, TimeUnit.MINUTES);
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(this::cancel, SYNC_TIMEOUT, TimeUnit.MINUTES);
+        authToken = new AuthToken(sessionID, mcAcc );
         authManager.addSession(this);
+        status = Status.PENDING;
+        mcbSyncLog(SyncMessage.PENDING);
     }
 
     public AuthSession(Player mcAcc, User discordAcc) {
@@ -62,8 +53,8 @@ public class AuthSession {
         return status;
     }
 
-    public Player getMCAcc() {
-        return MCAcc;
+    public Player getMcAcc() {
+        return mcAcc;
     }
 
     public User getDiscordAcc() {
@@ -78,6 +69,16 @@ public class AuthSession {
         return sessionID;
     }
 
+    public void cancel() {
+        if(status == Status.PENDING) {
+            authManager.removeSession(this.authToken.toString());
+            status = Status.CANCELLED;
+            mcbSyncLog(SyncMessage.CANCELLED);
+            mcAcc.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &cAccount sync cancelled!"));
+        }
+        scheduler.shutdownNow();
+    }
+
     public void authorize(Player sender, AuthToken token) {
         boolean authenticated = false;
         if(token.getMcAcc().getUniqueId().equals(sender.getUniqueId())) {
@@ -85,13 +86,13 @@ public class AuthSession {
                 authenticated = authToken.authenticateToken(token);
             } catch (IllegalConfirmRequesterException illegalConfirmRequester) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmRequester.getMsg()));
-                System.out.println(illegalConfirmRequester.getMsg());
+                mcbSyncLog(SyncMessage.DECLINED, illegalConfirmRequester.getClass().getSimpleName());
             } catch (IllegalConfirmKeyException illegalConfirmKey) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmKey.getMsg()));
-                System.out.println(illegalConfirmKey.getMsg());
+                mcbSyncLog(SyncMessage.DECLINED, illegalConfirmKey.getClass().getSimpleName());
             } catch (IllegalConfirmSessionIDException illegalConfirmSessionID) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6[MCBSync] &c" + illegalConfirmSessionID.getMsg()));
-                System.out.println(illegalConfirmSessionID.getMsg());
+                mcbSyncLog(SyncMessage.DECLINED, illegalConfirmSessionID.getClass().getSimpleName());
             }
         } else {
             try {
@@ -102,25 +103,74 @@ public class AuthSession {
         }
         status = authenticated ?  Status.APPROVED : Status.DENIED;
         if(status == Status.APPROVED) {
-            getMCAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &aapproved!"));
-            System.out.println("Authentication Approved");
+            getMcAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &aapproved!"));
+            mcbSyncLog(SyncMessage.APPROVED);
             MCUser mcUser = new MCUser(sender);
-            MCBUser mcbUser = new MCBUser(authManager.getSession(this.getSessionID()).getDiscordAcc());
+            MCBUser mcbUser = new MCBUser(authManager.getSession(this.authToken.toString()).getDiscordAcc());
             mcUser.setMcbUser(mcbUser);
             Database.set(mcUser.getPlayer().getUniqueId().toString(), new JSONObject(mcUser.getDataAsMap()));
             authManager.removeSession(this.getSessionID());
         } else {
-            getMCAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &cdenied!"));
+            getMcAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &cdenied!"));
             authManager.removeSession(this.getSessionID());
-            System.out.println("Authentication Denied");
         }
+    }
+
+    public void mcbSyncLog(SyncMessage syncMessage, Object ... args) {
+        switch (syncMessage) {
+            case PENDING:
+                syncLogger.info(formatSyncMessage(SyncMessage.PENDING, getSessionID(), getMcAcc().getName(), getDiscordAcc().getName()));
+                break;
+            case CANCELLED:
+                syncLogger.info(formatSyncMessage(SyncMessage.CANCELLED, getSessionID(), getMcAcc().getName(), getDiscordAcc().getName()));
+                break;
+            case APPROVED:
+                syncLogger.info(formatSyncMessage(SyncMessage.APPROVED, getSessionID(), getMcAcc().getName(), getDiscordAcc().getName()));
+                break;
+            case DECLINED:
+                syncLogger.info(formatSyncMessage(SyncMessage.DECLINED, getSessionID(), getMcAcc().getName(), getDiscordAcc().getName(), args));
+                break;
+        }
+    }
+
+    private String formatSyncMessage(SyncMessage syncMessage, Object ... args) {
+        return String.format(syncMessage.toString(), args);
     }
 
     @Override
     public String toString() {
-        return "Session by: " + getMCAcc().getDisplayName() +
+        return "Session by: " + getMcAcc().getDisplayName() +
                 "\n Session ID: " + getSessionID() +
                 "\n Sync request to " + getDiscordAcc() +
                 "\n Status: " + getStatus();
+    }
+
+    private enum Status {
+        PENDING,
+        APPROVED,
+        DENIED,
+        CANCELLED
+    }
+
+    private enum SyncMessage {
+        PENDING("Sync session started! " + suffix()),
+        APPROVED("Sync session approved! " + suffix()),
+        CANCELLED("Sync session cancelled! " + suffix()),
+        DECLINED("Sync session denied! " + suffix() + " | Reason: %s");
+
+        private String message;
+
+        SyncMessage(String message) {
+            this.message = message;
+        }
+
+        static String suffix() {
+            return (" Session ID: %s | Requested by: %s | Sync Request to: %s");
+        }
+
+        @Override
+        public String toString() {
+            return message;
+        }
     }
 }
