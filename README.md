@@ -8,6 +8,9 @@
 
 __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.0.5](https://dev.bukkit.org/projects/minecordbot-bukkit/files/2426990)*  | __Current Version:__ [MineCordBot 2.0.6](https://github.com/CyR1en/Minecordbot-v2/releases/tag/2.06)
 
+_Note: Minecordbot requires permissions for Discord channels it is linked to.
+It should have it's own role already. Otherwise - we recommend adding it to a generic, priveleged 'Bots' role - where you can assign it permissions per-channel._
+
 ---
 ### __Features:__
 * Simple and Lightweight Installation
