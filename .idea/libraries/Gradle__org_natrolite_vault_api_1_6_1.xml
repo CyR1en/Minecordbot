@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.natrolite:vault-api:1.6.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.natrolite/vault-api/1.6.1/3a8c8dab8936d3b075f75827d3f975181dd96893/vault-api-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.natrolite/vault-api/1.6.1/6b072a3c8180e6045489c0152a720d1248e673b4/vault-api-1.6.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,131 @@
+mc:
+  message:
+    login: "{player} joined the game"
+    logout: "{player} left the game"
+  deaths:
+    drowning: "{player} drowned"
+    suffocation: "{player} suffocated"
+    suicide: "{player} committed suicide"
+    fall: "{player} hit the ground to hard"
+    void: "{player} fell out of the map"
+    lava: "{player} tried to swim in lava"
+    fire: "{player} burnt to death"
+    cactus: "{player} was pricked to death"
+    pvp: "{player} was killed by {killer}"
+    wither: "{player} withered away"
+    anvil: "{player} was squashed by a falling anvil"
+  mobs:
+    wolf: "{player} was slain by a Wolf"
+    ocelot: "{player} was slain by an Ocelot"
+    zombie: "{player} was slain by a Zombie"
+    skeleton: "{player} was shot by a Skeleton"
+    pigzombie: "{player} was slain by a Pig Zombie"
+    spider: "{player} was slain by a Spider"
+    cavespider: "{player} was slain by a Cave Spider"
+    silverfish: "{player} was slain by a Silverfish"
+    slime: "{player} was slain by a Slime"
+    creeper: "{player} blew up"
+    enderman: "{player} was slain by an Enderman"
+    ghast: "{player} was slain by a Ghast"
+    blaze: "{player} was slain by a Blaze"
+    enderdragon: "{player} was slain by an Ender Dragon"
+    wither: "{player} was slain by Wither"
+    witherskeleton: "{player} was slain by a Wither Skeleton"
+    witch: "{player} was killed by a Witch"
+mcb:
+  command:
+    no-perm-message: "Vous n'avez pas accès à cette commande."
+    invalid-arguments: "Arguments invalides."
+    invalid-tc: "Salon textuel invalide pour la commande."
+    no-alias: "Il n'y a pas d'autre alias pour cette commande."
+  commands:
+    settrigger:
+      usage: "settrigger <nouveau trigger>"
+      description: "définir un caractère trigger pour les commandes bot."
+    shutdown:
+      usage: "shutdown"
+      description: "éteindre le bot."
+    reload:
+      usage: "reload"
+      description: "recharger la config MineCordBot"
+      reloaded: "Config Minecordbot rechargée !"
+    eval:
+      usage: "eval <expression>"
+      description: "JavaScript eval()"
+    mcmd:
+      usage: "minecraftcommand <commande Minecraft>"
+      description: "executer une commande Minecraft depuis Discord."
+    permission:
+      usage: "permission <set> <utilisateur> <rang> | permission <get> <utilisateur>"
+      description: "ajouter/retirer des permissions à un utilisateur, et connaître son rang de permission."
+      user-not-found: "L'utilisateur `%s` est introuvable."
+      added-perm: "L'utilisateur `%s` a désormais le rang de permission_%s ."
+      last-user: "L'utilisateur `%s` ne peut pas être retiré cat c'est le dernier utilisateur sur la liste de permissions `%s`"
+      remove-perm: "Permissions `%s` retirées à `%s`"
+      get-perm: "L'utilisateur `%s` a accès aux permissions `%s`."
+    setgame:
+      usage: "setgame <nom du jeu>"
+      description: "définir le jeu du bot Discord."
+      changed: "Jeu défini : %s !"
+    setavatar:
+      usage: "setavatar <url image>"
+      description: "définir l'avatar du bot."
+      changed: "L'avatar du bot a été modifié !"
+    setusername:
+      usage: "setusername <nom>"
+      description: "définir le nom utilisateur du bot."
+      changed: "Nom modifié !"
+    setnickname:
+      usage: "setnickname <surnom>"
+      description: "définir le surnom du bot discord."
+      changed: "Surnom modifié !"
+    ping:
+      usage: "ping"
+      description: "tester le temps de réponse du bot."
+    help:
+      usage: "help [commande]"
+      description: "lister les commandes/obtenir les infos sur une commande."
+      too-much-args: "trop d'arguments."
+      no-such-command: "La commande %s n'existe pas."
+      list:
+        header: "Commandes MineCordBot"
+        info: "Commandes d'information"
+        fun: "Commandes pour le lulz"
+        help: "Commandes d'aide"
+        mod: "Commandes de modération serveur"
+        misc: "Commandes diverses"
+        special: "Commandes spéciales"
+    list:
+      usage: "list [update:true ou false]"
+      description: "lister les joueurs connectés sur Minecraft."
+      list:
+        header: "Joueurs Connectés au Serveur Minecraft"
+    info:
+      usage: "info"
+      description: "obtenir les informations sur MineCordBot et sur le bot"
+      minfo:
+        generalinfo_header: "== Infos Globales =="
+        nonick: "Le bot n'a pas de surnom."
+        version: "Version"
+        textchannel: "Salons Textuels"
+        voicechannel: "Salons Vocaux"
+        uptime: "Allumé Depuis"
+        botinfo_header: "=== Infos Bot ==="
+        clientid: "ID Client Bot"
+        botname: "Nom du Bot"
+        botnick: "Surnom du Bot"
+        footer: "=== Plus d'Infos ==="
+    textchannel:
+      usage: "textchannel <add|remove|list> <ID>"
+      description: "ajouter/retirer/lister les salons textuels connectés à MineCordBot"
+      invalid-tc: "Le salon textuel `%s` n'est pas un salon valide."
+      added-tc: "Salon textuel `%s` ajouté aux salons connectés."
+      tc-not-bound: "Le salon textuel `%s` n'est pas connecté à Minecraft"
+      last-tc: "Le salon textuel `%s` ne peut pas être retiré car c'est le dernier salon sur la liste"
+      removed-tc: "Salon `%s` retiré de la liste"
+      list:
+        header: "Salons Textuels Connectés"
+        guild_name: "Nom de Guilde"
+        channel_name: "Nom du Salon"
+  messenger:
+    no-player: "{player} est introuvable."
