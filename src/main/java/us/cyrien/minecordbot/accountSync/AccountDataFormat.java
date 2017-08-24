@@ -2,7 +2,7 @@ package us.cyrien.minecordbot.accountSync;
 
 import org.bukkit.ChatColor;
 import org.json.JSONObject;
-import us.cyrien.minecordbot.entity.MCUser;
+import us.cyrien.minecordbot.entity.UnifiedUser;
 
 import java.util.LinkedHashMap;
 
@@ -12,7 +12,7 @@ public class AccountDataFormat {
     private String mcUsername;
     private String discordUsername;
 
-    public AccountDataFormat(MCUser mcUser) {
+    public AccountDataFormat(UnifiedUser mcUser) {
         discordID = mcUser.getMcbUser() == null ? "Not Synced yet" : mcUser.getMcbUser().getID();
         mcUsername = ChatColor.stripColor(mcUser.getPlayer().getName());
         discordUsername = mcUser.getMcbUser() == null ? "Not Synced yet" : mcUser.getMcbUser().getName() ;

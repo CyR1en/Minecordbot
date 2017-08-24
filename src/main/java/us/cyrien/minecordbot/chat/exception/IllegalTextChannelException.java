@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.core.exceptions;
+package us.cyrien.minecordbot.chat.exception;
 
 public class IllegalTextChannelException extends Exception {
 

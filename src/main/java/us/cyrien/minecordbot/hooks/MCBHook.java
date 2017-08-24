@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot;
+package us.cyrien.minecordbot.hooks;
 
 import io.github.hedgehog1029.frame.hook.IPluginHook;
 import org.bukkit.Bukkit;
@@ -13,8 +13,6 @@ public class MCBHook implements IPluginHook {
     }
 
     public Minecordbot getMinecordbot() {
-        if(available())
-            return (Minecordbot) Bukkit.getPluginManager().getPlugin("MineCordBot");
-        return null;
+        return (Minecordbot) Bukkit.getPluginManager().getPlugin("MineCordBot");
     }
 }

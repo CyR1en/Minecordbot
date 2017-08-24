@@ -58,11 +58,11 @@ mcb:
     permission:
       usage: "permission <set> <user> <level> | permission <get> <user>"
       description: "Add, remove permission to user, and get what their permission level is."
-      user-not-found: "User with `%s` cannot be found."
-      added-perm: "User `%s` now has a level_%s Permission."
+      user-not-found: "MCBUser with `%s` cannot be found."
+      added-perm: "MCBUser `%s` now has a level_%s Permission."
       last-user: "Cannot remove user `%s` because it's the last user on the permission list `%s`"
       remove-perm: "Removed `%s` permission from `%s`"
-      get-perm: "User `%s` has a `%s` permission."
+      get-perm: "MCBUser `%s` has a `%s` permission."
     setgame:
       usage: "setgame <gametitle>"
       description: "set your discord bot's game."

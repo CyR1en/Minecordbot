@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.listener;
+package us.cyrien.minecordbot.chat.listeners;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -13,6 +13,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.BroadcastMessageEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.handle.MinecraftMentionHandler;
@@ -89,6 +91,21 @@ public class MinecraftEventListener implements Listener {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(new Color(92, 184, 92))
                         .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
             }
+        }
+    }
+
+    @EventHandler(priority =  EventPriority.NORMAL)
+    public void onBroadcastMessage(BroadcastMessageEvent event) {
+        String msg = event.getMessage();
+        messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
+    }
+
+    @EventHandler(priority =  EventPriority.NORMAL)
+    public void onServerCommandEvent(ServerCommandEvent event) {
+        String cmd = event.getCommand();
+        if(cmd.equals("broadcast ") || cmd.equals("bc ")) {
+            String msg = cmd.split(" ", 2)[1];
+            messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
         }
     }
 

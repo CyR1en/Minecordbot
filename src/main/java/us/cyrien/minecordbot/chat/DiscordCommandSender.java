@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.chat;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -15,9 +15,9 @@ import java.util.Set;
 
 public class DiscordCommandSender implements CommandSender {
     private final PermissibleBase perm;
-    MessageReceivedEvent e;
+    private CommandEvent e;
 
-    public DiscordCommandSender(MessageReceivedEvent e) {
+    public DiscordCommandSender(CommandEvent e) {
         this.e = e;
         perm = new PermissibleBase(this);
     }

@@ -1,7 +1,7 @@
 name: MineCordBot
 version: 2.1.0
 author: CyRien
-description: Discord bot that bridge chat from minecraft to discord
+description: A powerful way to bridge Minecraft and Discord
 
 main: us.cyrien.minecordbot.Minecordbot
 

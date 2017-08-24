@@ -7,9 +7,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
-import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.core.exceptions.IllegalTextChannelException;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.chat.exception.IllegalTextChannelException;
+import us.cyrien.minecordbot.configuration.MCBConfig;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -91,7 +91,7 @@ public class Messenger {
     }
 
     //By ID stuff
-    public void sendMessageEmbedToDiscordByID(String id, MessageEmbed message) throws IllegalTextChannelException{
+    public void sendMessageEmbedToDiscordByID(String id, MessageEmbed message) throws IllegalTextChannelException {
         TextChannel tc = mcb.getJDA().getTextChannelById(id);
         if(tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");

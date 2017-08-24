@@ -1,6 +1,5 @@
 package us.cyrien.minecordbot.accountSync.Authentication;
 
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.SimpleLog;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.ChatColor;
@@ -12,7 +11,7 @@ import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmRequesterExcep
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmSessionIDException;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.entity.MCBUser;
-import us.cyrien.minecordbot.entity.MCUser;
+import us.cyrien.minecordbot.entity.UnifiedUser;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +24,7 @@ public class AuthSession {
     private final SimpleLog syncLogger = SimpleLog.getLog("MCBSync");
 
     private Player mcAcc;
-    private User DiscordAcc;
+    private net.dv8tion.jda.core.entities.User DiscordAcc;
     private AuthToken authToken;
     private Status status;
     private AuthManager authManager;
@@ -33,7 +32,7 @@ public class AuthSession {
 
     private final String sessionID = RandomStringUtils.randomNumeric(6);
 
-    public AuthSession(Player mcAcc, User discordAcc, AuthManager authManager) {
+    public AuthSession(Player mcAcc, net.dv8tion.jda.core.entities.User discordAcc, AuthManager authManager) {
         this.mcAcc = mcAcc;
         this.DiscordAcc = discordAcc;
         this.authManager = authManager;
@@ -45,8 +44,8 @@ public class AuthSession {
         mcbSyncLog(SyncMessage.PENDING);
     }
 
-    public AuthSession(Player mcAcc, User discordAcc) {
-        this(mcAcc, discordAcc, Minecordbot.getAuthManager());
+    public AuthSession(Player mcAcc, net.dv8tion.jda.core.entities.User discordAcc) {
+        this(mcAcc, discordAcc, Minecordbot.getInstance().getAuthManager());
     }
 
     public Status getStatus() {
@@ -57,7 +56,7 @@ public class AuthSession {
         return mcAcc;
     }
 
-    public User getDiscordAcc() {
+    public net.dv8tion.jda.core.entities.User getDiscordAcc() {
         return DiscordAcc;
     }
 
@@ -105,7 +104,7 @@ public class AuthSession {
         if(status == Status.APPROVED) {
             getMcAcc().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6[MCBSync] &rAccount sync &aapproved!"));
             mcbSyncLog(SyncMessage.APPROVED);
-            MCUser mcUser = new MCUser(sender);
+            UnifiedUser mcUser = new UnifiedUser(sender);
             MCBUser mcbUser = new MCBUser(authManager.getSession(this.authToken.toString()).getDiscordAcc());
             mcUser.setMcbUser(mcbUser);
             Database.set(mcUser.getPlayer().getUniqueId().toString(), new JSONObject(mcUser.getDataAsMap()));

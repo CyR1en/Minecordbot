@@ -1,71 +1,103 @@
 package us.cyrien.minecordbot;
 
+import com.jagrosh.jdautilities.commandclient.Command;
+import com.jagrosh.jdautilities.commandclient.CommandClient;
+import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import io.github.hedgehog1029.frame.Frame;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.utils.PermissionUtil;
 import net.dv8tion.jda.core.utils.SimpleLog;
-import net.dv8tion.jda.core.events.ShutdownEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
 import us.cyrien.minecordbot.accountSync.Database;
 import us.cyrien.minecordbot.accountSync.listener.UserConnectionListener;
-import us.cyrien.minecordbot.commands.discordCommands.*;
-import us.cyrien.minecordbot.commands.minecraftCommand.*;
-import us.cyrien.minecordbot.localization.LocalizationFiles;
-import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.core.DrocsidFrame;
-import us.cyrien.minecordbot.core.module.DiscordCommand;
 import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.chat.listeners.DiscordMessageListener;
+import us.cyrien.minecordbot.chat.listeners.MinecraftEventListener;
+import us.cyrien.minecordbot.chat.listeners.TabCompleteV2;
+import us.cyrien.minecordbot.commands.discordCommand.*;
+import us.cyrien.minecordbot.commands.minecraftCommand.*;
+import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.entity.UpTimer;
 import us.cyrien.minecordbot.event.BotReadyEvent;
 import us.cyrien.minecordbot.handle.Metrics;
-import us.cyrien.minecordbot.handle.Updater;
-import us.cyrien.minecordbot.listener.DiscordMessageListener;
-import us.cyrien.minecordbot.listener.MinecraftEventListener;
-import us.cyrien.minecordbot.listener.TabCompleteV2;
+import us.cyrien.minecordbot.instrumentation.Instrumentator;
+import us.cyrien.minecordbot.localization.LocalizationFiles;
 
 import javax.security.auth.login.LoginException;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.File;
 
 public class Minecordbot extends JavaPlugin {
 
     public static final SimpleLog LOGGER = SimpleLog.getLog("Minecordbot");
 
-    private static List<DiscordCommand> discordCommands;
     private static Minecordbot instance;
-    private static Messenger messenger;
-    private static AuthManager authManager;
-    private static UpTimer upTimer;
-    private static EventWaiter eventWaiter;
+    private static Instrumentator instrumentator;
 
+    private CommandClientBuilder cb;
+    private Messenger messenger;
+    private AuthManager authManager;
+    private UpTimer upTimer;
+    private EventWaiter eventWaiter;
+    private CommandClient client;
     private JDA jda;
-    private Updater updater;
     private Metrics metrics;
+
+    public Command.Category ADMIN = new Command.Category("Admin", (e) -> {
+        if (e.getAuthor().getId().equals(e.getClient().getOwnerId()))
+            return true;
+        if (e.getGuild() == null)
+            return true;
+        return PermissionUtil.checkPermission(e.getMember(), Permission.ADMINISTRATOR);
+    });
+
+    public Command.Category OWNER = new Command.Category("Owner", (e) -> e.getAuthor().getId().equals(e.getClient().getOwnerId()));
+
+    public Command.Category INFO = new Command.Category("Info");
+
+    public Command.Category MISC = new Command.Category("Miscellaneous");
+
+    public Command.Category FUN = new Command.Category("Fun");
+
+    public Command.Category HELP = new Command.Category("Help");
 
     @Override
     public void onEnable() {
+        saveResource("libraries/natives/32/linux/libattach.so", true);
+        saveResource("libraries/natives/32/solaris/libattach.so", true);
+        saveResource("libraries/natives/32/windows/attach.dll", true);
+        saveResource("libraries/natives/64/linux/libattach.so", true);
+        saveResource("libraries/natives/64/mac/libattach.dylib", true);
+        saveResource("libraries/natives/64/solaris/libattach.so", true);
+        saveResource("libraries/natives/64/windows/attach.dll", true);
+
         eventWaiter = new EventWaiter();
+        cb = new CommandClientBuilder();
         authManager = new AuthManager();
-        discordCommands = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
-        Bukkit.getScheduler().runTaskLater(this, DrocsidFrame::main, 1L);
         initDatabase();
         if (initConfig()) {
             initJDA();
             initInstances();
-            initDCmds();
             initMCmds();
+            initCommandClient();
             initDListener();
             initMListener();
+        }
+        try {
+            instrumentator.instrumentate();
+            instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
+        } catch (Throwable e){
+            this.getLogger().warning("[Minecordbot] CraftServer.broadcast() instrumentation failed! server cannot start properly, shutting down...");
+            Bukkit.shutdown();
+            return;
         }
     }
 
@@ -88,12 +120,14 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public void registerDiscordEventModule(Object... listener) {
-        jda.addEventListener(listener);
+        for(Object o : listener)
+            jda.addEventListener(o);
     }
 
 
-    public void registerDiscordCommandModule(Class module) {
-        DrocsidFrame.addModule(module);
+    public void registerDiscordCommandModule(Command... commands) {
+        for(Command c : commands)
+            client.addCommand(c);
     }
 
     //private stuff/ initiation
@@ -102,6 +136,26 @@ public class Minecordbot extends JavaPlugin {
         if (!initialized)
             LOGGER.warn("MCB data generated, please populate all fields before restarting");
         return initialized;
+    }
+
+    private void initCommandClient() {
+        cb.setOwnerId(MCBConfig.get("owner_id"));
+        cb.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
+        cb.setPrefix(MCBConfig.get("trigger"));
+        registerDiscordCommandModule(
+                new List(this),
+                new Info(this),
+                new Ping(this),
+                new Help(this),
+                new Eval(this),
+                new SetGame(this),
+                new SetName(this),
+                new SetAvatar(this),
+                new Reload(this),
+                new MCCommand(this),
+                new TextChannel(this));
+        client = cb.build();
+        registerDiscordEventModule(client);
     }
 
     private void initDatabase() {
@@ -120,6 +174,7 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new MinecraftEventListener(this));
         registerMinecraftEventModule(new TabCompleteV2(this));
         registerMinecraftEventModule(new UserConnectionListener());
+        registerMinecraftEventModule(new List(this));
         //registerMinecraftEventModule(new AfkListener(this));
     }
 
@@ -137,75 +192,37 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftCommandModule(DConfirm.class);
     }
 
-    private void initDCmds() {
-        registerDiscordCommandModule(PingCommand.class);
-        registerDiscordCommandModule(ReloadCommand.class);
-        registerDiscordCommandModule(HelpCommand.class);
-        registerDiscordCommandModule(TextChannelCommand.class);
-        registerDiscordCommandModule(InfoCommand.class);
-        registerDiscordCommandModule(ListCommand.class);
-        registerDiscordCommandModule(EvalCommand.class);
-        registerDiscordCommandModule(PermissionCommand.class);
-        registerDiscordCommandModule(SendMinecraftCommandCommand.class);
-        registerDiscordCommandModule(SetNicknameCommand.class);
-        registerDiscordCommandModule(SetUsernameCommand.class);
-        registerDiscordCommandModule(SetGameCommand.class);
-        registerDiscordCommandModule(SetAvatarCommand.class);
-        registerDiscordCommandModule(ShutDownCommand.class);
-        registerDiscordCommandModule(SetTrigger.class);
-        //registerDiscordCommandModule(ImageSearchCommand.class);
-    }
-
     private void initInstances() {
         messenger = new Messenger(this);
         LocalizationFiles localizationFiles = new LocalizationFiles(this, true);
         instance = this;
         upTimer = new UpTimer();
-        if (MCBConfig.get("auto_update"))
-            updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.DEFAULT, false);
-        else
-            updater = new Updater(this, 101682, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
         metrics = new Metrics(this);
     }
 
-    //accessors and modifiers
-    public static List<DiscordCommand> getDiscordCommands() {
-        return discordCommands;
+    public CommandClient getClient() {
+        return client;
+    }
+
+    public Messenger getMessenger() {
+        return messenger;
+    }
+
+    public EventWaiter getEventWaiter() {
+        return eventWaiter;
     }
 
     public JDA getJDA() {
         return jda;
     }
 
-    public static Messenger getMessenger() {
-        return messenger;
-    }
-
-    public static AuthManager getAuthManager() { return authManager; }
+    public AuthManager getAuthManager() { return authManager; }
 
     public static Minecordbot getInstance() {
         return instance;
     }
 
-    public static String getUpTime() {
+    public String getUpTime() {
         return upTimer.getCurrentUptime();
-    }
-
-    public static EventWaiter getEventWaiter() {
-        return eventWaiter;
-    }
-
-    public void handleCommand(MessageReceivedEvent mRE) {
-        Iterator cmdIterator = discordCommands.iterator();
-        while (cmdIterator.hasNext()) {
-            DiscordCommand dc = (DiscordCommand) cmdIterator.next();
-            String raw = mRE.getMessage().getContent();
-            String noTrigger = raw.replaceAll(MCBConfig.get("trigger"), "");
-            String head = noTrigger.split(" ")[0];
-            String[] strings = raw.replaceAll(MCBConfig.get("trigger") + head, "").trim().split("\\s");
-            if (dc.getAliases().contains(head) || dc.getName().equalsIgnoreCase(head)) {
-                dc.execute(mRE, strings);
-            }
-        }
     }
 }

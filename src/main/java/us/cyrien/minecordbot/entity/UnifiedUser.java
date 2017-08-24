@@ -5,23 +5,21 @@ import us.cyrien.minecordbot.accountSync.AccountDataFormat;
 
 import java.util.LinkedHashMap;
 
-public class MCUser {
+public class UnifiedUser {
 
     private Player p;
     private MCBUser mcbUser;
     private AccountDataFormat accountDataFormat;
 
-    public MCUser(Player p) {
+    public UnifiedUser(Player p) {
         this.p = p;
         this.mcbUser = null;
     }
 
-    public MCUser(Player p, MCBUser mcbUser) {
+    public UnifiedUser(Player p, MCBUser mcbUser) {
         this.p = p;
         this.mcbUser = mcbUser;
     }
-
-
 
     public void setMcbUser(MCBUser mcbUser) {
         this.mcbUser = mcbUser;

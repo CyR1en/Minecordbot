@@ -58,11 +58,11 @@ mcb:
     permission:
       usage: "permission <set> <user> <level> | permission <get> <user>"
       description: "Add, remove permission to user, and get what their permission level is."
-      user-not-found: "User with `%s` cannot be found."
-      added-perm: "User `%s` now has a level_%s Permission."
-      last-user: "Cannot remove user `%s` because it's the last user on the permission list `%s`"
+      user-not-found: "MCBUser with `%s` cannot be found."
+      added-perm: "MCBUser `%s` now has a level_%s Permission."
+      last-user: "Cannot remove user `%s` because it's the last user on the permission List `%s`"
       remove-perm: "Removed `%s` permission from `%s`"
-      get-perm: "User `%s` has a `%s` permission."
+      get-perm: "MCBUser `%s` has a `%s` permission."
     setgame:
       usage: "setgame <gametitle>"
       description: "set your discord bot's game."
@@ -84,7 +84,7 @@ mcb:
       description: "check bot's response time."
     help:
       usage: "help [command]"
-      description: "list all commands and show usage for a command."
+      description: "List all commands and show usage for a command."
       too-much-args: "you've input too much arguments."
       no-such-command: "There's no such %s command."
       list:
@@ -96,8 +96,8 @@ mcb:
         misc: "Miscellaneous Commands"
         special: "Special Command"
     list:
-      usage: "list [update:true or false]"
-      description: "list all online players on the minecraft server."
+      usage: "List [update:true or false]"
+      description: "List all online players on the minecraft server."
       list:
         header: "Online Players on Minecraft server"
     info:
@@ -116,16 +116,23 @@ mcb:
         botnick: "Bot Nickname"
         footer: "=== More Info ==="
     textchannel:
-      usage: "textchannel <add|remove|list> <ID>"
-      description: "add, remove, or list textchannels that's bound to MCB"
+      usage: "textchannel <add|remove|List> <ID>"
+      description: "add, remove, or List textchannels that's bound to MCB"
       invalid-tc: "Text channel `%s` is not a valid text channel."
       added-tc: "Added text channel `%s` to the bound channels."
       tc-not-bound: "Text channel `%s` is not bound to Minecraft"
-      last-tc: "Cannot remove textchannel `%s` because it's the last textchannel on the list"
-      removed-tc: "Removed text channel `%s` from the list"
+      last-tc: "Cannot remove textchannel `%s` because it's the last textchannel on the List"
+      removed-tc: "Removed text channel `%s` from the List"
       list:
         header: "Bound Text Channels"
         guild_name: "Guild Name"
         channel_name: "Channel Name"
+      subcommand:
+        list:
+          description: "lists all bound text channels"
+        add:
+          description: "add a new bound channel"
+        remove:
+          description: "remove bound channel"
   messenger:
     no-player: "{player} cannot be found."

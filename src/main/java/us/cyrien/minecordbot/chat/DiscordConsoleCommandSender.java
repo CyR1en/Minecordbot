@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.chat;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -20,9 +20,9 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
 
     protected final ConvoTracker conversationTracker = new ConvoTracker();
     private final PermissibleBase perm;
-    private MessageReceivedEvent e;
+    private CommandEvent e;
 
-    public DiscordConsoleCommandSender(MessageReceivedEvent e) {
+    public DiscordConsoleCommandSender(CommandEvent e) {
         this.e = e;
         perm = new PermissibleBase(this);
     }

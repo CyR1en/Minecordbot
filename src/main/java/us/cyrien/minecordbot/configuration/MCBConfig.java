@@ -2,7 +2,6 @@ package us.cyrien.minecordbot.configuration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import us.cyrien.minecordbot.accountSync.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,10 +101,6 @@ public class MCBConfig {
 
     public static JSONObject getDefault() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        JSONObject perms = new JSONObject();
-        perms.put("level_1", new String[]{"12332131231231"});
-        perms.put("level_2", new String[]{"12332131231231"});
-        perms.put("level_3", new String[]{"12332131231231"});
         JSONObject broadcast = new JSONObject();
         broadcast.put("allow_incognito", false);
         broadcast.put("death_event", true);
@@ -124,14 +119,14 @@ public class MCBConfig {
         map.put("owner_id", "replace this with your server owner id");
         map.put("trigger", ",");
         map.put("auto_delete_command_response", false);
-        map.put("auto_update", false);
+        map.put("auto_update", null);
         map.put("localization", "en");
         map.put("message_format", "&7");
         map.put("text_channels", new String[]{"923823", "3232323"});
         map.put("blocked_bots", new String[]{"bot id's of", "bots you want to prevent from message relays"});
         map.put("blocked_command_prefix", new String[] {"bot command prefix", "that you want to prevent from message relay"});
         map.put("mod_channel", "place text channel id where you want to see messages with private message");
-        map.put("permissions", perms);
+        map.put("permissions", null);
         map.put("message_prefix_discord", "Minecraft {sender}:");
         map.put("message_prefix_minecraft", "Discord {sender}:");
         map.put("broadcasts", broadcast);
@@ -139,7 +134,6 @@ public class MCBConfig {
         map.put("default_game", "set bot's default game");
         map.put("afk_timer", 300);
         return new JSONObject(map);
-
     }
 
 }

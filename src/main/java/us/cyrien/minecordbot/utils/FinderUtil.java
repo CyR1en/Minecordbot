@@ -100,8 +100,12 @@ public class FinderUtil {
     public static Player findPlayerInDatabase(String discordID) {
         Iterator<String> it =  SimplifiedDatabase.getData().keys();
         while(it.hasNext()) {
-
+            Player p = Bukkit.getPlayer(it.next());
+            if(p != null)
+                if(SimplifiedDatabase.get(p.getUniqueId().toString()).equals(discordID))
+                    return p;
         }
+        return null;
     }
 
     public static List<VoiceChannel> findVoiceChannel(String query, Guild guild) {

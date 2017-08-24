@@ -95,7 +95,7 @@ public class SimplifiedDatabase extends Database {
         return exists;
     }
 
-    public Path getConfigPath() {
+    public static Path getConfigPath() {
         return filePath;
     }
 

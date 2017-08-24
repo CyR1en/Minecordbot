@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.prefix;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
+import io.github.hedgehog1029.frame.annotations.Hook;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -10,15 +11,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.hooks.MVHook;
+import us.cyrien.minecordbot.hooks.VaultHook;
 
 public enum MinecraftPlaceHolder {
     WORLD {
         @Override
         public String toString() {
             String world;
-            if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
-                MultiverseCore mv = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+            if (mvHook != null) {
+                MultiverseCore mv = mvHook.getMultiverseCore();
                 WorldManager wm = new WorldManager(mv);
                 if (wm.isMVWorld(e.getPlayer().getWorld())) {
                     MultiverseWorld mvw = wm.getMVWorld(e.getPlayer().getWorld());
@@ -26,7 +28,7 @@ public enum MinecraftPlaceHolder {
                 } else {
                     world = e.getPlayer().getWorld().getName();
                 }
-            } else if(Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            } else if(vaultHook != null) {
                 Chat c = rgC.getProvider();
                 world = c.getPlayerPrefix(e.getPlayer());
             } else {
@@ -58,7 +60,7 @@ public enum MinecraftPlaceHolder {
         @Override
         public String toString() {
             String prefix;
-            if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            if (vaultHook != null) {
                 Permission vaultPerm = rgP.getProvider();
                 prefix = vaultPerm.getPrimaryGroup(e.getPlayer());
             } else {
@@ -71,12 +73,17 @@ public enum MinecraftPlaceHolder {
 
     private static AsyncPlayerChatEvent e;
 
+    @Hook
+    private static MVHook mvHook;
+    @Hook
+    private static VaultHook vaultHook;
+
     private static RegisteredServiceProvider<Permission> rgP;
     private static RegisteredServiceProvider<Chat> rgC;
 
     public void init(AsyncPlayerChatEvent e) {
         MinecraftPlaceHolder.e = e;
-        if(Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+        if(vaultHook != null) {
             MinecraftPlaceHolder.rgP = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
             MinecraftPlaceHolder.rgC = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
         }
