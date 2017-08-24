@@ -37,7 +37,7 @@ public class DSync {
             AuthSession authSession = new AuthSession((Player) commandSender, dUser);
             AuthToken token = authSession.getAuthToken();
             User finalDUser1 = dUser;
-            EventWaiter eventWaiter = Minecordbot.getEventWaiter();
+            EventWaiter eventWaiter = Minecordbot.getInstance().getEventWaiter();
             dUser.openPrivateChannel().queue(pc -> pc.sendMessage(verificationCode(token)).queue(m -> {
                 m.addReaction(CANCEL).complete();
                 eventWaiter.waitForEvent(MessageReactionAddEvent.class, e -> {
