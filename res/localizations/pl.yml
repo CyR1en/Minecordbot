@@ -37,6 +37,7 @@ mcb:
     no-perm-message: "Nie masz dostępu do tej komendy."
     invalid-arguments: "błędny arguments."
     invalid-tc: "błędny kanał dla tej komendy."
+    no-alias: "Nie ma innych aliasów dla tej komendy"
   commands:
     settrigger:
       usage: "settrigger <nowy trigger>"
@@ -65,22 +66,26 @@ mcb:
     setgame:
       usage: "setgame <tytułgry>"
       description: "ustaw grę bota."
+      changed: "Gra zmieniona na %s!"
     setavatar:
       usage: "setavatar <urlawatara>"
       description: "ustaw awatar bota."
+      changed: "zmieniono awatar bota."
     setusername:
       usage: "setusername <username>"
       description: "ustaw nazwę bota."
+      changed: "zmieniono nazwę!"
     setnickname:
        usage: "setnickname <nick>"
        description: "ustaw nick bota."
+       changed: "zmieniono nick bota!"
     ping:
       usage: "ping"
       description: "Sprawdź czas reakcji bot'a."
     help:
       usage: "help [komenda]"
       description: "Pokaż listę komend bądź sposób użycia komendy."
-      too-much-args: "zbyd dużo argumentów."
+      too-much-args: "zbyt dużo argumentów."
       no-such-command: "Nie ma takiej komendy."
       list:
         header: "Komendy MineCordBota"
@@ -89,6 +94,7 @@ mcb:
         help: "Komendy Pomocy"
         mod: "Komendy Moderowania Serwera"
         misc: "Różne Komendy"
+        special: "Specjalne Komendy"
     list:
       usage: "ls [aktualizować:true or false]"
       description: "Lista wszysystkich graczy online."
@@ -98,7 +104,7 @@ mcb:
       usage: "info"
       description: "Informacje o bocie"
       minfo:
-        generalinfo_header: "== Generalne Informacje =="
+        generalinfo_header: "== Informacje Generalne =="
         nonick: "Bot nie ma nicku."
         version: "Wersje"
         textchannel: "Kanały tekstowe"
