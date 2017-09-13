@@ -15,7 +15,7 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.0
 * Fully Configurable
 * Multiple channel binds
 * Cross-server command execution
-* Localized in English and Polish
+* Localized in English, Polish, German, Romanian and Pirate(YARRRR!)
 * Works with various other chat plugins
 * Sleek command response interface
 * Tab auto-completion for in-game mentions
