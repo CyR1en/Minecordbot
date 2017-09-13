@@ -95,6 +95,10 @@ public class SimplifiedDatabase extends Database {
         return exists;
     }
 
+    public static JSONObject getConfig() {
+        return config;
+    }
+
     public static Path getConfigPath() {
         return filePath;
     }

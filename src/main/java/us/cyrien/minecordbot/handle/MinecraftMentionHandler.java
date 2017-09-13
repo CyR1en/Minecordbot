@@ -17,9 +17,13 @@ public class MinecraftMentionHandler {
     public String handleMention(String s) {
         ArrayList<User> list;
         String[] strings = s.split(" ");
+        if(strings.length < 2 && strings[0].trim().equals("@"))
+            return s;
         for (int i = 0; i < strings.length; i++)
             if (strings[i].startsWith("@")) {
-                list = (ArrayList) jda.getUsersByName(strings[i].replaceAll("@", "").replaceAll("_", " "), false);
+                list = (ArrayList) jda.getUsersByName(strings[i]
+                        .replaceAll("@", "")
+                        .replaceAll("_", " "), false);
                 if (list.size() > 0) {
                     String uID = list.get(0).getId();
                     strings[i] = "<@" + uID + ">";

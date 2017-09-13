@@ -1,20 +1,20 @@
 package us.cyrien.minecordbot.commands.minecraftCommand;
 
-import com.jagrosh.jdautilities.waiter.EventWaiter;
-import io.github.hedgehog1029.frame.annotations.Command;
-import io.github.hedgehog1029.frame.annotations.Permission;
-import io.github.hedgehog1029.frame.annotations.Sender;
+import us.cyrien.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import us.cyrien.mcutils.annotations.Command;
+import us.cyrien.mcutils.annotations.Permission;
+import us.cyrien.mcutils.annotations.Sender;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthSession;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthToken;
 import us.cyrien.minecordbot.utils.FinderUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class DSync {
 
     private static final String CANCEL = "\u274c";
 
-    @Command(aliases = "dsync", usage = "/dsync <Discord user id>", desc = "Sync Minecraft and Discord account")
+    @Command(aliases = "mcbsync", usage = "/mcbsync <Discord user id or Discord username>", desc = "Sync Minecraft and Discord account")
     @Permission("minecordbot.discordsync")
     public void syncRequest(@Sender CommandSender commandSender, String discordID) {
         JDA jda = Minecordbot.getInstance().getJDA();
@@ -40,9 +40,7 @@ public class DSync {
             EventWaiter eventWaiter = Minecordbot.getInstance().getEventWaiter();
             dUser.openPrivateChannel().queue(pc -> pc.sendMessage(verificationCode(token)).queue(m -> {
                 m.addReaction(CANCEL).complete();
-                eventWaiter.waitForEvent(MessageReactionAddEvent.class, e -> {
-                    return e.getReaction().getEmote().getName().equals(CANCEL) && e.getMessageId().equals(m.getId()) && !e.getUser().isBot();
-                }, a -> {
+                eventWaiter.waitForEvent(MessageReactionAddEvent.class, e -> e.getReaction().getEmote().getName().equals(CANCEL) && e.getMessageId().equals(m.getId()) && !e.getUser().isBot(), a -> {
                     a.getReaction().removeReaction().queue();
                     authSession.cancel();
                 }, AuthSession.SYNC_TIMEOUT, TimeUnit.MINUTES, authSession::cancel);
@@ -62,7 +60,7 @@ public class DSync {
     }
 
     private String verificationCode(AuthToken token) {
-        return "**MCBSync Verification Code**: \n ```" + token.toString() + "``` \n" + "Copy the verification code above and do __**/dconfirm <verification code>**__ in-game \n\n" +
+        return "**MCBSync Verification Code**: \n ```" + token.toString() + "``` \n" + "Copy the verification code above and do __**/syncconfirm <verification code>**__ in-game \n\n" +
                 "_by syncing accounts you agree that your account data(username, id) will be stored to the resource folder of the sync plugin. \n" +
                 "If you don't give the consent to store your data press the cancel button bellow._";
     }

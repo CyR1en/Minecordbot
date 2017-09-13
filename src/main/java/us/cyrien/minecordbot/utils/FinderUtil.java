@@ -4,13 +4,12 @@ import net.dv8tion.jda.core.entities.*;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.SimplifiedDatabase;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FinderUtil {
 
@@ -98,12 +97,32 @@ public class FinderUtil {
     }
 
     public static Player findPlayerInDatabase(String discordID) {
-        Iterator<String> it =  SimplifiedDatabase.getData().keys();
-        while(it.hasNext()) {
-            Player p = Bukkit.getPlayer(it.next());
-            if(p != null)
-                if(SimplifiedDatabase.get(p.getUniqueId().toString()).equals(discordID))
-                    return p;
+        Logger.info("Query : " + discordID);
+        Map<Object, String> inverseData = SimplifiedDatabase.getConfig().toMap()
+                .entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+        for (Map.Entry<Object, String> map : inverseData.entrySet()) {
+            Logger.info("Map| Key : " + map.getKey() + " Value : " + map.getValue());
+            if(discordID.equals(map.getKey())) {
+                UUID uuid = UUID.fromString(map.getValue());
+                Logger.info("UUID : " + uuid);
+                Player p = Bukkit.getPlayer(uuid) == null ? Bukkit.getOfflinePlayer(uuid).getPlayer() : Bukkit.getPlayer(uuid);
+                System.out.println(p);
+                if(p != null)
+                    return  p;
+            }
+        }
+        return null;
+    }
+
+    public static User findUserInDatabase(Player p) {
+        Map<String, Object> config = SimplifiedDatabase.getConfig().toMap();
+        for (Map.Entry<String, Object> map : config.entrySet()) {
+            if (p != null && map.getValue().equals(p.getUniqueId())) {
+                String userID = SimplifiedDatabase.get(p.getUniqueId().toString());
+                if (!userID.equals("Not Synced yet")) {
+                    return Minecordbot.getInstance().getJDA().getUserById(userID);
+                }
+            }
         }
         return null;
     }

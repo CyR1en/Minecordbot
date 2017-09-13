@@ -1,18 +1,12 @@
 package us.cyrien.minecordbot.hooks;
 
-import io.github.hedgehog1029.frame.hook.IPluginHook;
-import org.bukkit.Bukkit;
+import us.cyrien.mcutils.hook.PluginHook;
 import us.cyrien.minecordbot.Minecordbot;
 
+public class MCBHook extends PluginHook<Minecordbot> {
 
-public class MCBHook implements IPluginHook {
-
-    @Override
-    public boolean available() {
-        return Bukkit.getServer().getPluginManager().isPluginEnabled("MineCordBot");
+    public MCBHook() {
+        this.name = "MineCordBot";
     }
 
-    public Minecordbot getMinecordbot() {
-        return (Minecordbot) Bukkit.getPluginManager().getPlugin("MineCordBot");
-    }
 }

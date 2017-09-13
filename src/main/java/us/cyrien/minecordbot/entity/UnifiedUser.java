@@ -1,7 +1,9 @@
 package us.cyrien.minecordbot.entity;
 
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.accountSync.AccountDataFormat;
+import us.cyrien.minecordbot.utils.FinderUtil;
 
 import java.util.LinkedHashMap;
 
@@ -13,7 +15,8 @@ public class UnifiedUser {
 
     public UnifiedUser(Player p) {
         this.p = p;
-        this.mcbUser = null;
+        User user = FinderUtil.findUserInDatabase(p);
+        this.mcbUser = user == null ? null : new MCBUser(user);
     }
 
     public UnifiedUser(Player p, MCBUser mcbUser) {
@@ -23,6 +26,10 @@ public class UnifiedUser {
 
     public void setMcbUser(MCBUser mcbUser) {
         this.mcbUser = mcbUser;
+    }
+
+    public boolean isSynced() {
+        return mcbUser != null && p != null;
     }
 
     public AccountDataFormat getAccountDataFormat() {

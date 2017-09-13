@@ -39,51 +39,51 @@ mcb:
     invalid-tc: "Yer usin' th' wrong chat."
     no-alias: "Ya betta' use me propper name, boy!"
   commands:
+    spoiler:
+      description: "creates a spoiler gif"
+      includeText: "please provide a text for the spoiler"
+      tooManyLines: "there's too many lines. Cannot be greater than 8"
+      spoilerPreview: "[ Hover to see spoiler ]"
+      failedToGenerate: "failed to generate spoiler image"
+    purge:
+      description: "delete up to 100 previous messages"
+      invalidNum: "invalid number, must be 1 to 100"
+      deleting: "deleting messages..."
+      failedToRetrieve: "failed to retrieve messages"
+      couldNotRetrieve: "could not retrieve messages"
+    poll:
+      description: "make a poll"
     settrigger:
-      usage: "settrigger <new trigger>"
       description: "Fetch me some new gun powd'r - can't fire this grapeshot w'thout it."
     shutdown:
-      usage: "shutdown"
       description: "Batt'n down th' hatches and drop th' anchor."
+      shutting: "Shutting down..."
     reload:
-      usage: "reload"
       description: "Rearm thy mattie."
       reloaded: "First Mate Minecord, reportin' fer duty."
     eval:
-      usage: "eval <expression>"
       description: "Javanese arithmatic"
     mcmd:
-      usage: "minecraftcommand <Minecraft Command>"
       description: "Fire th' ship's cannons, First Mate Minecord!."
-    permission:
-      usage: "permission <set> <crew> <station> | permission <get> <crew>"
-      description: "Restation sailors and query their station."
-      user-not-found: "Crew member `%s` ain't on th'ship. Were they marooned?"
-      added-perm: "Sailor `%s` now has a level_%s station."
-      last-user: "Cannot remove sailor `%s` because they be the last crew member on the manifest `%s`"
-      remove-perm: "Removed `%s` station from `%s`"
-      get-perm: "Sailor `%s` has a `%s` station."
     setgame:
-      usage: "setgame <gametitle>"
       description: "Hoist the flag high!"
-      changed: "The %s flag be a fly'n!"
+      changed: "Game set to %s!"
+      notplaying: "%s no longer playing anything"
+      playing: "%s now playing"
     setavatar:
-      usage: "setavatar <imageurl>"
       description: "Make ye First Mate don another colour."
-      changed: "Ready for infiltrating the blockade!"
+      changed: "successfully changed avatar"
+      invalid: "invalid or missing URL"
+      failed: "failed to set avatar"
+      couldNotLoad: "could not load image from provided URL"
     setusername:
-      usage: "setusername <username>"
       description: "Mattie, ye need a new name."
-      changed: "Edward Teach would be proud."
-    setnickname:
-      usage: "setnickname <nickname>"
-      description: "Hoy thar, Tazerface!"
-      changed: "It's not Tazerface!"
+      changed: "username Changed from %s to %s"
+      limit: "username can only be changed twice per hour"
+      invalid: "username is invalid"
     ping:
-      usage: "ping"
       description: "How long till we reach land?"
     help:
-      usage: "help [command]"
       description: "list all o' the captain's orders and tell th' quartermaster."
       too-much-args: "Too much liqour."
       no-such-command: "Captain, %s is not an order."
@@ -94,22 +94,24 @@ mcb:
         help: "Man Overboard!"
         mod: "Swimming Lessons"
         misc: "Munitions"
-        special: "Rare Treasures"
     list:
-      usage: "list [update:true or false]"
       description: "Take role, Mr. 'CordBot"
       list:
         header: "Mates On Board"
     info:
-      usage: "info"
       description: "Know thy First Mate"
       minfo:
-        generalinfo_header: "== General Info =="
+        generalinfo_header: "== General InfoCmd =="
         nonick: "Hrm... His Christian name will have to do."
         version: "Family Generation"
         textchannel: "Learn'ed caligraphy"
         voicechannel: "Shanties"
         uptime: "Days at Sea"
+        botinfo_header: "=== Bot Information ==="
+        clientid: "Bot Client ID"
+        botname: "Bot Name"
+        botnick: "Bot Nickname"
+        footer: "=== More InfoCmd ==="
     textchannel:
       usage: "textchannel <add|remove|list> <ID>"
       description: "add, remove, or list runner boys hired by the First Mate"
@@ -122,5 +124,12 @@ mcb:
         header: "Message Runners"
         guild_name: "Guild Name"
         channel_name: "Runner's Name"
+      subcommand:
+        list:
+          description: "lists all bound text channels"
+        add:
+          description: "add a new bound channel"
+        remove:
+          description: "remove bound channel"
   messenger:
     no-player: "{player} ain't on the ship."

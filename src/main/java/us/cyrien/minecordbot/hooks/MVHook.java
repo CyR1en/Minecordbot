@@ -1,16 +1,11 @@
 package us.cyrien.minecordbot.hooks;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import io.github.hedgehog1029.frame.hook.IPluginHook;
-import org.bukkit.Bukkit;
+import us.cyrien.mcutils.hook.PluginHook;
 
-public class MVHook implements IPluginHook {
-    @Override
-    public boolean available() {
-        return Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core");
-    }
+public class MVHook extends PluginHook<MultiverseCore> {
 
-    public MultiverseCore getMultiverseCore() {
-        return (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+    public MVHook() {
+        this.name = "Multiverse-Core";
     }
 }

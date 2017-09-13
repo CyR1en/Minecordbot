@@ -24,6 +24,17 @@ repositories {
         name = 'natrolite-repo'
         url = 'https://repo.natrolite.org/repository/maven-public/'
     }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        name = 'vault-repo'
+        url = 'http://nexus.hc.to/content/repositories/pub_releases'
+    }
+    maven {
+        name = 'sk89q-repo'
+        url = 'http://maven.sk89q.com/repo'
+    }
     flatDir {
         dirs 'libs'
     }
@@ -33,13 +44,15 @@ dependencies {
     compile 'org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT'
     compile 'org.javassist:javassist:3.15.0-GA'
 
-    compile 'com.jagrosh:JDA-Utilities:1.4'
     compile 'net.dv8tion:JDA:3.2.0_239'
 
-    compile name: 'Frame'
     compileOnly 'org.natrolite:vault-api:1.6.1'
     compileOnly name: 'mv'
     compileOnly name: 'PermissionsEx-1.23.4'
+    compileOnly name: 'mcMMO'
+    compileOnly name: 'EssentialsX'
+    compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
+    compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
 }
 
 jar {
@@ -60,6 +73,7 @@ shadowJar {
         exclude(dependency('org.hamcrest:hamcrest-core:1.1'))
         exclude(dependency('org.yaml:snakeyaml:1.18'))
         exclude(dependency('commons-lang:commons-lang:2.6'))
+        exclude(dependency('com.github.TechFortress:GriefPrevention:16.7.1'))
     }
     relocate 'org.apache', 'shadow.org.apache'
     relocate('org.json', 'shadow.org.json')

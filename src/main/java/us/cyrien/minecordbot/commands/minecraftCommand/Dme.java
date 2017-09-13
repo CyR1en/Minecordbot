@@ -1,15 +1,15 @@
 package us.cyrien.minecordbot.commands.minecraftCommand;
 
-import io.github.hedgehog1029.frame.annotations.Command;
-import io.github.hedgehog1029.frame.annotations.Permission;
-import io.github.hedgehog1029.frame.annotations.Sender;
-import io.github.hedgehog1029.frame.annotations.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.mcutils.annotations.Command;
+import us.cyrien.mcutils.annotations.Permission;
+import us.cyrien.mcutils.annotations.Sender;
+import us.cyrien.mcutils.annotations.Text;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.chat.Messenger;
 
 public class Dme {
     @Command(aliases = "dme", usage = "/dme <action>", desc = "/me command but for discord.")

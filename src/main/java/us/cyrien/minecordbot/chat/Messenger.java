@@ -3,10 +3,13 @@ package us.cyrien.minecordbot.chat;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
+import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.exception.IllegalTextChannelException;
 import us.cyrien.minecordbot.configuration.MCBConfig;
@@ -123,6 +126,14 @@ public class Messenger {
         }, duration, TimeUnit.SECONDS));
     }
 
+    public void sendMessageToDM(User user, String message) {
+        user.openPrivateChannel().queue(pc -> pc.sendMessage(message).queue(null ,  t -> {
+            Logger.warn(ChatColor.stripColor(cannotSendCode()));
+        }), t -> {
+            Logger.warn(ChatColor.stripColor(cannotSendCode()));
+        });
+    }
+
     //Command Response
     public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int duration)  {
         boolean tempResponse = MCBConfig.get("auto_delete_command_response");
@@ -138,6 +149,10 @@ public class Messenger {
             sendTempMessage(e, message, duration);
         else
             sendMessage(e, message);
+    }
+
+    private String cannotSendCode() {
+        return "&6[MCBMessenger] &rVerification code cannot be sent because you are blocking Direct Messages. &aEnable Direct Messages and try again.";
     }
 
 }

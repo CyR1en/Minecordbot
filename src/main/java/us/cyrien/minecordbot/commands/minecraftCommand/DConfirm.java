@@ -1,18 +1,17 @@
 package us.cyrien.minecordbot.commands.minecraftCommand;
 
-import io.github.hedgehog1029.frame.annotations.Command;
-import io.github.hedgehog1029.frame.annotations.Permission;
-import io.github.hedgehog1029.frame.annotations.Sender;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import us.cyrien.mcutils.annotations.Command;
+import us.cyrien.mcutils.annotations.Permission;
+import us.cyrien.mcutils.annotations.Sender;
+import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthSession;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthToken;
-import us.cyrien.minecordbot.Minecordbot;
 
 public class DConfirm {
-    @Command(aliases = "dconfirm", usage = "/dconfirm <verification code>", desc = "Confirm Minecraft and Discord account sync")
+    @Command(aliases = "syncconfirm", usage = "/syncconfirm <verification code>", desc = "Confirm Minecraft and Discord account sync")
     @Permission("minecordbot.discordsync")
     public void syncConfirm(@Sender CommandSender commandSender, String verificationCode) {
         if (!(commandSender instanceof Player)) {

@@ -78,7 +78,9 @@ public class MCBConfig {
             } else {
                 config = new JSONObject(new String(Files.readAllBytes(configPath), StandardCharsets.UTF_8));
                 for (String key : def.keySet()) {
-                    if (!config.has(key)) {
+                    if (config.has(key) && !def.has(key)) {
+                        config.remove(key);
+                    } else if (!config.has(key)) {
                         config.put(key, def.get(key));
                         exists = false;
                     }
@@ -112,27 +114,26 @@ public class MCBConfig {
         ctc.put("help", new String[]{" "});
         ctc.put("fun", new String[]{" "});
         ctc.put("info", new String[]{" "});
-        ctc.put("mod", new String[]{" "});
+        ctc.put("owner", new String[]{""});
+        ctc.put("admin", new String[]{""});
 
         map.put("bot_token", "replace this with your bot token");
         map.put("client_id", "replace this with your bot's client id");
         map.put("owner_id", "replace this with your server owner id");
         map.put("trigger", ",");
         map.put("auto_delete_command_response", false);
-        map.put("auto_update", null);
         map.put("localization", "en");
         map.put("message_format", "&7");
         map.put("text_channels", new String[]{"923823", "3232323"});
         map.put("blocked_bots", new String[]{"bot id's of", "bots you want to prevent from message relays"});
-        map.put("blocked_command_prefix", new String[] {"bot command prefix", "that you want to prevent from message relay"});
+        map.put("blocked_command_prefix", new String[]{"bot command prefix", "that you want to prevent from message relay"});
         map.put("mod_channel", "place text channel id where you want to see messages with private message");
-        map.put("permissions", null);
+        map.put("oneway_mod_channel", false);
         map.put("message_prefix_discord", "Minecraft {sender}:");
         map.put("message_prefix_minecraft", "Discord {sender}:");
         map.put("broadcasts", broadcast);
         map.put("command_text_channel", ctc);
         map.put("default_game", "set bot's default game");
-        map.put("afk_timer", 300);
         return new JSONObject(map);
     }
 

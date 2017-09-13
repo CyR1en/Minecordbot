@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.chat;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import us.cyrien.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;

@@ -1,8 +1,9 @@
 package us.cyrien.minecordbot.entity;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import us.cyrien.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.utils.FinderUtil;
@@ -18,13 +19,17 @@ public class MCBUser {
     private UUID mcUUID;
     private User user;
 
-    public MCBUser(CommandEvent e) {
+    public MCBUser(MessageReceivedEvent e) {
         nickNames = new HashMap<>();
         name = e.getAuthor().getName();
         nickNames.put(e.getGuild(), e.getMember().getNickname());
         ID = e.getAuthor().getId();
         mcUUID = null;
         user = e.getAuthor();
+    }
+
+    public MCBUser(CommandEvent e) {
+        this(e.getEvent());
     }
 
     public MCBUser(User user, Guild guild) {

@@ -1,6 +1,7 @@
 name: MineCordBot
 version: 2.1.0
 author: CyRien
+softdepend: [GriefPrevention, Multiverse-Core, Vault, Essentials, mcMMO, PermissionsEx]
 description: A powerful way to bridge Minecraft and Discord
 
 main: us.cyrien.minecordbot.Minecordbot
