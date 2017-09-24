@@ -1,7 +1,7 @@
 package us.cyrien.minecordbot.accountSync.Authentication;
 
 import net.dv8tion.jda.core.utils.SimpleLog;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;

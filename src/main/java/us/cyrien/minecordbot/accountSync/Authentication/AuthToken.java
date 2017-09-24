@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.accountSync.Authentication;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmKeyException;

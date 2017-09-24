@@ -75,7 +75,6 @@ shadowJar {
         exclude(dependency('org.yaml:snakeyaml:1.18'))
         exclude(dependency('commons-lang:commons-lang:2.6'))
         exclude(dependency('com.github.TechFortress:GriefPrevention:16.7.1'))
-        exclude(dependency('org.slf4j:slf4j-api:1.7.25'))
         exclude(dependency('rhino:js:1.7R2'))
         exclude(dependency('junit:junit:4.10'))
     }
