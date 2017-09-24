@@ -132,7 +132,7 @@ public class MCBConfig {
         map.put("message_prefix_discord", "Minecraft {sender}:");
         map.put("message_prefix_minecraft", "Discord {sender}:");
         map.put("broadcasts", broadcast);
-        map.put("command_text_channel", ctc);
+        map.put("command_text_channel", null);
         map.put("default_game", "set bot's default game");
         return new JSONObject(map);
     }

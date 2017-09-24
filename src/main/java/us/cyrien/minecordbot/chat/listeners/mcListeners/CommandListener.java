@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 
@@ -17,18 +16,6 @@ public class CommandListener extends MCBListener {
 
     public CommandListener(Minecordbot mcb) {
         super(mcb);
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onServerCommandEvent(ServerCommandEvent e) {
-        CommandSender s = e.getSender();
-        TextChannel textChannel = mcb.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
-        String msg = "**" + ChatColor.stripColor(s.getName()) + "**: " + e.getCommand();
-        if (textChannel != null) {
-            EmbedBuilder eb = new EmbedBuilder().setColor(new Color(60, 92, 243));
-            eb.addField("Command-Event", langMessageParser.parsePlayer(msg, ChatColor.stripColor(s.getName())), false);
-            messenger.sendMessageEmbedToDiscord(textChannel, eb.build());
-        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

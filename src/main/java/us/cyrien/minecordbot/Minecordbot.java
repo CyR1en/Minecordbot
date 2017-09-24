@@ -11,7 +11,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.utils.PermissionUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -194,7 +193,7 @@ public class Minecordbot extends JavaPlugin {
         try {
             JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(MCBConfig.get("bot_token"));
             Game game = Game.of("Type " + MCBConfig.get("trigger") + "help");
-            if(!Objects.equals(MCBConfig.get("default_game"), MCBConfig.getDefault().get("default_game")) && !StringUtils.isBlank(MCBConfig.get("default_game"))) {
+            if(!Objects.equals(MCBConfig.get("default_game"), MCBConfig.getDefault().get("default_game"))) {
                 String sGame = MCBConfig.get("default_game");
                 if(sGame != null)
                     game = Game.of(sGame);

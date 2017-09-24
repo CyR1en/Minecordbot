@@ -1,5 +1,6 @@
 package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.ServerCommandEvent;
@@ -13,7 +14,7 @@ public class BroadcastCommandListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBroadcastCommand(ServerCommandEvent event) {
-        String cmd = event.getCommand();
+        String cmd = ChatColor.stripColor(event.getCommand());
         if (cmd.equals("broadcast ") || cmd.equals("bc ")) {
             String msg = cmd.split(" ", 2)[1];
             messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
