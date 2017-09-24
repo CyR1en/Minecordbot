@@ -8,8 +8,10 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.utils.PermissionUtil;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,13 +28,13 @@ import us.cyrien.minecordbot.commands.discordCommand.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.entity.UpTimer;
-import us.cyrien.minecordbot.event.BotReadyEvent;
 import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
 
 import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
+import java.util.Objects;
 
 public class Minecordbot extends JavaPlugin {
 
@@ -76,10 +78,6 @@ public class Minecordbot extends JavaPlugin {
             Frame.main();
             if (HookContainer.getEssentialsHook() != null)
                 registerMinecraftEventModule(new HelpOpListener(this));
-            if (HookContainer.getMcbHook() != null) {
-                Messenger test = HookContainer.getMcbHook().getPlugin().getMessenger();
-                test.sendMessageToAllBoundChannel("Test");
-            }
         }, 1L);
         initDatabase();
         if (initConfig()) {
@@ -194,7 +192,15 @@ public class Minecordbot extends JavaPlugin {
 
     private void initJDA() {
         try {
-            jda = new JDABuilder(AccountType.BOT).setToken(MCBConfig.get("bot_token")).buildAsync();
+            JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(MCBConfig.get("bot_token"));
+            Game game = Game.of("Type " + MCBConfig.get("trigger") + "help");
+            if(!Objects.equals(MCBConfig.get("default_game"), MCBConfig.getDefault().get("default_game")) && !StringUtils.isBlank(MCBConfig.get("default_game"))) {
+                String sGame = MCBConfig.get("default_game");
+                if(sGame != null)
+                    game = Game.of(sGame);
+            }
+            builder.setGame(game);
+            jda = builder.buildAsync();
         } catch (LoginException | RateLimitedException e) {
             e.printStackTrace();
         }
@@ -217,7 +223,6 @@ public class Minecordbot extends JavaPlugin {
 
     private void initDListener() {
         registerDiscordEventModule(new DiscordRelayListener(this));
-        registerDiscordEventModule(new BotReadyEvent(this));
         registerDiscordEventModule(eventWaiter);
     }
 
@@ -240,6 +245,7 @@ public class Minecordbot extends JavaPlugin {
         registerMCPluginHook(MVHook.class);
         registerMCPluginHook(PermissionsExHook.class);
         registerMCPluginHook(EssentialsHook.class);
+        registerMCPluginHook(mcMMOHook.class);
     }
 
     private void initInstances() {
@@ -252,9 +258,7 @@ public class Minecordbot extends JavaPlugin {
 
     private boolean isV1_12() {
         String version = Bukkit.getServer().getClass().getPackage().getName();
-        System.out.println(version);
         String formattedVersion = version.substring(version.lastIndexOf(46) + 1);
-        System.out.println("Formatted: " + formattedVersion);
         return formattedVersion.equals("v1_12_R1");
     }
 
