@@ -3,7 +3,7 @@ package us.cyrien.minecordbot.event;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.Minecordbot;
 

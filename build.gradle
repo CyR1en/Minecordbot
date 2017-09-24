@@ -44,7 +44,9 @@ dependencies {
     compile 'org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT'
     compile 'org.javassist:javassist:3.15.0-GA'
 
-    compile 'net.dv8tion:JDA:3.2.0_239'
+    compile 'net.dv8tion:JDA:3.3.1_276'
+    compile 'com.jagrosh:JDA-Utilities:1.7'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
 
     compileOnly 'org.natrolite:vault-api:1.6.1'
     compileOnly name: 'mv'

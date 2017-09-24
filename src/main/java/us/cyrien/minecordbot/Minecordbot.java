@@ -1,9 +1,9 @@
 package us.cyrien.minecordbot;
 
-import us.cyrien.jdautilities.commandclient.Command;
-import us.cyrien.jdautilities.commandclient.CommandClient;
-import us.cyrien.jdautilities.commandclient.CommandClientBuilder;
-import us.cyrien.jdautilities.waiter.EventWaiter;
+import com.jagrosh.jdautilities.commandclient.Command;
+import com.jagrosh.jdautilities.commandclient.CommandClient;
+import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
+import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -14,7 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.cyrien.mcutils.Frame;
-import us.cyrien.mcutils.annotations.Hook;
+import us.cyrien.mcutils.hook.PluginHook;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
 import us.cyrien.minecordbot.accountSync.Database;
@@ -31,6 +31,7 @@ import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
 
+import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
 
 public class Minecordbot extends JavaPlugin {
@@ -45,9 +46,6 @@ public class Minecordbot extends JavaPlugin {
     private CommandClient client;
     private JDA jda;
     private Metrics metrics;
-
-    @Hook
-    private  EssentialsHook essentialsHook;
 
     public Command.Category ADMIN = new Command.Category("Admin", (e) -> {
         if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
@@ -74,7 +72,15 @@ public class Minecordbot extends JavaPlugin {
         eventWaiter = new EventWaiter();
         cb = new CommandClientBuilder();
         authManager = new AuthManager();
-        Bukkit.getScheduler().runTaskLater(this, Frame::main, 1L);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            Frame.main();
+            if (HookContainer.getEssentialsHook() != null)
+                registerMinecraftEventModule(new HelpOpListener(this));
+            if (HookContainer.getMcbHook() != null) {
+                Messenger test = HookContainer.getMcbHook().getPlugin().getMessenger();
+                test.sendMessageToAllBoundChannel("Test");
+            }
+        }, 1L);
         initDatabase();
         if (initConfig()) {
             initJDA();
@@ -97,7 +103,7 @@ public class Minecordbot extends JavaPlugin {
     }
 
     //Framework stuff
-    public void registerMinecraftCommandModule(Class module) {
+    public void registerModule(Class module) {
         Frame.addModule(module);
     }
 
@@ -105,10 +111,32 @@ public class Minecordbot extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
-    public void registerMCPluginHook(Class... hooks) {
-        for (Class p : hooks) {
-            Frame.addHook(p);
-        }
+
+    /**
+     * Register a {@link us.cyrien.mcutils.hook.PluginHook PluginHook} that allow the hook to be
+     * used without being instantiated.
+     *
+     * <p> Once the plugin hook have been registered. The hook can be called to a class like wise.
+     *     <pre>
+     *          {@code
+     *              @Hook
+     *              private MCBHook hook;
+     *              public void hook() {
+     *                  if(hook != null)
+     *                      Minecordbot mcb = hook.getPlugin();
+     *              }
+     *          }
+     *     </pre>
+     * </p>
+     *  @param hook
+     *        Hook class that implements {@link PluginHook PluginHook}.
+     * @param classes
+     *        Classes that uses the hook.
+     */
+    public void registerMCPluginHook(Class hook, @Nullable Class... classes) {
+        Frame.addHook(hook);
+        for(Class c : classes)
+            registerModule(c);
     }
 
     public void registerDiscordEventModule(Object... listener) {
@@ -181,9 +209,7 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
         registerMinecraftEventModule(new ListCmd(this));
-        if(essentialsHook != null)
-            registerMinecraftEventModule(new HelpOpListener(this));
-        if(isV1_12())
+        if (isV1_12())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
             Logger.info("Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
@@ -196,11 +222,15 @@ public class Minecordbot extends JavaPlugin {
     }
 
     private void initMCmds() {
-        registerMinecraftCommandModule(Dcmd.class);
-        registerMinecraftCommandModule(Dme.class);
-        registerMinecraftCommandModule(ExeDCommand.class);
-        registerMinecraftCommandModule(DSync.class);
-        registerMinecraftCommandModule(DConfirm.class);
+        registerModule(Dcmd.class);
+        registerModule(Dme.class);
+        registerModule(ExeDCommand.class);
+        registerModule(DSync.class);
+        registerModule(DConfirm.class);
+    }
+
+    private void registerMCPluginHook(Class clazz) {
+        registerMCPluginHook(clazz, HookContainer.class);
     }
 
     private void initPluginHooks() {

@@ -11,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 import us.cyrien.mcutils.annotations.Hook;
+import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.hooks.MVHook;
 import us.cyrien.minecordbot.hooks.PermissionsExHook;
 import us.cyrien.minecordbot.hooks.VaultHook;
@@ -75,11 +76,11 @@ public enum MinecraftPlaceHolder {
     private static AsyncPlayerChatEvent e;
 
     @Hook
-    private static MVHook mvHook;
+    private final static MVHook mvHook = HookContainer.getMvHook();
     @Hook
-    private static VaultHook vaultHook;
+    private final static VaultHook vaultHook = HookContainer.getVaultHook();
     @Hook
-    private static PermissionsExHook pexHook;
+    private final static PermissionsExHook pexHook = HookContainer.getPermissionsExHook();
 
     public void init(AsyncPlayerChatEvent e) {
         MinecraftPlaceHolder.e = e;

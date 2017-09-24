@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.commands.minecraftCommand;
 
-import us.cyrien.jdautilities.waiter.EventWaiter;
+import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;

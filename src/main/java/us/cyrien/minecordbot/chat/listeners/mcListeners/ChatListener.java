@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import us.cyrien.mcutils.annotations.Hook;
+import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
@@ -17,10 +17,8 @@ import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
-    @Hook
-    private GriefPreventionHook griefPreventionHook;
-    @Hook
-    private mcMMOHook mcMMOHook;
+    private final GriefPreventionHook griefPreventionHook = HookContainer.getGriefPreventionHook();
+    private final mcMMOHook mcMMOHook = HookContainer.getMcMMOHook();
 
     private TextChannel modTextChannel;
 

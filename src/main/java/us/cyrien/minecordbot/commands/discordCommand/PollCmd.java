@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
-import us.cyrien.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;

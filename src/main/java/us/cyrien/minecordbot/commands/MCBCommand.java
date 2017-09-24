@@ -1,5 +1,7 @@
 package us.cyrien.minecordbot.commands;
 
+import com.jagrosh.jdautilities.commandclient.Command;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -7,8 +9,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
-import us.cyrien.jdautilities.commandclient.Command;
-import us.cyrien.jdautilities.commandclient.CommandEvent;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.configuration.MCBConfig;
@@ -16,6 +16,7 @@ import us.cyrien.minecordbot.localization.Locale;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -41,7 +42,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         auto = false;
         if(obj != null)
             auto = Boolean.parseBoolean(obj.toString());
-        scheduler = minecordbot.getEventWaiter().getThreadpool();
+        scheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override

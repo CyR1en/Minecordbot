@@ -1,6 +1,6 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
-import us.cyrien.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Minecordbot;

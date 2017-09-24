@@ -1,8 +1,7 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
-import us.cyrien.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import org.apache.commons.lang3.StringUtils;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
@@ -27,7 +26,7 @@ public class EvalCmd extends MCBCommand {
         String arg = event.getArgs();
         arg = arg.replaceAll("```js", "");
         arg = arg.replaceAll("```", "");
-        if (StringUtils.isBlank(arg)) {
+        if (event.getArgs().isEmpty()) {
             event.replyInDM(event.getClient().getError() + " please provide something to evaluate");
             return;
         }

@@ -1,7 +1,5 @@
 package us.cyrien.minecordbot.accountSync.Authentication;
 
-import us.cyrien.minecordbot.accountSync.Authentication.AuthSession;
-
 import java.util.HashMap;
 
 public class AuthManager {
