@@ -5,9 +5,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.TabCompleteEvent;
-import org.json.JSONArray;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +13,12 @@ import java.util.List;
 public class MentionListener extends MCBListener {
 
     private JDA jda;
-    private JSONArray tcArray;
+    private List<String> tcArray;
 
     public MentionListener(Minecordbot mcb) {
         super(mcb);
-        jda = mcb.getJDA();
-        tcArray = MCBConfig.get("text_channels");
+        jda = mcb.getBot().getJda();
+        tcArray= (List<String>) configsManager.getChatConfig().getList("Relay_Channels");
     }
 
     @EventHandler

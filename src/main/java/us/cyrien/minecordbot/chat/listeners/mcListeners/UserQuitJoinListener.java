@@ -1,18 +1,26 @@
 package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.metadata.MetadataValue;
+import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.configuration.MCBConfig;
+import us.cyrien.minecordbot.hooks.SuperVanishHook;
 import us.cyrien.minecordbot.localization.Locale;
 
 import java.awt.*;
 
-public class UserQuitJoinListener extends MCBListener{
+public class UserQuitJoinListener extends MCBListener {
+
+    private static final Color JOIN_COLOR = new Color(92, 184, 92);
+    private static final Color LEAVE_COLOR = new Color(243, 119, 54);
 
     public UserQuitJoinListener(Minecordbot mcb) {
         super(mcb);
@@ -20,48 +28,80 @@ public class UserQuitJoinListener extends MCBListener{
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        TextChannel textChannel = mcb.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
+        SuperVanishHook svHook = HookContainer.getSuperVanishHook();
+        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
+        TextChannel textChannel = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
         String msg = Locale.getMcMessage("logout").finish();
-        boolean isLeaveBroadCast = MCBConfig.getJSONObject("broadcasts").getBoolean("leave_event");
-        if (textChannel != null)
-            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(new Color(243, 119, 54))
-                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
-        if (isLeaveBroadCast) {
-            boolean allowIncog = MCBConfig.getJSONObject("broadcasts").getBoolean("hide_incognito_users");
-            if (allowIncog) {
-                if (!e.getPlayer().hasPermission("minecordbot.incognito")) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(new Color(243, 119, 54))
-                            .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
-                }
+        boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
+        boolean seeQuit = configsManager.getModChannelConfig().getBoolean("See_Player_Quit");
+        if (textChannel != null && seeQuit) {
+            String m = msg;
+            if (svHook != null) {
+                boolean seeSV =  configsManager.getModChannelConfig().getBoolean("See_SV");
+                if (VanishAPI.isInvisible(e.getPlayer()) || e.getQuitMessage().equals("Fake") && seeSV)
+                    m = "(Vanish) " + m;
+            }
+            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(LEAVE_COLOR)
+                    .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+        }
+        if (isLeaveBroadcast) {
+            boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
+            if (e.getQuitMessage().equals("Fake")) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
+                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                e.setQuitMessage("");
+            } else if (isVanished(e.getPlayer())) {
+                return;
+            } else if (allowIncog) {
+                if (!e.getPlayer().hasPermission("minecordbot.incognito"))
+                    return;
             } else {
-                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(new Color(243, 119, 54))
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
                         .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
             }
         }
-
     }
-
-
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        TextChannel textChannel = mcb.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
+        SuperVanishHook svHook = HookContainer.getSuperVanishHook();
+        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
+        TextChannel textChannel = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
         String msg = Locale.getMcMessage("login").finish();
-        boolean isJoinBroadCast = MCBConfig.getJSONObject("broadcasts").getBoolean("join_event");
-        if (textChannel != null)
-            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(new Color(92, 184, 92))
-                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+        boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");
+        boolean seeJoin = configsManager.getModChannelConfig().getBoolean("See_Player_Join");
+        if (textChannel != null && seeJoin) {
+            String m = msg;
+            if (svHook != null) {
+                boolean seeSV = configsManager.getModChannelConfig().getBoolean("See_SV");
+                if (VanishAPI.isInvisible(e.getPlayer()) || e.getJoinMessage().equals("Fake") && seeSV)
+                    m = "(Vanish) " + m;
+            }
+            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(JOIN_COLOR)
+                    .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+        }
         if (isJoinBroadCast) {
-            boolean allowIncog = MCBConfig.getJSONObject("broadcasts").getBoolean("hide_incognito_users");
-            if (allowIncog) {
-                if (!e.getPlayer().hasPermission("minecordbot.incognito")) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(new Color(92, 184, 92))
-                            .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
-                }
+            boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
+            if (e.getJoinMessage().equals("Fake")) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
+                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                e.setJoinMessage("");
+            } else if (isVanished(e.getPlayer())) {
+                return;
+            } else if (allowIncog) {
+                if (e.getPlayer().hasPermission("minecordbot.incognito"))
+                    return;
             } else {
-                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(new Color(92, 184, 92))
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
                         .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
             }
         }
+    }
+
+    private boolean isVanished(Player player) {
+        for (MetadataValue meta : player.getMetadata("vanished")) {
+            if (meta.asBoolean()) return true;
+        }
+        return false;
     }
 }

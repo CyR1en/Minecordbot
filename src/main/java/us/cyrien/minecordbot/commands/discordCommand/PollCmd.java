@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -14,7 +15,7 @@ public class PollCmd extends MCBCommand {
         this.name = "poll";
         this.arguments = "<question> or <question>|<option1>|<option2>...";
         this.help = Locale.getCommandsMessage("poll.description").finish();
-        this.category = minecordbot.ADMIN;
+        this.category = Bot.ADMIN;
     }
 
     @Override

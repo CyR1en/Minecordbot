@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Game;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -14,7 +15,7 @@ public class SetGameCmd extends MCBCommand {
         this.help = Locale.getCommandsMessage("setgame.description").finish();
         this.arguments = "[game]";
         this.ownerCommand = true;
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
         this.type = Type.EMBED;
     }
 

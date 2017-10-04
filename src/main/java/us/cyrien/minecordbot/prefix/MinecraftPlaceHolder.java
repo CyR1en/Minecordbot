@@ -4,7 +4,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
 import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.permission.Permission;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -30,23 +30,12 @@ public enum MinecraftPlaceHolder {
                 } else {
                     world = e.getPlayer().getWorld().getName();
                 }
-            } else if(vaultHook != null) {
+            } else if (vaultHook != null) {
                 Chat c = vaultHook.getChat();
-                world = c.getPlayerPrefix(e.getPlayer());
+                if (c != null)
+                    world = c.getPlayerPrefix(e.getPlayer());
             }
-            return world;
-        }
-    },
-    SENDER {
-        @Override
-        public String toString() {
-            return ChatColor.stripColor(e.getPlayer().getName());
-        }
-    },
-    NAME {
-        @Override
-        public String toString() {
-            return ChatColor.stripColor(e.getPlayer().getName());
+            return world == null ? "" : world;
         }
     },
     ENAME {
@@ -56,13 +45,17 @@ public enum MinecraftPlaceHolder {
             return ChatColor.stripColor(p.getDisplayName());
         }
     },
-    RANK {
+    ERANK {
         @Override
         public String toString() {
-            String prefix =  "";
+            String prefix = "";
             if (vaultHook != null) {
-                Permission vaultPerm = vaultHook.getPermission();
-                prefix = vaultPerm.getPrimaryGroup(e.getPlayer());
+                Chat c = vaultHook.getChat();
+                if (c != null) {
+                    String group = c.getPrimaryGroup(e.getPlayer());
+                    prefix = c.getGroupPrefix(e.getPlayer().getWorld(), group);
+                    prefix = prefix == null || StringUtils.isEmpty(prefix) ? group : prefix;
+                }
             } else if (pexHook != null) {
                 PermissionsEx pex = pexHook.getPlugin();
                 PermissionUser pexUser = pex.getPermissionsManager().getUser(e.getPlayer().getUniqueId());
@@ -71,7 +64,47 @@ public enum MinecraftPlaceHolder {
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             return ChatColor.stripColor(prefix);
         }
-    };
+    },
+    RANK_GROUP {
+        @Override
+        public String toString() {
+            String prefix = "";
+            if (vaultHook != null) {
+                Chat c = vaultHook.getChat();
+                if (c != null) {
+                    prefix = c.getPrimaryGroup(e.getPlayer());
+                }
+            } else if (pexHook != null) {
+                PermissionsEx pex = pexHook.getPlugin();
+                PermissionUser pexUser = pex.getPermissionsManager().getUser(e.getPlayer().getUniqueId());
+                prefix = pexUser.getPrefix(e.getPlayer().getWorld().getName());
+            }
+            prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+            return ChatColor.stripColor(prefix);
+        }
+    },
+    RANK_PREFIX {
+        @Override
+        public String toString() {
+            String prefix = "";
+            if (vaultHook != null) {
+                Chat c = vaultHook.getChat();
+                if (c != null) {
+                    String group = c.getPrimaryGroup(e.getPlayer());
+                    prefix = c.getGroupPrefix(e.getPlayer().getWorld(), group);
+                    prefix = prefix == null || StringUtils.isEmpty(prefix) ? "" : prefix;
+                }
+            } else if (pexHook != null) {
+                PermissionsEx pex = pexHook.getPlugin();
+                PermissionUser pexUser = pex.getPermissionsManager().getUser(e.getPlayer().getUniqueId());
+                prefix = pexUser.getPrefix(e.getPlayer().getWorld().getName());
+            }
+            prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+            return ChatColor.stripColor(prefix);
+        }
+    },
+    SENDER,
+    NAME;
 
     private static AsyncPlayerChatEvent e;
 
@@ -84,5 +117,10 @@ public enum MinecraftPlaceHolder {
 
     public void init(AsyncPlayerChatEvent e) {
         MinecraftPlaceHolder.e = e;
+    }
+
+    @Override
+    public String toString() {
+        return ChatColor.stripColor(e.getPlayer().getName());
     }
 }

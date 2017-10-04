@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 /**
  * Easily hook other plugins by extending this class to a subclass.
  * Interfaces {@link us.cyrien.mcutils.hook.IPluginHook}
- *
+ * <p>
  * <p> PluginHook implementation example.
  * <pre>
  *         {@code

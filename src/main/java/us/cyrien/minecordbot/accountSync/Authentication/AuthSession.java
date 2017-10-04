@@ -1,15 +1,16 @@
 package us.cyrien.minecordbot.accountSync.Authentication;
 
-import net.dv8tion.jda.core.utils.SimpleLog;
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
+import us.cyrien.mcutils.logger.Logger;
+import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.Database;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmKeyException;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmRequesterException;
 import us.cyrien.minecordbot.accountSync.exceptions.IllegalConfirmSessionIDException;
-import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.entity.MCBUser;
 import us.cyrien.minecordbot.entity.UnifiedUser;
 
@@ -21,7 +22,7 @@ public class AuthSession {
 
     public static final long SYNC_TIMEOUT = 5;
 
-    private final SimpleLog syncLogger = SimpleLog.getLog("MCBSync");
+    private final Logger syncLogger = new Logger("[MCBSync] ");
 
     private Player mcAcc;
     private net.dv8tion.jda.core.entities.User DiscordAcc;
@@ -32,7 +33,7 @@ public class AuthSession {
 
     private final String sessionID = RandomStringUtils.randomNumeric(6);
 
-    public AuthSession(Player mcAcc, net.dv8tion.jda.core.entities.User discordAcc, AuthManager authManager) {
+    public AuthSession(Player mcAcc, User discordAcc, AuthManager authManager) {
         this.mcAcc = mcAcc;
         this.DiscordAcc = discordAcc;
         this.authManager = authManager;
@@ -44,7 +45,7 @@ public class AuthSession {
         mcbSyncLog(SyncMessage.PENDING);
     }
 
-    public AuthSession(Player mcAcc, net.dv8tion.jda.core.entities.User discordAcc) {
+    public AuthSession(Player mcAcc, User discordAcc) {
         this(mcAcc, discordAcc, Minecordbot.getInstance().getAuthManager());
     }
 
@@ -56,7 +57,7 @@ public class AuthSession {
         return mcAcc;
     }
 
-    public net.dv8tion.jda.core.entities.User getDiscordAcc() {
+    public User getDiscordAcc() {
         return DiscordAcc;
     }
 

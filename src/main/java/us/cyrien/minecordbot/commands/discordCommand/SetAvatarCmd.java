@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Icon;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -18,7 +19,7 @@ public class SetAvatarCmd extends MCBCommand {
         this.aliases = new String[]{"sa"};
         this.arguments = "<url>";
         this.help = Locale.getCommandsMessage("setavatar.description").finish();
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
         this.ownerCommand = true;
         this.type = Type.EMBED;
     }

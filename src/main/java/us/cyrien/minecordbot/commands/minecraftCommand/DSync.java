@@ -25,7 +25,7 @@ public class DSync {
     @Command(aliases = "mcbsync", usage = "/mcbsync <Discord user id or Discord username>", desc = "Sync Minecraft and Discord account")
     @Permission("minecordbot.discordsync")
     public void syncRequest(@Sender CommandSender commandSender, String discordID) {
-        JDA jda = Minecordbot.getInstance().getJDA();
+        JDA jda = Minecordbot.getInstance().getBot().getJda();
         User dUser = StringUtils.isNumeric(discordID) ? jda.getUserById(discordID) : null;
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("only players can use this");

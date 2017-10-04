@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.entity.AnimatedGifEncoder;
@@ -25,7 +26,7 @@ public class SpoilerCmd extends MCBCommand {
         this.name = "spoiler";
         this.help = Locale.getCommandsMessage("spoiler.description").finish();
         this.arguments = "<spoiler text>";
-        this.category = minecordbot.ADMIN;
+        this.category = Bot.ADMIN;
         this.type = Type.EMBED;
     }
 

@@ -5,9 +5,9 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.Bukkit;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.localization.Locale;
 
 public class InfoCmd extends MCBCommand {
@@ -17,7 +17,7 @@ public class InfoCmd extends MCBCommand {
         this.name = "info";
         this.aliases = new String[]{"inf", "in"};
         this.help = Locale.getCommandsMessage("info.description").finish();
-        this.category = minecordbot.INFO;
+        this.category = Bot.INFO;
         this.type = Type.EMBED;
     }
 
@@ -27,7 +27,7 @@ public class InfoCmd extends MCBCommand {
         String path = "info.minfo.";
         int textChannelCount = e.getGuild().getTextChannels().size();
         int voiceChannelCount = e.getGuild().getVoiceChannels().size();
-        String clientID = MCBConfig.get("client_id");
+        String clientID = configsManager.getBotConfig().getString("Bot_ID");
         String botName = e.getJDA().getSelfUser().getName();
         Guild guild = e.getGuild();
         Member member = guild.getMember(e.getJDA().getSelfUser());
@@ -37,7 +37,7 @@ public class InfoCmd extends MCBCommand {
         String mcbInfo = "\n" + Locale.getCommandsMessage(path + "version").finish() + ": " + Bukkit.getPluginManager().getPlugin("MineCordBot").getDescription().getVersion() +
                 "\n" + Locale.getCommandsMessage(path + "textchannel").finish() + ": " + textChannelCount +
                 "\n" + Locale.getCommandsMessage(path + "voicechannel").finish() + ": " + voiceChannelCount +
-                "\n" + Locale.getCommandsMessage(path + "uptime").finish() + ": " + getMinecordbot().getUpTime();
+                "\n" + Locale.getCommandsMessage(path + "uptime").finish() + ": " + getMcb().getUpTime();
         String botInfo = "\n" + Locale.getCommandsMessage(path + "clientid").finish() + ": " + clientID +
                 "\n" + Locale.getCommandsMessage(path + "botname").finish() + ": " + botName +
                 "\n" + Locale.getCommandsMessage(path + "botnick").finish() + ": " + nickName;

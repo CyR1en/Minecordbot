@@ -6,20 +6,20 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
 
-public class ShutdownCmd extends MCBCommand {
+public class StartCmd extends MCBCommand {
 
-    public ShutdownCmd(Minecordbot minecordbot) {
+    public StartCmd(Minecordbot minecordbot) {
         super(minecordbot);
-        this.name = "shutdown";
-        this.help = Locale.getCommandsMessage("shutdown.description").finish();
+        this.name = "start";
+        this.help = Locale.getCommandsMessage("start.description").finish();
         this.ownerCommand = true;
         this.category = Bot.OWNER;
-        this.type = Type.EMBED;
+        this.type = MCBCommand.Type.EMBED;
     }
 
     @Override
     protected void doCommand(CommandEvent e) {
-        respond(e, Locale.getCommandMessage("shutdown.shutting").finish());
+        respond(e, Locale.getCommandsMessage("start.starting").finish());
         getMcb().getBot().shutdown();
     }
 }

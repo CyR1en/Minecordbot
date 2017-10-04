@@ -39,6 +39,9 @@ mcb:
     invalid-tc: "Invalid text channel for command."
     no-alias: "There are no other alias for this command"
   commands:
+    start:
+      description: "start the bod."
+      starting: "Starting bot...."
     spoiler:
       description: "creates a spoiler gif."
       includeText: "please provide a text for the spoiler"

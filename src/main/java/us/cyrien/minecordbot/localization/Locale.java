@@ -3,15 +3,19 @@ package us.cyrien.minecordbot.localization;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.cyrien.mcutils.logger.Logger;
-import us.cyrien.minecordbot.configuration.MCBConfig;
+import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 
 import java.io.File;
 
 
 public class Locale {
+    private static MCBConfigsManager configsManager;
 
+    public static void init(MCBConfigsManager config) {
+        Locale.configsManager = config;
+    }
 	private static YamlConfiguration getLocalization() {
-	    String loc = MCBConfig.get("localization");
+	    String loc = configsManager.getBotConfig().getString("Localization");
 	    File f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder() + "/localizations/" + loc + ".yml");
 	    if(!f.exists())
             f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder()+ "localizations/en.yml");
@@ -36,7 +40,7 @@ public class Locale {
     }
 
     public static Formatter getDeathMessage(String path) {
-	    return new Formatter(getTranslatedMessage("mc.death." + path));
+	    return new Formatter(getTranslatedMessage("mc.deaths." + path));
     }
 
     public static Formatter getMcMessage(String path) {

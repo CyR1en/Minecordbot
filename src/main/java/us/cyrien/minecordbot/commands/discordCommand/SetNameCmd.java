@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -15,7 +16,7 @@ public class SetNameCmd extends MCBCommand {
         this.arguments = "<username>";
         this.help = Locale.getCommandsMessage("setusername.description").finish();
         this.ownerCommand = true;
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
         this.type = Type.EMBED;
     }
 

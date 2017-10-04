@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Message;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -16,7 +17,8 @@ public class PurgeCmd extends MCBCommand {
         this.name = "purge";
         this.help = Locale.getCommandsMessage("purge.description").finish();
         this.arguments = "<number>";
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
+        this.ownerCommand = true;
         this.type = Type.EMBED;
     }
 

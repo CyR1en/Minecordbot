@@ -5,15 +5,15 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.json.JSONArray;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.exception.IllegalTextChannelException;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -68,20 +68,20 @@ public class Messenger {
     }
 
     public void sendMessageToAllBoundChannel(String message) {
-        JSONArray tcArray = MCBConfig.get("text_channels");
-        assert tcArray != null;
+        List<String> tcArray = (List<String>) mcb.getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
+        assert tcArray != null : "No bound text channels";
         for (Object s : tcArray) {
-            if (mcb.getJDA().getTextChannelById(s.toString()) != null)
-                mcb.getJDA().getTextChannelById(s.toString()).sendMessage(message).queue();
+            if (mcb.getBot().getJda().getTextChannelById(s.toString()) != null && !StringUtils.isEmpty(toString()))
+                mcb.getBot().getJda().getTextChannelById(s.toString()).sendMessage(message).queue();
         }
     }
 
     public void sendMessageEmbedToAllBoundChannel(MessageEmbed messageEmbed) {
-        JSONArray tcArray = MCBConfig.get("text_channels");
-        assert tcArray != null;
+        List<String> tcArray = (List<String>) mcb.getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
+        assert tcArray != null : "No bound text channels";
         for (Object s : tcArray) {
-            if (mcb.getJDA().getTextChannelById(s.toString()) != null)
-                mcb.getJDA().getTextChannelById(s.toString()).sendMessage(messageEmbed).queue();
+            if (mcb.getBot().getJda().getTextChannelById(s.toString()) != null && !StringUtils.isEmpty(toString()))
+                mcb.getBot().getJda().getTextChannelById(s.toString()).sendMessage(messageEmbed).queue();
         }
     }
 
@@ -95,21 +95,21 @@ public class Messenger {
 
     //By ID stuff
     public void sendMessageEmbedToDiscordByID(String id, MessageEmbed message) throws IllegalTextChannelException {
-        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if(tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue();
     }
 
     public void sendMessageToDiscordByID(String id, String message) throws IllegalTextChannelException {
-        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if(tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue();
     }
 
     public void sendTempMessageToDiscordByID(String id, String message, int duration) throws IllegalTextChannelException {
-        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if(tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
@@ -118,7 +118,7 @@ public class Messenger {
     }
 
     public void sendTempMessageEmbedToDiscordByID(String id, MessageEmbed message, int duration) throws IllegalTextChannelException {
-        TextChannel tc = mcb.getJDA().getTextChannelById(id);
+        TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if(tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
@@ -134,22 +134,6 @@ public class Messenger {
         });
     }
 
-    //Command Response
-    public void sendCommandEmbedResponse(MessageReceivedEvent e, MessageEmbed me, int duration)  {
-        boolean tempResponse = MCBConfig.get("auto_delete_command_response");
-        if (tempResponse)
-            sendTempMessageEmbed(e, me, duration);
-        else
-            sendMessageEmbed(e, me);
-    }
-
-    public void sendCommandResponse(MessageReceivedEvent e, String message, int duration) {
-        boolean tempResponse = MCBConfig.get("auto_delete_command_response");
-        if (tempResponse)
-            sendTempMessage(e, message, duration);
-        else
-            sendMessage(e, message);
-    }
 
     private String cannotSendCode() {
         return "&6[MCBMessenger] &rVerification code cannot be sent because you are blocking Direct Messages. &aEnable Direct Messages and try again.";

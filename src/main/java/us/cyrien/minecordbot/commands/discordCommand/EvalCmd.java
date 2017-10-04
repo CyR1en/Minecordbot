@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import us.cyrien.mcutils.logger.Logger;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 
@@ -18,7 +19,7 @@ public class EvalCmd extends MCBCommand {
         this.help = "js eval function";
         this.aliases = new String[]{"ev"};
         this.ownerCommand = true;
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
     }
 
     @Override

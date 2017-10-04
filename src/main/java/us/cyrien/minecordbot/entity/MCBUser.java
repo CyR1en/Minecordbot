@@ -43,7 +43,7 @@ public class MCBUser {
         nickNames = new HashMap<>();
         name = user.getName();
         ID = user.getId();
-        Minecordbot.getInstance().getJDA().getMutualGuilds(user).forEach(guild -> nickNames.put(guild, guild.getMember(user).getNickname()));
+        Minecordbot.getInstance().getBot().getJda().getMutualGuilds(user).forEach(guild -> nickNames.put(guild, guild.getMember(user).getNickname()));
     }
 
     public Player parseAsPlayer() {

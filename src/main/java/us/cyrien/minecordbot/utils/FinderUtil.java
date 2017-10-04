@@ -9,7 +9,6 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.SimplifiedDatabase;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class FinderUtil {
 
@@ -86,7 +85,7 @@ public class FinderUtil {
     }
 
     public static Member findMember(String query) {
-        List<Guild> guilds = Minecordbot.getInstance().getJDA().getGuilds();
+        List<Guild> guilds = Minecordbot.getInstance().getBot().getJda().getGuilds();
         List<Member> members;
         for (Guild guild : guilds) {
             members = findMember(query, guild);
@@ -98,8 +97,7 @@ public class FinderUtil {
 
     public static Player findPlayerInDatabase(String discordID) {
         Logger.info("Query : " + discordID);
-        Map<Object, String> inverseData = SimplifiedDatabase.getConfig().toMap()
-                .entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+        Map<Object, String> inverseData = SimplifiedDatabase.getInvertedData();
         for (Map.Entry<Object, String> map : inverseData.entrySet()) {
             Logger.info("Map| Key : " + map.getKey() + " Value : " + map.getValue());
             if(discordID.equals(map.getKey())) {
@@ -115,12 +113,12 @@ public class FinderUtil {
     }
 
     public static User findUserInDatabase(Player p) {
-        Map<String, Object> config = SimplifiedDatabase.getConfig().toMap();
+        Map<String, Object> config = SimplifiedDatabase.getData().toMap();
         for (Map.Entry<String, Object> map : config.entrySet()) {
             if (p != null && map.getValue().equals(p.getUniqueId())) {
                 String userID = SimplifiedDatabase.get(p.getUniqueId().toString());
                 if (!userID.equals("Not Synced yet")) {
-                    return Minecordbot.getInstance().getJDA().getUserById(userID);
+                    return Minecordbot.getInstance().getBot().getJda().getUserById(userID);
                 }
             }
         }

@@ -10,10 +10,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
 import us.cyrien.minecordbot.hooks.mcMMOHook;
-import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
@@ -24,7 +22,8 @@ public class ChatListener extends MCBListener {
 
     public ChatListener(Minecordbot mcb) {
         super(mcb);
-        modTextChannel = mcb.getJDA().getTextChannelById(MCBConfig.get("mod_channel"));
+        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
+        modTextChannel = modChannel == null || modChannel.isEmpty() ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -55,19 +54,22 @@ public class ChatListener extends MCBListener {
     }
 
     private void relay(RelayMessage relayMessage) {
-        if (modTextChannel == null) {
+        boolean seeChat = configsManager.getModChannelConfig().getBoolean("See_Chat");
+        if (modTextChannel == null && relayMessage.getType() == ChatType.DEFAULT) {
             messenger.sendMessageToAllBoundChannel(relayMessage + "");
         } else if (relayMessage.getType() == ChatType.DEFAULT) {
             messenger.sendMessageToAllBoundChannel(relayMessage + "");
-            messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
+            if (seeChat)
+                messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
         } else {
-            messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
+            if (seeChat)
+                messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
         }
     }
 
     private String formatMessage(ChatType type, AsyncPlayerChatEvent e) {
         String msg = mentionHandler.handleMention(ChatColor.stripColor(e.getMessage()));
-        String prefix = PrefixParser.parseMinecraftPrefix(MCBConfig.get("message_prefix_discord"), e);
+        String prefix = configsManager.getChatConfig().getString("Minecraft_Prefix");
         return type.getChatPrefix() + "**" + prefix + "** " + msg;
     }
 

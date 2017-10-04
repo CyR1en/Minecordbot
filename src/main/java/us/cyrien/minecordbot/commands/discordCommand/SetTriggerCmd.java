@@ -1,9 +1,9 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.localization.Locale;
 
 public class SetTriggerCmd extends MCBCommand{
@@ -15,7 +15,7 @@ public class SetTriggerCmd extends MCBCommand{
         this.arguments = "<new trigger>";
         this.help = Locale.getCommandsMessage("settrigger.description").finish();
         this.ownerCommand = true;
-        this.category = minecordbot.OWNER;
+        this.category = Bot.OWNER;
         this.type = Type.EMBED;
     }
 
@@ -26,7 +26,8 @@ public class SetTriggerCmd extends MCBCommand{
             respond(e, Locale.getCommandsMessage("settrigger.invalid").finish());
             return;
         }
-        MCBConfig.set("trigger", trigger);
+        configsManager.getBotConfig().set("Command_Trigger", trigger);
+        configsManager.getBotConfig().saveConfig();
         respond(e, Locale.getCommandsMessage("settrigger.changed").finish());
     }
 }

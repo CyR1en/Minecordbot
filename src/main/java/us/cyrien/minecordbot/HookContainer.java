@@ -19,6 +19,12 @@ public class HookContainer {
     private static PermissionsExHook permissionsExHook;
     @Hook
     private static VaultHook vaultHook;
+    @Hook
+    private static SuperVanishHook superVanishHook;
+
+    public static SuperVanishHook getSuperVanishHook() {
+        return superVanishHook;
+    }
 
     public static GriefPreventionHook getGriefPreventionHook() {
         return griefPreventionHook;

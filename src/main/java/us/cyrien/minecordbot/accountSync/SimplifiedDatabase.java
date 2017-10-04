@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimplifiedDatabase extends Database {
 
@@ -95,8 +97,17 @@ public class SimplifiedDatabase extends Database {
         return exists;
     }
 
-    public static JSONObject getConfig() {
+    public static JSONObject getData() {
         return config;
+    }
+
+    public static Map<Object, String> getInvertedData() {
+        Map<String, Object> data = getData().toMap();
+        Map<Object, String> invertedData = new HashMap<>();
+        for(Map.Entry<String, Object> entry: data.entrySet()){
+            invertedData.put(entry.getValue(), entry.getKey());
+        }
+        return invertedData;
     }
 
     public static Path getConfigPath() {

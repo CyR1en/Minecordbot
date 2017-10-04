@@ -1,11 +1,12 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.utils.PermissionUtil;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.DiscordCommandSender;
 import us.cyrien.minecordbot.chat.DiscordConsoleCommandSender;
@@ -21,7 +22,7 @@ public class MCCommandCmd extends MCBCommand {
         this.aliases = new String[]{"mccommand, mcmd"};
         this.arguments = "<Command> [argument]...";
         this.help = Locale.getCommandsMessage("mcmd.description").finish();
-        this.category = minecordbot.MISC;
+        this.category = Bot.MISC;
     }
 
     @Override

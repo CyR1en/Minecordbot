@@ -11,7 +11,7 @@ public class MinecraftMentionHandler {
     private JDA jda;
 
     public MinecraftMentionHandler(Minecordbot mcb) {
-        jda = mcb.getJDA();
+        jda = mcb.getBot().getJda();
     }
 
     public String handleMention(String s) {

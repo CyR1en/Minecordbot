@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
@@ -18,13 +19,13 @@ public class HelpCmd extends MCBCommand {
         super(minecordbot);
         this.name = "help";
         this.help = Locale.getCommandsMessage("help.description").finish();
-        this.category = minecordbot.HELP;
+        this.category = Bot.HELP;
     }
 
     @Override
     protected void doCommand(CommandEvent e) {
         EmbedBuilder eb = new EmbedBuilder();
-        JDA jda = getMinecordbot().getJDA();
+        JDA jda = getMcb().getBot().getJda();
         eb.setColor(e.getGuild().getMember(jda.getSelfUser()).getColor());
         eb.setDescription(Locale.getCommandsMessage("help.more").format(e.getClient().getPrefix()));
         if(e.getArgs().isEmpty()) {
@@ -39,13 +40,13 @@ public class HelpCmd extends MCBCommand {
     }
 
     private EmbedBuilder listCommands(EmbedBuilder ebi) {
-        Command.Category[] categories = {getMinecordbot().ADMIN, getMinecordbot().FUN, getMinecordbot().HELP,
-                getMinecordbot().INFO, getMinecordbot().MISC, getMinecordbot().OWNER};
+        Command.Category[] categories = {Bot.ADMIN, Bot.FUN, Bot.HELP,
+                Bot.INFO, Bot.MISC, Bot.OWNER};
         for (int i = 0; i <= categories.length - 1; i++) {
             StringBuilder str = new StringBuilder();
             if (getAllCommandsWithCategoryOf(categories[i]).size() != 0) {
                 for (Command c : getAllCommandsWithCategoryOf(categories[i])) {
-                    str.append(getMinecordbot().getClient().getPrefix()).append(c.getName())
+                    str.append(getMcb().getBot().getClient().getPrefix()).append(c.getName())
                             .append(c.getArguments() == null ? "" : " " + c.getArguments())
                             .append(" - ").append(c.getHelp()).append("\n");
                 }
@@ -57,7 +58,7 @@ public class HelpCmd extends MCBCommand {
 
     private java.util.List<MCBCommand> getAllCommandsWithCategoryOf(Command.Category category) {
         ArrayList<MCBCommand> commands = new ArrayList<>();
-        for (Command c : getMinecordbot().getClient().getCommands()) {
+        for (Command c : getMcb().getBot().getClient().getCommands()) {
             if (c.getCategory().equals(category))
                 commands.add((MCBCommand)c);
         }

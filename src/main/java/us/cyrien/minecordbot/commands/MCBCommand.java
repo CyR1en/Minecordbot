@@ -10,8 +10,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 import us.cyrien.mcutils.logger.Logger;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.configuration.MCBConfig;
+import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 import us.cyrien.minecordbot.localization.Locale;
 
 import java.awt.*;
@@ -24,25 +25,25 @@ import java.util.function.Consumer;
 
 public abstract class MCBCommand extends Command implements Comparable<Command> {
 
-    private static final long RESPONSE_DURATION = 5;
+    protected static final long RESPONSE_DURATION = 5;
 
-    private final ScheduledExecutorService scheduler;
-    private Minecordbot minecordbot;
+    protected final ScheduledExecutorService scheduler;
+    protected Minecordbot mcb;
+    protected MCBConfigsManager configsManager;
 
     protected boolean auto;
     protected Type type;
 
     public MCBCommand(Minecordbot minecordbot) {
-        this.minecordbot = minecordbot;
+        this.mcb = minecordbot;
         this.guildOnly = true;
         this.helpBiConsumer = (ce, c) -> respond(ce,getHelpCard(ce, c));
         this.botPermissions = setupPerms();
+        configsManager = minecordbot.getMcbConfigsManager();
         type = Type.DEFAULT;
-        Object obj = MCBConfig.get("auto_delete_command_response");
-        auto = false;
-        if(obj != null)
-            auto = Boolean.parseBoolean(obj.toString());
+        auto = configsManager.getBotConfig().getBoolean("Delete_Response");
         scheduler = Executors.newSingleThreadScheduledExecutor();
+        Locale.init(mcb.getMcbConfigsManager());
     }
 
     @Override
@@ -113,7 +114,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
 
     protected static MessageEmbed getHelpCard(CommandEvent e, Command c) {
         EmbedBuilder eb = new EmbedBuilder().setColor(e.getGuild().getMember(e.getJDA().getSelfUser()).getColor());
-        eb.setTitle(c.getName().substring(0, 1).toUpperCase() + c.getName().substring(1) + " Command HelpCmd Card:", null);
+        eb.setTitle(c.getName().substring(0, 1).toUpperCase() + c.getName().substring(1) + " Command Help Card:", null);
         String argument = c.getArguments() == null ? "" : c.getArguments();
         eb.addField("Usage", e.getClient().getPrefix() + c.getName() + " " + argument, false);
         eb.addField("Description", c.getHelp(), false);
@@ -126,7 +127,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         String permission = c.getUserPermissions().length < 1 ? "None" : Arrays.toString(c.getUserPermissions());
         if(c.isOwnerCommand())
             permission = "OWNER";
-        if(c.getCategory().equals(Minecordbot.getInstance().ADMIN))
+        if(c.getCategory().equals(Bot.ADMIN))
             permission = "ADMIN";
         eb.addField("Permission", "Required Permission: " + permission, false);
         return eb.build();
@@ -141,8 +142,8 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         return type;
     }
 
-    public Minecordbot getMinecordbot() {
-        return minecordbot;
+    public Minecordbot getMcb() {
+        return mcb;
     }
 
     private String noPermissionMessage() {

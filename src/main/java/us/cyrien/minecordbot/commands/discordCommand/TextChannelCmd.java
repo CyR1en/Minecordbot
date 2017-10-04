@@ -4,14 +4,13 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import org.json.JSONArray;
+import net.dv8tion.jda.core.entities.TextChannel;
 import us.cyrien.mcutils.logger.Logger;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
-import us.cyrien.minecordbot.configuration.MCBConfig;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.utils.FinderUtil;
-import us.cyrien.minecordbot.utils.JsonUtils;
 
 public class TextChannelCmd extends MCBCommand {
 
@@ -21,7 +20,7 @@ public class TextChannelCmd extends MCBCommand {
         this.aliases = new String[]{"tchannel","tc"};
         this.arguments = "<list | add | remove> [sub command args]...";
         this.help = Locale.getCommandsMessage("textchannel.description").finish();
-        this.category = minecordbot.ADMIN;
+        this.category = Bot.ADMIN;
         this.children = new Command[]{new Add(minecordbot), new List(minecordbot), new Remove(minecordbot)};
         this.type = Type.EMBED;
     }
@@ -37,7 +36,7 @@ public class TextChannelCmd extends MCBCommand {
             super(minecordbot);
             this.name = "list";
             this.help = Locale.getCommandsMessage("textchannel.subcommand.list.description").finish();
-            this.category = minecordbot.MISC;
+            this.category = Bot.MISC;
         }
 
         @Override
@@ -51,9 +50,9 @@ public class TextChannelCmd extends MCBCommand {
             eb.setTitle("- " + Locale.getCommandsMessage((path + "header")).finish() + " -", null);
             eb.setColor(e.getGuild().getMember(e.getJDA().getSelfUser()).getColor());
             int i = 1;
-            JSONArray tcArray = MCBConfig.get("text_channels");
-            for (Object tc : tcArray) {
-                net.dv8tion.jda.core.entities.TextChannel tc1 = e.getJDA().getTextChannelById(tc.toString());
+            java.util.List<String> tcArray = (java.util.List<String>) configsManager.getChatConfig().getList("Relay_Channels");
+            for (String tc : tcArray) {
+                TextChannel tc1 = e.getJDA().getTextChannelById(tc);
                 if (tc1 != null) {
                     String gName = tc1.getGuild().getName();
                     String tcName = tc1.getName();
@@ -73,7 +72,7 @@ public class TextChannelCmd extends MCBCommand {
             this.name = "add";
             this.arguments = "<text channel id or channel name>";
             this.help = Locale.getCommandsMessage("textchannel.subcommand.add.description").finish();
-            this.category = minecordbot.ADMIN;
+            this.category = Bot.ADMIN;
         }
 
         @Override
@@ -83,25 +82,27 @@ public class TextChannelCmd extends MCBCommand {
 
         private void addTextChannel(CommandEvent e) {
             String arg = e.getArgs();
-            JSONArray tcArray = MCBConfig.get("text_channels");
+            java.util.List<String> tcArray = (java.util.List<String>) configsManager.getChatConfig().getList("Relay_Channels");
             String response;
             boolean withID = e.getJDA().getTextChannelById(arg) != null;
             if(withID) {
-                net.dv8tion.jda.core.entities.TextChannel tc = e.getJDA().getTextChannelById(arg);
+                TextChannel tc = e.getJDA().getTextChannelById(arg);
                 if (tc != null) {
-                    tcArray.put(arg);
-                    MCBConfig.set("text_channels", tcArray);
+                    tcArray.add(arg);
+                    configsManager.getChatConfig().set("Relay_Channels", tcArray);
+                    configsManager.getChatConfig().saveConfig();
                 } else {
                     response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
                     respond(e, String.format(response, arg));
                     return;
                 }
             } else {
-                java.util.List<net.dv8tion.jda.core.entities.TextChannel> result = FinderUtil.findTextChannel(arg, e.getGuild());
-                net.dv8tion.jda.core.entities.TextChannel tc = result.size() > 0 ? result.get(0): null;
+                java.util.List<TextChannel> result = FinderUtil.findTextChannel(arg, e.getGuild());
+                TextChannel tc = result.size() > 0 ? result.get(0): null;
                 if(tc != null) {
-                    tcArray.put(tc.getId());
-                    MCBConfig.set("text_channels", tcArray);
+                    tcArray.add(tc.getId());
+                    configsManager.getChatConfig().set("Relay_Channels", tcArray);
+                    configsManager.getChatConfig().saveConfig();
                 } else {
                     response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
                     respond(e, String.format(response, arg));
@@ -121,7 +122,7 @@ public class TextChannelCmd extends MCBCommand {
             this.name = "remove";
             this.arguments = "<text channel id or channel name>";
             this.help = Locale.getCommandsMessage("textchannel.subcommand.remove.description").finish();
-            this.category = minecordbot.ADMIN;
+            this.category = Bot.ADMIN;
         }
 
         @Override
@@ -131,32 +132,32 @@ public class TextChannelCmd extends MCBCommand {
 
         private void removeTextChannel(CommandEvent e) {
             String arg = e.getArgs();
-            JSONArray tcArray = MCBConfig.get("text_channels");
             String response;
             boolean withID = e.getJDA().getTextChannelsByName(arg, true).size() > 0;
+            java.util.List<String> tcArray = (java.util.List<String>) configsManager.getChatConfig().getList("Relay_Channels");
             String tcID = withID ? arg : FinderUtil.findTextChannel(arg, e.getGuild()).get(0).getId();
             if (!containsID(tcID)) {
                 response = Locale.getCommandsMessage("textchannel.tc-not-bound").finish();
                 respond(e, String.format(response, arg));
                 return;
             }
-            if (tcArray.length() == 1) {
+            if (tcArray.size() == 1) {
                 response = Locale.getCommandsMessage("textchannel.last-tc").finish();
                 respond(e, String.format(response, arg));
                 return;
             }
-            tcArray.remove(JsonUtils.indexOf(tcID, tcArray));
-            MCBConfig.set("text_channels", tcArray);
+            tcArray.remove(tcID);
+            configsManager.getChatConfig().set("Relay_Channels", tcArray);
+            configsManager.getChatConfig().saveConfig();
             response = Locale.getCommandsMessage("textchannel.removed-tc").finish();
             respond(e, String.format(response, arg));
             Logger.info("Removed text channel " + arg);
         }
 
         private boolean containsID(String textChannelID) {
-            JSONArray ids = MCBConfig.get("text_channels");
-            assert ids != null;
-            for (Object s : ids)
-                if (s.toString().equalsIgnoreCase(textChannelID))
+            java.util.List<String> ids = (java.util.List<String>) configsManager.getChatConfig().getList("Relay_Channels");
+            for (String s : ids)
+                if (s.equalsIgnoreCase(textChannelID))
                     return true;
             return false;
         }

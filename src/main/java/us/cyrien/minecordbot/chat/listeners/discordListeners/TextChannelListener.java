@@ -5,35 +5,39 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
-import org.json.JSONArray;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.Messenger;
-import us.cyrien.minecordbot.configuration.MCBConfig;
-import us.cyrien.minecordbot.prefix.PrefixParser;
+import us.cyrien.minecordbot.configuration.MCBConfigsManager;
+
+import java.util.List;
 
 public abstract class TextChannelListener extends ListenerAdapter {
 
     private Minecordbot mcb;
     private Messenger messenger;
     protected MCBChannelType channelType;
+    protected MCBConfigsManager configsManager;
 
     public TextChannelListener(Minecordbot mcb) {
         this.mcb = mcb;
         messenger = mcb.getMessenger();
         this.channelType = MCBChannelType.DEFAULT_CHANNEL;
+        configsManager = mcb.getMcbConfigsManager();
     }
 
+    @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        boolean self = event.getAuthor().equals(mcb.getJDA().getSelfUser());
+        boolean self = event.getAuthor().equals(mcb.getBot().getJda().getSelfUser());
         boolean blocked = prefixIsBlocked(event.getMessage().getContent()) || botIsBlocked(event.getAuthor().getId());
-        if(self || blocked)
+        if (self || blocked)
             return;
         switch (channelType) {
             case MOD_CHANNEL:
-                String tcID = MCBConfig.get("mod_channel");
-                TextChannel tc = mcb.getJDA().getTextChannelById(tcID);
-                if(tc != null)
+                String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
+                TextChannel tc = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
+                if (tc != null && event.getTextChannel().equals(tc))
                     execute(event);
                 break;
             case BOUND_CHANNEL:
@@ -53,9 +57,9 @@ public abstract class TextChannelListener extends ListenerAdapter {
     public abstract void execute(MessageReceivedEvent event);
 
     protected boolean botIsBlocked(String id) {
-        JSONArray blockedB = MCBConfig.get("blocked_bots");
-        if (mcb.getJDA().getUserById(id) != null) {
-            User user = mcb.getJDA().getUserById(id);
+        List<String> blockedB = (List<String>) configsManager.getChatConfig().getList("Blocked_Bots");
+        if (mcb.getBot().getJda().getUserById(id) != null) {
+            User user = mcb.getBot().getJda().getUserById(id);
             if (user.isBot()) {
                 for (Object s : blockedB) {
                     if (user.getId().equals(s.toString().trim()))
@@ -67,7 +71,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     }
 
     protected boolean prefixIsBlocked(String message) {
-        JSONArray blockedP = MCBConfig.get("blocked_command_prefix");
+        List<String> blockedP = (List<String>) configsManager.getChatConfig().getList("Blocked_Prefix");
         for (Object p : blockedP) {
             if (message.startsWith(p.toString()))
                 return true;
@@ -76,7 +80,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     }
 
     protected boolean containsChannel(String id) {
-        JSONArray tcArray = MCBConfig.get("text_channels");
+        List<String> tcArray= (List<String>) configsManager.getChatConfig().getList("Relay_Channels");
         if (tcArray != null) {
             for (Object s : tcArray)
                 if (s.toString().equalsIgnoreCase(id))
@@ -87,8 +91,9 @@ public abstract class TextChannelListener extends ListenerAdapter {
 
     protected void relayMessage(MessageReceivedEvent event) {
         String msg = event.getMessage().getContent();
-        String prefix = PrefixParser.parseDiscordPrefixes(MCBConfig.get("message_prefix_minecraft"), event);
-        getMessenger().sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (MCBConfig.get("message_format") + msg)).trim());
+        String prefix = configsManager.getChatConfig().getString("Configuration.Chat-Setting.Discord_Prefix");
+        String format = configsManager.getChatConfig().getString("Configuration.Chat-Setting.Message_Format");
+        getMessenger().sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + (format + msg)).trim());
     }
 
     public Messenger getMessenger() {
@@ -99,10 +104,10 @@ public abstract class TextChannelListener extends ListenerAdapter {
         return mcb;
     }
 
-public enum MCBChannelType {
-    PRIVATE_CHANNEL,
-    BOUND_CHANNEL,
-    MOD_CHANNEL,
-    DEFAULT_CHANNEL
-}
+    public enum MCBChannelType {
+        PRIVATE_CHANNEL,
+        BOUND_CHANNEL,
+        MOD_CHANNEL,
+        DEFAULT_CHANNEL
+    }
 }
