@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -68,21 +67,39 @@ public class Messenger {
     }
 
     public void sendMessageToAllBoundChannel(String message) {
-        List<String> tcArray = (List<String>) mcb.getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
-        assert tcArray != null : "No bound text channels";
-        for (Object s : tcArray) {
-            if (mcb.getBot().getJda().getTextChannelById(s.toString()) != null && !StringUtils.isEmpty(toString()))
-                mcb.getBot().getJda().getTextChannelById(s.toString()).sendMessage(message).queue();
+        List<TextChannel> tcArray = mcb.getRelayChannels();
+        if (tcArray.size() == 0) {
+            Logger.warn("There are no bound relay channels");
+            return;
         }
+        tcArray.forEach((tc) -> tc.sendMessage(message).queue());
     }
 
     public void sendMessageEmbedToAllBoundChannel(MessageEmbed messageEmbed) {
-        List<String> tcArray = (List<String>) mcb.getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
-        assert tcArray != null : "No bound text channels";
-        for (Object s : tcArray) {
-            if (mcb.getBot().getJda().getTextChannelById(s.toString()) != null && !StringUtils.isEmpty(toString()))
-                mcb.getBot().getJda().getTextChannelById(s.toString()).sendMessage(messageEmbed).queue();
+        List<TextChannel> tcArray = mcb.getRelayChannels();
+        if (tcArray.size() == 0) {
+            Logger.warn("There are no bound relay channels");
+            return;
         }
+        tcArray.forEach((tc) -> tc.sendMessage(messageEmbed).queue());
+    }
+
+    public void sendMessageToAllModChannel(String message) {
+        List<TextChannel> tcArray = mcb.getModChannels();
+        if (tcArray.size() == 0) {
+            Logger.warn("There are no bound relay channels");
+            return;
+        }
+        tcArray.forEach((tc) -> tc.sendMessage(message).queue());
+    }
+
+    public void sendMessageEmbedToAllModChannel(MessageEmbed messageEmbed) {
+        List<TextChannel> tcArray = mcb.getModChannels();
+        if (tcArray.size() == 0) {
+            Logger.warn("There are no bound relay channels");
+            return;
+        }
+        tcArray.forEach((tc) -> tc.sendMessage(messageEmbed).queue());
     }
 
     public void sendMessageEmbedToDiscord(TextChannel textChannel, MessageEmbed message) {
@@ -96,21 +113,21 @@ public class Messenger {
     //By ID stuff
     public void sendMessageEmbedToDiscordByID(String id, MessageEmbed message) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
-        if(tc == null)
+        if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue();
     }
 
     public void sendMessageToDiscordByID(String id, String message) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
-        if(tc == null)
+        if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue();
     }
 
     public void sendTempMessageToDiscordByID(String id, String message, int duration) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
-        if(tc == null)
+        if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
             msg.delete().queue();
@@ -119,7 +136,7 @@ public class Messenger {
 
     public void sendTempMessageEmbedToDiscordByID(String id, MessageEmbed message, int duration) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
-        if(tc == null)
+        if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
         tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
             msg.delete().queue();
@@ -127,7 +144,7 @@ public class Messenger {
     }
 
     public void sendMessageToDM(User user, String message) {
-        user.openPrivateChannel().queue(pc -> pc.sendMessage(message).queue(null ,  t -> {
+        user.openPrivateChannel().queue(pc -> pc.sendMessage(message).queue(null, t -> {
             Logger.warn(ChatColor.stripColor(cannotSendCode()));
         }), t -> {
             Logger.warn(ChatColor.stripColor(cannotSendCode()));

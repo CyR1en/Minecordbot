@@ -1,7 +1,6 @@
 package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
-import net.dv8tion.jda.core.entities.TextChannel;
-import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,12 +16,21 @@ public class BroadcastListener extends MCBListener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBroadcastMessage(BroadcastMessageEvent event) {
         String msg = ChatColor.stripColor(event.getMessage());
-        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
-        TextChannel textChannel = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
-        messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
         boolean seeBc = configsManager.getModChannelConfig().getBoolean("See_Broadcast");
-        if(seeBc) {
-            messenger.sendMessageToDiscord(textChannel,"\uD83D\uDCE2 " + msg );
+        boolean privateBroadcast = event.getRecipients().size() < Bukkit.getServer().getOnlinePlayers().size();
+        boolean enableClearLag = configsManager.getBroadcastConfig().getBoolean("See_ClearLag");
+        if(!privateBroadcast) {
+            if(msg.trim().startsWith("[ClearLag]") && enableClearLag) {
+                messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
+                if(seeBc) {
+                    messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg );
+                }
+                return;
+            }
+            messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
+            if(seeBc) {
+                messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg );
+            }
         }
     }
 }

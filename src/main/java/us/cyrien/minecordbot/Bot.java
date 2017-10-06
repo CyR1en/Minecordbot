@@ -131,6 +131,7 @@ public class Bot {
                 new SpoilerCmd(mcb),
                 new SetGameCmd(mcb),
                 new SetNameCmd(mcb),
+                new ShutdownCmd(mcb),
                 new MCCommandCmd(mcb),
                 new SetAvatarCmd(mcb),
                 new SetTriggerCmd(mcb),

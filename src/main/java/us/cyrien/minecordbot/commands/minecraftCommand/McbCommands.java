@@ -8,15 +8,18 @@ import us.cyrien.mcutils.annotations.Permission;
 import us.cyrien.mcutils.annotations.Sender;
 import us.cyrien.minecordbot.Minecordbot;
 
-public class ExeDCommand {
+public class McbCommands {
     @Command(aliases = {"minecordbot", "mcb"}, usage = "do /minecordbot help", desc = "")
     @Permission("minecordbot.reload")
     public void command(@Sender CommandSender commandSender, String s) {
-        if (s.equals("help")) {
+        if (s.equalsIgnoreCase("help")) {
             help(commandSender);
-        } else if (s.equals("reload")) {
+        } else if (s.equalsIgnoreCase("reload")) {
             Minecordbot.getInstance().getMcbConfigsManager().reloadAllConfig();
+            Minecordbot.getInstance().getMcbConfigsManager().setupConfigurations();
             commandSender.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "MineCordBot Reloaded!");
+        } else if(s.equalsIgnoreCase("start")){
+            Minecordbot.getInstance().getBot().start();
         } else {
             help(commandSender);
         }

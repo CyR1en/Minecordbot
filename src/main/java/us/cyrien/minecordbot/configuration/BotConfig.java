@@ -4,8 +4,8 @@ import us.cyrien.mcutils.config.ConfigManager;
 
 public class BotConfig extends BaseConfig {
 
-    public BotConfig(ConfigManager configManager) {
-        super(configManager);
+    public BotConfig(ConfigManager configManager, String[] header) {
+        super(configManager, header);
     }
 
     @Override

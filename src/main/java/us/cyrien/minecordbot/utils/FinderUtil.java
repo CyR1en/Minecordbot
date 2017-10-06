@@ -104,7 +104,6 @@ public class FinderUtil {
                 UUID uuid = UUID.fromString(map.getValue());
                 Logger.info("UUID : " + uuid);
                 Player p = Bukkit.getPlayer(uuid) == null ? Bukkit.getOfflinePlayer(uuid).getPlayer() : Bukkit.getPlayer(uuid);
-                System.out.println(p);
                 if(p != null)
                     return  p;
             }

@@ -20,6 +20,7 @@ public class ReloadCmd extends MCBCommand {
     @Override
     protected void doCommand(CommandEvent e) {
         configsManager.reloadAllConfig();
+        configsManager.setupConfigurations();
         EmbedBuilder eb = new EmbedBuilder().setColor(e.getGuild().getMember(e.getJDA().getSelfUser()).getColor());
         eb.setTitle(Locale.getCommandsMessage("reload.reloaded").finish(), null);
         respond(e, eb.build());

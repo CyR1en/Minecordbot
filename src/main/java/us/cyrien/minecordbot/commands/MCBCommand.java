@@ -4,10 +4,7 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.requests.RestAction;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Bot;
@@ -17,6 +14,7 @@ import us.cyrien.minecordbot.localization.Locale;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -195,6 +193,11 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         embedBuilder.setFooter("Response", null);
         embedBuilder.setTimestamp(event.getMessage().getCreationTime());
         return embedBuilder.build();
+    }
+
+    protected boolean isModChannel(TextChannel c) {
+        List<TextChannel> tcs = mcb.getModChannels();
+        return tcs.contains(c);
     }
 
     public enum Type {

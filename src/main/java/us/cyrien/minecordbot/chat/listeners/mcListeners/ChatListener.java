@@ -3,7 +3,6 @@ package us.cyrien.minecordbot.chat.listeners.mcListeners;
 import com.gmail.nossr50.api.ChatAPI;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,18 +11,16 @@ import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
 import us.cyrien.minecordbot.hooks.mcMMOHook;
+import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
     private final GriefPreventionHook griefPreventionHook = HookContainer.getGriefPreventionHook();
     private final mcMMOHook mcMMOHook = HookContainer.getMcMMOHook();
 
-    private TextChannel modTextChannel;
 
     public ChatListener(Minecordbot mcb) {
         super(mcb);
-        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
-        modTextChannel = modChannel == null || modChannel.isEmpty() ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -54,30 +51,50 @@ public class ChatListener extends MCBListener {
     }
 
     private void relay(RelayMessage relayMessage) {
-        boolean seeChat = configsManager.getModChannelConfig().getBoolean("See_Chat");
-        if (modTextChannel == null && relayMessage.getType() == ChatType.DEFAULT) {
+        boolean seeChatOnMod = configsManager.getModChannelConfig().getBoolean("See_Chat");
+        if (relayMessage.getType() == ChatType.DEFAULT) {
             messenger.sendMessageToAllBoundChannel(relayMessage + "");
-        } else if (relayMessage.getType() == ChatType.DEFAULT) {
-            messenger.sendMessageToAllBoundChannel(relayMessage + "");
-            if (seeChat)
-                messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
-        } else {
-            if (seeChat)
-                messenger.sendMessageToDiscord(modTextChannel, relayMessage + "");
+        }
+        if (seeChatOnMod) {
+            switch (relayMessage.getType()) {
+                case CANCELLED:
+                    boolean seeCancelled = configsManager.getModChannelConfig().getBoolean("See_Cancelled_Chat");
+                    if (seeCancelled)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case GRIEF_PROTECTION_SOFT_MUTE:
+                    boolean seeGPSM = configsManager.getModChannelConfig().getBoolean("See_GriefPrevention_SoftMute");
+                    if (seeGPSM)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case MCMMO_PARTY:
+                    boolean seeParty = configsManager.getModChannelConfig().getBoolean("See_mcMMO_Party_Chat");
+                    if (seeParty)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case MCMMO_ADMIN:
+                    boolean seeAdmin = configsManager.getModChannelConfig().getBoolean("See_mcMMO_Admin_Chat");
+                    if (seeAdmin)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case DEFAULT:
+                    messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+            }
         }
     }
 
     private String formatMessage(ChatType type, AsyncPlayerChatEvent e) {
         String msg = mentionHandler.handleMention(ChatColor.stripColor(e.getMessage()));
-        String prefix = configsManager.getChatConfig().getString("Minecraft_Prefix");
+        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString("Minecraft_Prefix"), e);
         return type.getChatPrefix() + "**" + prefix + "** " + msg;
     }
 
     public enum ChatType {
         GRIEF_PROTECTION_SOFT_MUTE("GriefProtection-SoftMute| "),
-        MCMMO_PARTY("mcMMO-party| "),
-        MCMMO_ADMIN("mcMMO-admin| "),
-        CANCELLED("\\uD83D\\uDD15| "),
+        MCMMO_PARTY("mcMMO-party | "),
+        MCMMO_ADMIN("mcMMO-admin | "),
+        CANCELLED("\uD83D\uDD15 | "),
         DEFAULT("");
 
         public String chatPrefix;

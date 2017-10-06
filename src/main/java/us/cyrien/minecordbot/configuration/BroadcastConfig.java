@@ -4,8 +4,8 @@ import us.cyrien.mcutils.config.ConfigManager;
 
 public class BroadcastConfig extends BaseConfig {
 
-    public BroadcastConfig(ConfigManager configManager) {
-        super(configManager);
+    public BroadcastConfig(ConfigManager configManager, String[] header) {
+        super(configManager, header);
     }
 
     @Override
@@ -30,6 +30,11 @@ public class BroadcastConfig extends BaseConfig {
         if (config.get("See_Player_Death") == null) {
             comment = "Will player death event broadcast be relayed to Discord?";
             config.set("See_Player_Death", true, comment);
+            config.saveConfig();
+        }
+        if(config.get("See_ClearLag") == null) {
+            comment = "Will ClearLag broadcasts be relayed to Discord?";
+            config.set("See_ClearLag", true, comment);
             config.saveConfig();
         }
         if (config.get("Hide_Incognito_Player") == null) {

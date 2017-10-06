@@ -2,10 +2,10 @@ package us.cyrien.minecordbot.configuration;
 
 import us.cyrien.mcutils.config.ConfigManager;
 
-public class ChatConfig extends BaseConfig{
-    
-    public ChatConfig(ConfigManager configManager) {
-        super(configManager);
+public class ChatConfig extends BaseConfig {
+
+    public ChatConfig(ConfigManager configManager, String[] header) {
+        super(configManager, header);
     }
 
     @Override
@@ -13,7 +13,7 @@ public class ChatConfig extends BaseConfig{
         String comment;
         String[] commentArr;
         if (config.get("Relay_Channels") == null) {
-            commentArr = new String[]{"Channel ID's of text channels you", "want to bind Minecraft chat with"};
+            commentArr = new String[]{"MCBChannel ID's of text channels you", "want to bind Minecraft chat with"};
             config.set("Relay_Channels", new String[]{"123123123", "123123123"}, commentArr);
             config.saveConfig();
         }
@@ -46,4 +46,20 @@ public class ChatConfig extends BaseConfig{
             config.saveConfig();
         }
     }
+
+    /*
+    public enum ChatNodes {
+        RELAY_CHANNELS("Relay_Channels"),
+        MESSAGE_FORMAT("")
+        private String node;
+        Nodes(String node) {
+            this.node = node;
+        }
+
+        @Override
+        public String toString() {
+            return node;
+        }
+    }
+        */
 }

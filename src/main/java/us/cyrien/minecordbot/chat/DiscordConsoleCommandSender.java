@@ -37,7 +37,6 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
         String message = "```\n";
         for (String s : strings)
             message += s + "\n";
-        System.out.println(message);
         e.getTextChannel().sendMessage(ChatColor.stripColor(message) + "```").queue();
     }
 

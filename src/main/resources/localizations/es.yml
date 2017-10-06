@@ -126,7 +126,7 @@ mcb:
       list:
         header: "Bound Text Channels"
         guild_name: "Guild Name"
-        channel_name: "Channel Name"
+        channel_name: "MCBChannel Name"
       subcommand:
         list:
           description: "lists all bound text channels"

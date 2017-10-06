@@ -2,8 +2,6 @@ package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.TextChannel;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,19 +27,17 @@ public class UserQuitJoinListener extends MCBListener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
-        TextChannel textChannel = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
         String msg = Locale.getMcMessage("logout").finish();
         boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
         boolean seeQuit = configsManager.getModChannelConfig().getBoolean("See_Player_Quit");
-        if (textChannel != null && seeQuit) {
+        if (seeQuit) {
             String m = msg;
             if (svHook != null) {
-                boolean seeSV =  configsManager.getModChannelConfig().getBoolean("See_SV");
+                boolean seeSV = configsManager.getModChannelConfig().getBoolean("See_SV");
                 if (VanishAPI.isInvisible(e.getPlayer()) || e.getQuitMessage().equals("Fake") && seeSV)
                     m = "(Vanish) " + m;
             }
-            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(LEAVE_COLOR)
+            messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
                     .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
         if (isLeaveBroadcast) {
@@ -65,19 +61,17 @@ public class UserQuitJoinListener extends MCBListener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
-        TextChannel textChannel = StringUtils.isEmpty(modChannel) ? null : mcb.getBot().getJda().getTextChannelById(modChannel);
         String msg = Locale.getMcMessage("login").finish();
         boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");
         boolean seeJoin = configsManager.getModChannelConfig().getBoolean("See_Player_Join");
-        if (textChannel != null && seeJoin) {
+        if (seeJoin) {
             String m = msg;
             if (svHook != null) {
                 boolean seeSV = configsManager.getModChannelConfig().getBoolean("See_SV");
                 if (VanishAPI.isInvisible(e.getPlayer()) || e.getJoinMessage().equals("Fake") && seeSV)
                     m = "(Vanish) " + m;
             }
-            messenger.sendMessageEmbedToDiscord(textChannel, new EmbedBuilder().setColor(JOIN_COLOR)
+            messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(JOIN_COLOR)
                     .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
         if (isJoinBroadCast) {

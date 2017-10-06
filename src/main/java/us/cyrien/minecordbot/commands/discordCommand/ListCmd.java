@@ -69,14 +69,6 @@ public class ListCmd extends MCBCommand implements Listener {
         return eb.build();
     }
 
-    private boolean isModChannel(TextChannel textChannel) {
-        String modChannel = configsManager.getModChannelConfig().getString("Mod_TextChannel");
-        TextChannel tc = getMcb().getBot().getJda().getTextChannelById(modChannel);
-        if (tc != null)
-            return tc.equals(textChannel);
-        return false;
-    }
-
     private void updateList(TextChannel textChannel) {
         if (message != null)
             message.editMessage(generateList(textChannel)).complete();

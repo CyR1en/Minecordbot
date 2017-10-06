@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot;
 
 import com.jagrosh.jdautilities.waiter.EventWaiter;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +24,8 @@ import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Minecordbot extends JavaPlugin {
 
@@ -34,23 +37,21 @@ public class Minecordbot extends JavaPlugin {
     private Bot bot;
     private MCBConfigsManager mcbConfigsManager;
     private EventWaiter eventWaiter;
+    private LocalizationFiles localizationFiles;
+    private ConfigManager cfgManager;
     private Metrics metrics;
 
     @Override
     public void onEnable() {
-        authManager = new AuthManager();
-        eventWaiter = new EventWaiter();
-        ConfigManager cfgManager = new ConfigManager(this);
-        mcbConfigsManager = new MCBConfigsManager(cfgManager);
+        initInsantances();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             Frame.main();
             postInit();
         }, 1L);
-        if(mcbConfigsManager.setupConfigurations()) {
+        if (mcbConfigsManager.setupConfigurations()) {
             Locale.init(mcbConfigsManager);
             bot = new Bot(this, eventWaiter);
             initDatabase();
-            initInstances();
             initMCmds();
             initPluginHooks();
             initMListener();
@@ -63,6 +64,18 @@ public class Minecordbot extends JavaPlugin {
     public void onDisable() {
         if (bot != null)
             bot.shutdown();
+    }
+
+    private void initInsantances() {
+        localizationFiles = new LocalizationFiles(this, true);
+        cfgManager = new ConfigManager(this);
+        authManager = new AuthManager();
+        eventWaiter = new EventWaiter();
+        mcbConfigsManager = new MCBConfigsManager(cfgManager);
+        messenger = new Messenger(this);
+        upTimer = new UpTimer();
+        metrics = new Metrics(this);
+        instance = this;
     }
 
     //Framework stuff
@@ -124,7 +137,7 @@ public class Minecordbot extends JavaPlugin {
     private void initMCmds() {
         registerModule(Dcmd.class);
         registerModule(Dme.class);
-        registerModule(ExeDCommand.class);
+        registerModule(McbCommands.class);
         registerModule(DSync.class);
         registerModule(DConfirm.class);
     }
@@ -152,11 +165,6 @@ public class Minecordbot extends JavaPlugin {
     }
 
     private void initInstances() {
-        messenger = new Messenger(this);
-        LocalizationFiles localizationFiles = new LocalizationFiles(this, true);
-        instance = this;
-        upTimer = new UpTimer();
-        metrics = new Metrics(this);
     }
 
     private boolean broadcastAvailable() {
@@ -165,6 +173,28 @@ public class Minecordbot extends JavaPlugin {
                 .replaceAll("(_)([A-Z])\\w+", "").replaceAll("v", "");
         double parsed = Double.valueOf(formattedVersion.replaceAll("_", "."));
         return parsed >= 1.12;
+    }
+
+    public List<TextChannel> getModChannels() {
+        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList("Mod_Channels");
+        return findValidTextChannels(tcID);
+    }
+
+    public List<TextChannel> getRelayChannels() {
+        List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
+        return findValidTextChannels(tcID);
+    }
+
+    private List<TextChannel> findValidTextChannels(List<String> tcID) {
+        List<TextChannel> out = new ArrayList<>();
+        tcID.forEach((s) -> {
+            if (!s.isEmpty()) {
+                TextChannel tc = bot.getJda().getTextChannelById(s);
+                if(tc != null)
+                    out.add(tc);
+            }
+        });
+        return out;
     }
 
     public EventWaiter getEventWaiter() {
@@ -193,5 +223,13 @@ public class Minecordbot extends JavaPlugin {
 
     public String getUpTime() {
         return upTimer.getCurrentUptime();
+    }
+
+    public LocalizationFiles getLocalizationFiles() {
+        return localizationFiles;
+    }
+
+    public ConfigManager getCfgManager() {
+        return cfgManager;
     }
 }
