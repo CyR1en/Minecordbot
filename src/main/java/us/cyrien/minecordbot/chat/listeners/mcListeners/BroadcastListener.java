@@ -17,19 +17,21 @@ public class BroadcastListener extends MCBListener {
     public void onBroadcastMessage(BroadcastMessageEvent event) {
         String msg = ChatColor.stripColor(event.getMessage());
         boolean seeBc = configsManager.getModChannelConfig().getBoolean("See_Broadcast");
+        boolean seePlBc = configsManager.getBroadcastConfig().getBoolean("See_Plugin_Broadcast");
         boolean privateBroadcast = event.getRecipients().size() < Bukkit.getServer().getOnlinePlayers().size();
-        boolean enableClearLag = configsManager.getBroadcastConfig().getBoolean("See_ClearLag");
-        if(!privateBroadcast) {
-            if(msg.trim().startsWith("[ClearLag]") && enableClearLag) {
+        boolean seeCL = configsManager.getBroadcastConfig().getBoolean("See_ClearLag");
+        if (!privateBroadcast && seePlBc) {
+            boolean isClearLag = msg.contains("[ClearLag]");
+            if (isClearLag && seeCL) {
                 messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
-                if(seeBc) {
-                    messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg );
+                if (seeBc) {
+                    messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg);
                 }
-                return;
-            }
-            messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
-            if(seeBc) {
-                messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg );
+            } else if (!isClearLag) {
+                messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
+                if (seeBc) {
+                    messenger.sendMessageToAllModChannel("\uD83D\uDCE2 " + msg);
+                }
             }
         }
     }

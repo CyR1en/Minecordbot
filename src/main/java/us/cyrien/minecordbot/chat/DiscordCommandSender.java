@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.Set;
 
 public class DiscordCommandSender implements CommandSender {
+
     private final PermissibleBase perm;
     private CommandEvent e;
 

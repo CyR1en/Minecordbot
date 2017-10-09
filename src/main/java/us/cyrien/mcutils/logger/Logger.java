@@ -37,6 +37,10 @@ public class Logger {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + getPrefix() + msg);
 	}
 
+	public static void debug(String msg) {
+
+	}
+
 	private static String getPrefix() {
 		return prefix;
 	}

@@ -13,7 +13,7 @@ public class SetGameCmd extends MCBCommand {
         super(minecordbot);
         this.name = "setgame";
         this.help = Locale.getCommandsMessage("setgame.description").finish();
-        this.arguments = "[game]";
+        this.arguments = "[game]...";
         this.ownerCommand = true;
         this.category = Bot.OWNER;
         this.type = Type.EMBED;

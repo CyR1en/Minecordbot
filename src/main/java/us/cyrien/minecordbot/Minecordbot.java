@@ -188,7 +188,7 @@ public class Minecordbot extends JavaPlugin {
     private List<TextChannel> findValidTextChannels(List<String> tcID) {
         List<TextChannel> out = new ArrayList<>();
         tcID.forEach((s) -> {
-            if (!s.isEmpty()) {
+            if (!s.isEmpty() && bot.getJda() != null) {
                 TextChannel tc = bot.getJda().getTextChannelById(s);
                 if(tc != null)
                     out.add(tc);

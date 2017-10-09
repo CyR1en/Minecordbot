@@ -41,7 +41,7 @@ public class BroadcastConfig extends BaseConfig {
             commentArr = new String[]{"Do players with minecordbot.incognito",
                     "permission be hidden from",
                     "Join/Quit broadcast that are being relayed to Discord."};
-            config.set("Hide_Incognito_Player", true, commentArr);
+            config.set("Hide_Incognito_Player", false, commentArr);
             config.saveConfig();
         }
     }

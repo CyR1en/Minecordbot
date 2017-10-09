@@ -33,9 +33,11 @@ public class EvalCmd extends MCBCommand {
         }
 
         ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("Nashorn");
+        scriptEngine.put("mcb", mcb);
         scriptEngine.put("event", event);
         scriptEngine.put("jda", event.getJDA());
         scriptEngine.put("guild", event.getGuild());
+        scriptEngine.put("cfgMngr", mcb.getMcbConfigsManager());
         scriptEngine.put("channel", event.getTextChannel());
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getColor());

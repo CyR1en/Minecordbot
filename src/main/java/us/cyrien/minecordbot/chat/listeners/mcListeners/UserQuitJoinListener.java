@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -24,7 +25,7 @@ public class UserQuitJoinListener extends MCBListener {
         super(mcb);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = Locale.getMcMessage("logout").finish();
@@ -49,16 +50,16 @@ public class UserQuitJoinListener extends MCBListener {
             } else if (isVanished(e.getPlayer())) {
                 return;
             } else if (allowIncog) {
-                if (!e.getPlayer().hasPermission("minecordbot.incognito"))
+                if (!e.getPlayer().hasPermission("minecordbot.incognito")) {
                     return;
-            } else {
-                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                }
             }
+            messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
+                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = Locale.getMcMessage("login").finish();
@@ -83,12 +84,12 @@ public class UserQuitJoinListener extends MCBListener {
             } else if (isVanished(e.getPlayer())) {
                 return;
             } else if (allowIncog) {
-                if (e.getPlayer().hasPermission("minecordbot.incognito"))
+                if (e.getPlayer().hasPermission("minecordbot.incognito")) {
                     return;
-            } else {
-                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                }
             }
+            messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
+                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
     }
 

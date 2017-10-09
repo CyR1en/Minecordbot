@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.entities.*;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.SimplifiedDatabase;
 
@@ -96,13 +95,10 @@ public class FinderUtil {
     }
 
     public static Player findPlayerInDatabase(String discordID) {
-        Logger.info("Query : " + discordID);
         Map<Object, String> inverseData = SimplifiedDatabase.getInvertedData();
         for (Map.Entry<Object, String> map : inverseData.entrySet()) {
-            Logger.info("Map| Key : " + map.getKey() + " Value : " + map.getValue());
             if(discordID.equals(map.getKey())) {
                 UUID uuid = UUID.fromString(map.getValue());
-                Logger.info("UUID : " + uuid);
                 Player p = Bukkit.getPlayer(uuid) == null ? Bukkit.getOfflinePlayer(uuid).getPlayer() : Bukkit.getPlayer(uuid);
                 if(p != null)
                     return  p;

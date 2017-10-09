@@ -62,30 +62,38 @@ public class Bot {
             String trigger = mcb.getMcbConfigsManager().getBotConfig().getString("Command_Trigger");
             String gameStr = mcb.getMcbConfigsManager().getBotConfig().getString("Default_Game");
             if (token == null || token.isEmpty()) {
-                Logger.err("No token was provided. Shutting down...");
-                mcb.getServer().shutdown();
+                Logger.err("No token was provided. Please provide a valid token. Bot will not be able to start." +
+                        "You can do \"/mcb start\" in-game to start the bot after filling out the configuration");
                 return false;
             } else if (token.equals("sample.token")) {
-                Logger.err("Token was left at default. Please provide a different token. Shutting down...");
-                mcb.getServer().shutdown();
+                Logger.err("Token was left at default. Please provide a valid token. Bot will not be able to start." +
+                        "You can do \"/mcb start\" in-game to start the bot after filling out the configuration");
                 return false;
             }
             JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
-            Game game = Game.of("Type " + trigger + "help");
+            Game game;
             if (gameStr != null && !gameStr.equals("default") && !gameStr.isEmpty()) {
                 game = Game.of(gameStr);
+            } else {
+                 game = Game.of("Type " + trigger + "help");
             }
             builder.setGame(game);
+            cb.setGame(game);
             jda = builder.buildAsync();
-        } catch (LoginException | RateLimitedException e) {
-            e.printStackTrace();
+        } catch (LoginException e) {
+            Logger.err("The provided bot token was invalid");
+            return false;
+        } catch (RateLimitedException e) {
+            Logger.err(e.getMessage());
             return false;
         }
         return true;
     }
 
     public void shutdown() {
-        if (jda != null) jda.shutdown();
+        if (jda != null) {
+            jda.shutdown();
+        }
     }
 
     public void registerDiscordCommandModule(Command... commands) {

@@ -12,7 +12,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Minecordbot_main" />
     <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.3.1_276" level="project" />
+    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.3.1_286" level="project" />
     <orderEntry type="library" name="Gradle: com.jagrosh:JDA-Utilities:1.8" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.6" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.7.25" level="project" />

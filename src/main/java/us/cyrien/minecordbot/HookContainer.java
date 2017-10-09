@@ -51,7 +51,6 @@ public class HookContainer {
     }
 
     public static EssentialsHook getEssentialsHook() {
-
         return essentialsHook;
     }
 }
