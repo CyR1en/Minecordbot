@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -47,15 +48,10 @@ public class UserQuitJoinListener extends MCBListener {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
                         .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
                 e.setQuitMessage("");
-            } else if (isVanished(e.getPlayer())) {
-                return;
-            } else if (allowIncog) {
-                if (!e.getPlayer().hasPermission("minecordbot.incognito")) {
-                    return;
-                }
+            } else if (check(e)) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
+                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
             }
-            messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
     }
 
@@ -76,21 +72,27 @@ public class UserQuitJoinListener extends MCBListener {
                     .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
         if (isJoinBroadCast) {
-            boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
             if (e.getJoinMessage().equals("Fake")) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
                         .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
                 e.setJoinMessage("");
-            } else if (isVanished(e.getPlayer())) {
-                return;
-            } else if (allowIncog) {
-                if (e.getPlayer().hasPermission("minecordbot.incognito")) {
-                    return;
-                }
+            } else if (check(e)) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
+                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
             }
-            messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                    .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
         }
+    }
+
+    private boolean check(PlayerEvent e) {
+        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
+        if (isVanished(e.getPlayer())) {
+            return false;
+        } else if (allowIncog) {
+            if (e.getPlayer().hasPermission("minecordbot.incognito")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isVanished(Player player) {
@@ -99,4 +101,5 @@ public class UserQuitJoinListener extends MCBListener {
         }
         return false;
     }
+
 }

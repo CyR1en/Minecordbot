@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,6 +20,7 @@ import us.cyrien.minecordbot.localization.Locale;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ListCmd extends MCBCommand implements Listener {
 
@@ -35,19 +37,26 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @Override
     protected void doCommand(CommandEvent e) {
-        TextChannel tc = isModChannel(e.getTextChannel()) ? e.getTextChannel() : null;
-        respond(generateList(tc), e).queue(m -> message = m);
+        TextChannel tc = e.getTextChannel();
+        tc.sendMessage("Listing....").queue(m -> {
+            message = m;
+            m.delete().queue();
+        });
+        respond(generateList(message), e).queue(m -> mcb.getChatManager().addSavedMessage(m));
     }
 
-    private MessageEmbed generateList(@Nullable TextChannel textChannel) {
+    private MessageEmbed generateList(@Nullable Message message) {
         StringBuilder out;
         EmbedBuilder eb = new EmbedBuilder();
+        Guild guild = message != null ? message.getGuild() : null;
+        if (guild != null)
+            eb.setColor(guild.getMember(mcb.getBot().getJda().getSelfUser()).getColor());
         List<Player> playerList = (List<Player>) Bukkit.getServer().getOnlinePlayers();
         if (playerList == null || playerList.size() == 0) {
             eb.setTitle("There are no players online...", null);
         } else if (playerList.size() == 1 && isVanished(playerList.get(0))) {
             eb.setTitle("There are no players online...", null);
-        } else if (textChannel != null) {
+        } else if (isModChannel(message.getTextChannel())) {
             out = new StringBuilder();
             int counter = 1;
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -69,13 +78,17 @@ public class ListCmd extends MCBCommand implements Listener {
         return eb.build();
     }
 
-    private void updateList(TextChannel textChannel) {
-        if (message != null)
-            message.editMessage(generateList(textChannel)).complete();
+    private void updateList(Message message) {
+        message.editMessage(generateList(message)).queue();
     }
 
     private void updateList() {
-        updateList(null);
+        System.out.println(mcb.getChatManager().getSavedMessage());
+        scheduler.schedule(() -> {
+            for (Message msg : mcb.getChatManager().getSavedMessage())
+                updateList(msg);
+        }, 1, TimeUnit.SECONDS);
+
     }
 
     private boolean isVanished(Player player) {
@@ -87,11 +100,13 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
+        System.out.println("Join");
         updateList();
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
+        System.out.println("Quit");
         updateList();
     }
 }

@@ -1,26 +1,32 @@
 package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
-import com.gmail.nossr50.api.ChatAPI;
+import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
+import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.UserManager;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.chat.ChatStatus;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
-import us.cyrien.minecordbot.hooks.mcMMOHook;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
     private final GriefPreventionHook griefPreventionHook = HookContainer.getGriefPreventionHook();
-    private final mcMMOHook mcMMOHook = HookContainer.getMcMMOHook();
-
+    private ChatStatus stat;
 
     public ChatListener(Minecordbot mcb) {
         super(mcb);
+        stat = new ChatStatus();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -31,6 +37,17 @@ public class ChatListener extends MCBListener {
         relay(relayMessage);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onmcMMOAdminChat(McMMOAdminChatEvent e) {
+        mcb.getChatManager().getChatStatus().setIsmcmmoAdminChat(true);
+    }
+
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onmcMMOPartyChat(McMMOPartyChatEvent e) {
+        mcb.getChatManager().getChatStatus().setmcmmopartychat(true);
+    }
+
     private ChatType getChatType(AsyncPlayerChatEvent e) {
         GriefPrevention griefPrevention = griefPreventionHook == null ? null : griefPreventionHook.getPlugin();
         DataStore dataStore = griefPrevention == null ? null : griefPrevention.dataStore;
@@ -38,16 +55,22 @@ public class ChatListener extends MCBListener {
             return ChatType.CANCELLED;
         } else if (griefPrevention != null && dataStore.isSoftMuted(e.getPlayer().getUniqueId())) {
             return ChatType.GRIEF_PROTECTION_SOFT_MUTE;
-        } else if (mcMMOHook != null) {
-            if (ChatAPI.isUsingPartyChat(e.getPlayer()))
-                return ChatType.MCMMO_PARTY;
-            else if (ChatAPI.isUsingAdminChat(e.getPlayer()))
-                return ChatType.MCMMO_ADMIN;
-            else
-                return ChatType.DEFAULT;
         } else {
             return ChatType.DEFAULT;
         }
+    }
+
+    private ChatType handleMCMMO(Player player) {
+        if (!Misc.isNPCEntity(player) && UserManager.hasPlayerDataKey(player)) {
+            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
+            if (mcMMOPlayer != null) {
+                if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY))
+                    return ChatType.MCMMO_PARTY;
+                else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN))
+                    return ChatType.MCMMO_ADMIN;
+            }
+        }
+        return ChatType.DEFAULT;
     }
 
     private void relay(RelayMessage relayMessage) {
@@ -86,7 +109,7 @@ public class ChatListener extends MCBListener {
 
     private String formatMessage(ChatType type, AsyncPlayerChatEvent e) {
         String msg = mentionHandler.handleMention(ChatColor.stripColor(e.getMessage()));
-        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString("Minecraft_Prefix"), e);
+        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString("Minecraft_Prefix"), e.getPlayer());
         return type.getChatPrefix() + "**" + prefix + "** " + msg;
     }
 

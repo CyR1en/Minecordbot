@@ -22,4 +22,8 @@ public class MCBListener implements Listener {
         mentionHandler = new MinecraftMentionHandler(mcb);
         configsManager = mcb.getMcbConfigsManager();
     }
+
+    public MCBConfigsManager getConfigsManager() {
+        return configsManager;
+    }
 }

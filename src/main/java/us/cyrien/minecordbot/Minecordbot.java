@@ -12,6 +12,7 @@ import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthManager;
 import us.cyrien.minecordbot.accountSync.Database;
 import us.cyrien.minecordbot.accountSync.listener.UserConnectionListener;
+import us.cyrien.minecordbot.chat.ChatManager;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.chat.listeners.mcListeners.*;
 import us.cyrien.minecordbot.commands.discordCommand.ListCmd;
@@ -39,6 +40,7 @@ public class Minecordbot extends JavaPlugin {
     private EventWaiter eventWaiter;
     private LocalizationFiles localizationFiles;
     private ConfigManager cfgManager;
+    private ChatManager chatManager;
     private Metrics metrics;
 
     @Override
@@ -66,11 +68,17 @@ public class Minecordbot extends JavaPlugin {
             bot.shutdown();
     }
 
+    public ChatManager getChatManager() {
+        return chatManager;
+    }
+
     private void initInsantances() {
         localizationFiles = new LocalizationFiles(this, true);
         cfgManager = new ConfigManager(this);
+        chatManager = new ChatManager(this);
         authManager = new AuthManager();
         eventWaiter = new EventWaiter();
+
         mcbConfigsManager = new MCBConfigsManager(cfgManager);
         messenger = new Messenger(this);
         upTimer = new UpTimer();

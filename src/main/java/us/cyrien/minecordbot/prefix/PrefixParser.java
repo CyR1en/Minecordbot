@@ -1,7 +1,7 @@
 package us.cyrien.minecordbot.prefix;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.entity.Player;
 
 public class PrefixParser {
 
@@ -17,9 +17,9 @@ public class PrefixParser {
         return prefix;
     }
 
-    public static String parseMinecraftPrefix(String prefix, AsyncPlayerChatEvent e) {
+    public static String parseMinecraftPrefix(String prefix, Player p) {
         for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
-            s.init(e);
+            s.init(p);
             String pH = "{" + s.name().toLowerCase() + "}";
             String pH0 ="\\{" + s.name().toLowerCase() + "}";
             if (prefix.contains(pH)) {
