@@ -37,6 +37,7 @@ mcb:
     no-perm-message: "Nie masz dostępu do tej komendy."
     invalid-arguments: "błędny arguments."
     invalid-tc: "błędny kanał dla tej komendy."
+    no-alias: "Nie ma innych aliasów dla tej komendy"
   commands:
     spoiler:
       description: "creates a spoiler gif"
@@ -68,27 +69,40 @@ mcb:
       description: "Wykonaj komendę na serwerze."
     setgame:
       description: "ustaw grę bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "Game set to %s!"
       notplaying: "%s no longer playing anything"
       playing: "%s now playing"
+=======
+      changed: "Gra zmieniona na %s!"
+>>>>>>> master:res/localizations/pl.yml
     setavatar:
       description: "ustaw awatar bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "successfully changed avatar"
       invalid: "invalid or missing URL"
       failed: "failed to set avatar"
       couldNotLoad: "could not load image from provided URL"
+=======
+      changed: "zmieniono awatar bota."
+>>>>>>> master:res/localizations/pl.yml
     setusername:
       description: "ustaw nazwę bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "username Changed from %s to %s"
       limit: "username can only be changed twice per hour"
       invalid: "username is invalid"
+=======
+      changed: "zmieniono nazwę!"
+>>>>>>> master:res/localizations/pl.yml
     setnickname:
        description: "ustaw nick bota."
+       changed: "zmieniono nick bota!"
     ping:
       description: "Sprawdź czas reakcji bot'a."
     help:
       description: "Pokaż listę komend bądź sposób użycia komendy."
-      too-much-args: "zbyd dużo argumentów."
+      too-much-args: "zbyt dużo argumentów."
       no-such-command: "Nie ma takiej komendy."
       list:
         header: "Komendy MineCordBota"
@@ -97,6 +111,7 @@ mcb:
         help: "Komendy Pomocy"
         mod: "Komendy Moderowania Serwera"
         misc: "Różne Komendy"
+        special: "Specjalne Komendy"
     list:
       description: "Lista wszysystkich graczy online."
       list:
@@ -104,7 +119,7 @@ mcb:
     info:
       description: "Informacje o bocie"
       minfo:
-        generalinfo_header: "== Generalne Informacje =="
+        generalinfo_header: "== Informacje Generalne =="
         nonick: "Bot nie ma nicku."
         version: "Wersje"
         textchannel: "Kanały tekstowe"
