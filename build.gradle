@@ -1,5 +1,5 @@
 plugins {
-    id "groovy"
+    id 'groovy'
     id 'java'
     id 'application'
     id 'idea'
@@ -7,22 +7,11 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.0.6'
+version '2.1.1'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-        resources {
-            srcDir 'res'
-        }
-    }
-}
 
 repositories {
     mavenCentral()
@@ -31,26 +20,42 @@ repositories {
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+    maven {
+        name = 'natrolite-repo'
+        url = 'https://repo.natrolite.org/repository/maven-public/'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        name = 'vault-repo'
+        url = 'http://nexus.hc.to/content/repositories/pub_releases'
+    }
+    maven {
+        name = 'sk89q-repo'
+        url = 'http://maven.sk89q.com/repo'
+    }
     flatDir {
         dirs 'libs'
     }
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
-    compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'org.apache.commons:commons-collections4:4.1'
+    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
 
-    compile 'net.java.dev.jna:jna:4.2.2'
+    compile 'net.dv8tion:JDA:3.3.1_286'
+    compile 'com.jagrosh:JDA-Utilities:1.8'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
-    compile 'com.neovisionaries:nv-websocket-client:1.30'
-    compile('com.mashape.unirest:unirest-java:1.4.9') {
-        exclude group: 'junit', module: 'junit'
-    }
-    compile 'net.dv8tion:JDA:3.0.0_160'
-    compile name: 'mv'
-    compile name: 'Frame'
-    compile name: 'PermissionsEx-1.23.4'
+    compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
+    compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
+    compileOnly 'org.natrolite:vault-api:1.6.1'
+    compileOnly name: 'mv'
+    compileOnly name: 'PermissionsEx-1.23.4'
+    compileOnly name: 'mcMMO'
+    compileOnly name: 'EssentialsX'
+    compileOnly name: 'SuperVanish'
 }
 
 jar {
@@ -64,23 +69,19 @@ jar {
 shadowJar {
     classifier = 'Shaded'
     dependencies {
-        exclude(dependency('org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'))
-        exclude(dependency('junit:junit:4.10'))
-        exclude(dependency('javax.persistence:persistence-api:1.0'))
+        exclude(dependency('org.spigotmc:spigot-api:1.12.1-R0.1-SNAPSHOT'))
         exclude(dependency('com.google.guava:guava:21.0'))
         exclude(dependency('com.google.code.gson:gson:2.8.0'))
-        exclude(dependency('org.avaje:ebean:2.8.1'))
         exclude(dependency('net.md-5:bungeecord-chat:1.12-SNAPSHOT'))
         exclude(dependency('org.hamcrest:hamcrest-core:1.1'))
         exclude(dependency('org.yaml:snakeyaml:1.18'))
-        exclude(dependency(name: 'PermissionsEx-1.23.4'))
-        exclude(dependency(name: 'mv'))
-        exclude(dependency('org.json:json:20160810'))
         exclude(dependency('commons-lang:commons-lang:2.6'))
-        exclude(dependency('com.googecode.json-simple:json-simple:1.1.1'))
+        exclude(dependency('com.github.TechFortress:GriefPrevention:16.7.1'))
+        exclude(dependency('rhino:js:1.7R2'))
+        exclude(dependency('junit:junit:4.10'))
     }
     relocate 'org.apache', 'shadow.org.apache'
-    relocate ('org.json', 'shadow.org.json')
+    relocate('org.json', 'shadow.org.json')
 }
 
 build {

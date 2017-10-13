@@ -1,0 +1,138 @@
+mc:
+  message:
+    login: "{player} joined the game"
+    logout: "{player} left the game"
+  deaths:
+    drowning: "{player} drowned"
+    suffocation: "{player} suffocated"
+    suicide: "{player} committed suicide"
+    fall: "{player} hit the ground to hard"
+    void: "{player} fell out of the map"
+    lava: "{player} tried to swim in lava"
+    fire: "{player} burnt to death"
+    cactus: "{player} was pricked to death"
+    pvp: "{player} was killed by {killer}"
+    wither: "{player} withered away"
+    anvil: "{player} was squashed by a falling anvil"
+  mobs:
+    wolf: "{player} was slain by a Wolf"
+    ocelot: "{player} was slain by an Ocelot"
+    zombie: "{player} was slain by a Zombie"
+    skeleton: "{player} was shot by a Skeleton"
+    pigzombie: "{player} was slain by a Pig Zombie"
+    spider: "{player} was slain by a Spider"
+    cavespider: "{player} was slain by a Cave Spider"
+    silverfish: "{player} was slain by a Silverfish"
+    slime: "{player} was slain by a Slime"
+    creeper: "{player} blew up"
+    enderman: "{player} was slain by an Enderman"
+    ghast: "{player} was slain by a Ghast"
+    blaze: "{player} was slain by a Blaze"
+    enderdragon: "{player} was slain by an Ender Dragon"
+    wither: "{player} was slain by Wither"
+    witherskeleton: "{player} was slain by a Wither Skeleton"
+    witch: "{player} was killed by a Witch"
+mcb:
+  command:
+    no-perm-message: "Sorry you do not have access to this command."
+    invalid-arguments: "Invalid arguments."
+    invalid-tc: "Invalid text channel for command."
+    no-alias: "There are no other alias for this command"
+  commands:
+    spoiler:
+      description: "creates a spoiler gif."
+      includeText: "please provide a text for the spoiler"
+      tooManyLines: "there's too many lines. Cannot be greater than 8"
+      spoilerPreview: "[ Hover to see spoiler ]"
+      failedToGenerate: "failed to generate spoiler image"
+    purge:
+      description: "delete up to 100 previous messages."
+      invalidNum: "invalid number, must be 1 to 100"
+      deleting: "deleting messages..."
+      failedToRetrieve: "failed to retrieve messages"
+      couldNotRetrieve: "could not retrieve messages"
+    poll:
+      description: "make a quick poll."
+    settrigger:
+      description: "set a command trigger for the bot."
+      changed: "trigger have been set to %s"
+      invalid: "%s cannot be a command trigger"
+    shutdown:
+      description: "Shut down the bot."
+      shutting: "Shutting down..."
+    reload:
+      description: "Reload the config for MineCordBot."
+      reloaded: "Minecordbot config reloaded!"
+    eval:
+      description: "JavaScript eval().s"
+    mcmd:
+      description: "Execute Minecraft commands from Discord. \n In game account needs to be in game to execute commands as the in game account."
+    setgame:
+      description: "set your discord bot's game."
+      changed: "Game set to %s!"
+      notplaying: "%s no longer playing anything"
+      playing: "%s now playing"
+    setavatar:
+      description: "set your discord bot's avatar."
+      changed: "successfully changed avatar"
+      invalid: "invalid or missing URL"
+      failed: "failed to set avatar"
+      couldNotLoad: "could not load image from provided URL"
+    setusername:
+      description: "set your discord bot's username."
+      changed: "username Changed from %s to %s"
+      limit: "username can only be changed twice per hour"
+      invalid: "username is invalid"
+    ping:
+      description: "check bot's response time."
+    help:
+      description: "List all commands and show usage for a command."
+      more: "For more detailed help, do %s<command> help."
+      too-much-args: "you've input too much arguments."
+      no-such-command: "There's no such %s command."
+      list:
+        header: "MineCordBot Commands"
+        info: "Informative Commands"
+        fun: "Fun Commands"
+        help: "Help Commands"
+        mod: "Server Moderating Commands"
+        misc: "Miscellaneous Commands"
+        special: "Special Command"
+    list:
+      description: "List all online players on the minecraft server."
+      list:
+        header: "Online Players on Minecraft server"
+    info:
+      description: "Know information about MineCordBot and the bot"
+      minfo:
+        generalinfo_header: "== General Information =="
+        nonick: "Bot doesn't have a nickname."
+        version: "Version"
+        textchannel: "Text Channels"
+        voicechannel: "Voice Channels"
+        uptime: "Up Time"
+        botinfo_header: "=== Bot Information ==="
+        clientid: "Bot Client ID"
+        botname: "Bot Name"
+        botnick: "Bot Nickname"
+        footer: "=== More InfoCmd ==="
+    textchannel:
+      description: "add, remove, or list textchannels that's bound to Minecraft"
+      invalid-tc: "Text channel `%s` is not a valid text channel."
+      added-tc: "Added text channel `%s` to the bound channels."
+      tc-not-bound: "Text channel `%s` is not bound to Minecraft"
+      last-tc: "Cannot remove textchannel `%s` because it's the last textchannel on the list"
+      removed-tc: "Removed text channel `%s` from the list"
+      list:
+        header: "Bound Text Channels"
+        guild_name: "Guild Name"
+        channel_name: "MCBChannel Name"
+      subcommand:
+        list:
+          description: "lists all bound text channels"
+        add:
+          description: "add a new bound channel"
+        remove:
+          description: "remove bound channel"
+  messenger:
+    no-player: "{player} cannot be found."

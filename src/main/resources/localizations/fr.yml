@@ -1,0 +1,140 @@
+mc:
+  message:
+    login: "{player} a rejoint la partie"
+    logout: "{player} a quitté la partie"
+  deaths:
+    drowning: "{player} s'est noyé(e)"
+    suffocation: "{player} a suffoqué dans un mur"
+    suicide: "{player} s'est suicidé(e)"
+    fall: "{player} s'est écrasé(e) au sol"
+    void: "{player} a littéralement quitté notre monde"
+    lava: "{player} a essayé de nager dans la lave"
+    fire: "{player} s'est fait carboniser à mort"
+    cactus: "{player} s'est fait piquer à mort"
+    pvp: "{player} s'est fait tuer par {killer}"
+    wither: "{player} est mort(e) de décomposition"
+    anvil: "{player} s'est fait écraser par une enclume"
+  mobs:
+    wolf: "{player} s'est fait tuer par un Loup"
+    ocelot: "{player} s'est fait tuer par un Ocelot"
+    zombie: "{player} s'est fait tuer par un Zombie"
+    skeleton: "{player} s'est fait tirer dessus par un Squelette"
+    pigzombie: "{player} s'est fait tuer par un Cochon Zombie"
+    spider: "{player} s'est fait tuer par une Arraignée"
+    cavespider: "{player} s'est fait tuer par une Arraignée venimeuse"
+    silverfish: "{player} s'est fait tuer par un Poission d'Argent'"
+    slime: "{player} s'est fait tuer par un Slime"
+    creeper: "{player} a péri dans une explosion"
+    enderman: "{player} s'est fait tuer par un Enderman"
+    ghast: "{player} s'est fait tuer par un Ghast"
+    blaze: "{player} s'est fait tuer par un Blaze"
+    enderdragon: "{player} s'est fait tuer par un Ender Dragon"
+    wither: "{player} s'est fait tuer par un' Wither"
+    witherskeleton: "{player} s'est fait tuer par un Wither Squelette"
+    witch: "{player} s'est fait tuer par une Sorcière"
+mcb:
+  command:
+    no-perm-message: "Vous n'avez pas accès à cette commande."
+    invalid-arguments: "Arguments invalides."
+    invalid-tc: "Salon textuel invalide pour la commande."
+    no-alias: "Il n'y a pas d'autre alias pour cette commande."
+  commands:
+    spoiler:
+      description: "créer un gif spoiler"
+      includeText: "ajoutez un texte pour le spoiler"
+      tooManyLines: "trop de lignes. La limite est de 8."
+      spoilerPreview: "[ Passer la souris pour voir le spoiler ]"
+      failedToGenerate: "la génération du spoiler a échoué"
+    purge:
+      description: "supprimer jusqu'à 100 messages précédents"
+      invalidNum: "mauvaise valeur, choisissez un nombre entre 1 et 100"
+      deleting: "suppression du message..."
+      failedToRetrieve: "échec lors de la recherche des messages"
+      couldNotRetrieve: "impossible de retrouver les messages"
+    poll:
+      description: "créer un sondage"
+    settrigger:
+      description: "définir un caractère trigger pour les commandes bot."
+      changed: "nouveau trigger: %s"
+      invalid: "%s ne peut pas servir de trigger"
+    shutdown:
+      description: "éteindre le bot."
+      shutting: "Je m'éteinsblblblbllb..."
+    reload:
+      description: "recharger la config MineCordBot"
+      reloaded: "Config Minecordbot rechargée !"
+    eval:
+      description: "JavaScript eval()"
+    mcmd:
+      description: "executer une commande Minecraft depuis Discord."
+    setgame:
+      description: "définir le jeu du bot Discord."
+      changed: "Jeu défini : %s !"
+      notplaying: "%s ne joue à aucun jeu"
+      playing: "%s joue"
+    setavatar:
+      description: "définir l'avatar du bot."
+      changed: "L'avatar du bot a été modifié !"
+      invalid: "URL invalide ou manquante"
+      failed: "erreur lors du changement d'avatar'"
+      couldNotLoad: "l'image indiquée n'a pas pu être chargée"
+    setusername:
+      description: "définir le nom utilisateur du bot."
+      changed: "Nom modifié !"
+    setnickname:
+      description: "définir le surnom du bot discord."
+      changed: "Surnom modifié !"
+      limit: "le surnon ne peut être modifier que 2 fois toutes les heures"
+      invalid: "le surnom est invalide"
+    ping:
+      description: "tester le temps de réponse du bot."
+    help:
+      description: "lister les commandes/obtenir les infos sur une commande."
+      too-much-args: "trop d'arguments."
+      no-such-command: "La commande %s n'existe pas."
+      list:
+        header: "Commandes MineCordBot"
+        info: "Commandes d'information"
+        fun: "Commandes pour le lulz"
+        help: "Commandes d'aide"
+        mod: "Commandes de modération serveur"
+        misc: "Commandes diverses"
+        special: "Commandes spéciales"
+    list:
+      description: "lister les joueurs connectés sur Minecraft."
+      list:
+        header: "Joueurs Connectés au Serveur Minecraft"
+    info:
+      description: "obtenir les informations sur MineCordBot et sur le bot"
+      minfo:
+        generalinfo_header: "== Infos Globales =="
+        nonick: "Le bot n'a pas de surnom."
+        version: "Version"
+        textchannel: "Salons Textuels"
+        voicechannel: "Salons Vocaux"
+        uptime: "Allumé Depuis"
+        botinfo_header: "=== Infos Bot ==="
+        clientid: "ID Client Bot"
+        botname: "Nom du Bot"
+        botnick: "Surnom du Bot"
+        footer: "=== Plus d'Infos ==="
+    textchannel:
+      description: "ajouter/retirer/lister les salons textuels connectés à MineCordBot"
+      invalid-tc: "Le salon textuel `%s` n'est pas un salon valide."
+      added-tc: "Salon textuel `%s` ajouté aux salons connectés."
+      tc-not-bound: "Le salon textuel `%s` n'est pas connecté à Minecraft"
+      last-tc: "Le salon textuel `%s` ne peut pas être retiré car c'est le dernier salon sur la liste"
+      removed-tc: "Salon `%s` retiré de la liste"
+      list:
+        header: "Salons Textuels Connectés"
+        guild_name: "Nom de Guilde"
+        channel_name: "Nom du Salon"
+      subcommand:
+        list:
+          description: "lister tous les salons reliés"
+        add:
+          description: "relier un nouveau salon"
+        remove:
+          description: "supprimer le salon relié"
+  messenger:
+    no-player: "{player} est introuvable."

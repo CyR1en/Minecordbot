@@ -1,0 +1,152 @@
+mc:
+  message:
+    login: "{player} dołączył do gry"
+    logout: "{player} opuścił gre"
+  deaths:
+    drowning: "{player} utonął"
+    suffocation: "{player} udusił się w ścianie"
+    suicide: "{player} popełnił samobójstwo"
+    fall: "{player} zbyt mocno uderzył w ziemię"
+    void: "{player} wypadł za mapę"
+    lava: "{player} próbował pływać w lawie"
+    fire: "{player} spłonął"
+    cactus: "{player} został zakłuty na śmierć"
+    pvp: "{player} został zabity przez {killer}"
+    wither: "{player} zosał zabity przez Withera"
+    anvil: "{player} został zmiażdżony przez kowadło"
+  mobs:
+    wolf: "{player} został zabity przez Wilkailka"
+    ocelot: "{player} został zabity przez Ocelota"
+    zombie: "{player} został zabity przez Zombie"
+    skeleton: "{player} został zastrzelony przez Szkieleta"
+    pigzombie: "{player} został zabity przez Świnie-Zombie"
+    spider: "{player} został zabity przez Pająka"
+    cavespider: "{player} został zabity przez Pająka jaskiniowego"
+    silverfish: "{player} został zabity przez Silverfish-a"
+    slime: "{player} został zabity przez Szlam"
+    creeper: "{player} wyleciał w powietrze"
+    enderman: "{player} został zabity przez Endermana"
+    ghast: "{player} został zabity przez Ghasta"
+    blaze: "{player} został zabity przez Płomyka"
+    enderdragon: "{player} został zabity przez Smoka Kresu"
+    wither: "{player} został zabity przez Withera"
+    witherskeleton: "{player} został zabity przez Mrocznego Szkieleta"
+    witch: "{player} został zabity przez Wiedźmę"
+mcb:
+  command:
+    no-perm-message: "Nie masz dostępu do tej komendy."
+    invalid-arguments: "błędny arguments."
+    invalid-tc: "błędny kanał dla tej komendy."
+    no-alias: "Nie ma innych aliasów dla tej komendy"
+  commands:
+    spoiler:
+      description: "creates a spoiler gif"
+      includeText: "please provide a text for the spoiler"
+      tooManyLines: "there's too many lines. Cannot be greater than 8"
+      spoilerPreview: "[ Hover to see spoiler ]"
+      failedToGenerate: "failed to generate spoiler image"
+    purge:
+      description: "delete up to 100 previous messages"
+      invalidNum: "invalid number, must be 1 to 100"
+      deleting: "deleting messages..."
+      failedToRetrieve: "failed to retrieve messages"
+      couldNotRetrieve: "could not retrieve messages"
+    poll:
+      description: "make a poll"
+    settrigger:
+      description: "ustaw nowy trigger dla komendy bota."
+      changed: "trigger have been set to %s"
+      invalid: "%s cannot be a command trigger"
+    shutdown:
+      description: "Wyłącz bota."
+      shutting: "Shutting down..."
+    reload:
+      description: "przeładuj konfing dla MineCordBota"
+      reloaded: "Przeładowano konfing MineCordBota!"
+    eval:
+      description: "Rozwiąż rówananie matematyczne"
+    mcmd:
+      description: "Wykonaj komendę na serwerze."
+    setgame:
+      description: "ustaw grę bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
+      changed: "Game set to %s!"
+      notplaying: "%s no longer playing anything"
+      playing: "%s now playing"
+=======
+      changed: "Gra zmieniona na %s!"
+>>>>>>> master:res/localizations/pl.yml
+    setavatar:
+      description: "ustaw awatar bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
+      changed: "successfully changed avatar"
+      invalid: "invalid or missing URL"
+      failed: "failed to set avatar"
+      couldNotLoad: "could not load image from provided URL"
+=======
+      changed: "zmieniono awatar bota."
+>>>>>>> master:res/localizations/pl.yml
+    setusername:
+      description: "ustaw nazwę bota."
+<<<<<<< HEAD:src/main/resources/localizations/pl.yml
+      changed: "username Changed from %s to %s"
+      limit: "username can only be changed twice per hour"
+      invalid: "username is invalid"
+=======
+      changed: "zmieniono nazwę!"
+>>>>>>> master:res/localizations/pl.yml
+    setnickname:
+       description: "ustaw nick bota."
+       changed: "zmieniono nick bota!"
+    ping:
+      description: "Sprawdź czas reakcji bot'a."
+    help:
+      description: "Pokaż listę komend bądź sposób użycia komendy."
+      too-much-args: "zbyt dużo argumentów."
+      no-such-command: "Nie ma takiej komendy."
+      list:
+        header: "Komendy MineCordBota"
+        info: "Komendy informacyjne"
+        fun: "Śmieszne Komendy"
+        help: "Komendy Pomocy"
+        mod: "Komendy Moderowania Serwera"
+        misc: "Różne Komendy"
+        special: "Specjalne Komendy"
+    list:
+      description: "Lista wszysystkich graczy online."
+      list:
+        header: "Gracze Online"
+    info:
+      description: "Informacje o bocie"
+      minfo:
+        generalinfo_header: "== Informacje Generalne =="
+        nonick: "Bot nie ma nicku."
+        version: "Wersje"
+        textchannel: "Kanały tekstowe"
+        voicechannel: "Kanały głosowe"
+        uptime: "Czas działania"
+        botinfo_header: "=== Informacje o Bocie ==="
+        clientid: "Id klienta bota"
+        botname: "Nazwa bota"
+        botnick: "Nick bota"
+        footer: "=== Więcej informacji ==="
+    textchannel:
+      description: "dodaj, usuń, lub wyświetl listę kanałów tekstowych przypisanych do MCB"
+      invalid-tc: "Kanał `%s` nie jest prawidłowym kanałem tekstowym."
+      added-tc: "Dodano kanał `%s` do połączonych kanałów tekstowych."
+      tc-not-bound: "Kanał `%s` nie jest połączony z Minecraftem"
+      last-tc: "Nie można usunąć kanału `%s poniewarz jest ostatnim kanałem na liścia"
+      removed-tc: "Usunięto kanał `%s` z listy kanałów"
+      list:
+        header: "Przypisane Kanały"
+        guild_name: "Nazwa Gildii"
+        channel_name: "Nazwa Kanału"
+      subcommand:
+        list:
+          description: "lists all bound text channels"
+        add:
+          description: "add a new bound channel"
+        remove:
+          description: "remove bound channel"
+  messenger:
+    no-player: "Nie znaleziono gracza {player}."
