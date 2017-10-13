@@ -1,13 +1,10 @@
-package us.cyrien.minecordbot.chat;
+package us.cyrien.minecordbot.chat.entity;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
+import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
@@ -16,13 +13,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
-public class DiscordConsoleCommandSender implements ConsoleCommandSender {
+public class DiscordCommandSender implements CommandSender {
 
-    protected final ConvoTracker conversationTracker = new ConvoTracker();
     private final PermissibleBase perm;
     private CommandEvent e;
 
-    public DiscordConsoleCommandSender(CommandEvent e) {
+    public DiscordCommandSender(CommandEvent e) {
         this.e = e;
         perm = new PermissibleBase(this);
     }
@@ -35,7 +31,7 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
     @Override
     public void sendMessage(String[] strings) {
         String message = "```\n";
-        for (String s : strings)
+        for(String s : strings)
             message += s + "\n";
         e.getTextChannel().sendMessage(ChatColor.stripColor(message) + "```").queue();
     }
@@ -123,29 +119,4 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
     public void setOp(boolean b) {
         throw new UnsupportedOperationException("Cannot change operator status of Minecord bot");
     }
-
-    public void sendRawMessage(String message) {
-        e.getTextChannel().sendMessage("`" + ChatColor.stripColor(message) + "`");
-    }
-
-    public boolean beginConversation(Conversation conversation) {
-        return false;
-    }
-
-    public void abandonConversation(Conversation conversation) {
-        this.conversationTracker.abandonConversation(conversation, new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
-    }
-
-    public void abandonConversation(Conversation conversation, ConversationAbandonedEvent details) {
-        this.conversationTracker.abandonConversation(conversation, details);
-    }
-
-    public void acceptConversationInput(String input) {
-        this.conversationTracker.acceptConversationInput(input);
-    }
-
-    public boolean isConversing() {
-        return this.conversationTracker.isConversing();
-    }
-
 }

@@ -69,7 +69,6 @@ public class Messenger {
     public void sendMessageToAllBoundChannel(String message) {
         List<TextChannel> tcArray = mcb.getRelayChannels();
         if (tcArray.size() == 0) {
-            Logger.warn("There are no bound relay channels");
             return;
         }
         tcArray.forEach((tc) -> tc.sendMessage(message).queue());
@@ -78,7 +77,6 @@ public class Messenger {
     public void sendMessageEmbedToAllBoundChannel(MessageEmbed messageEmbed) {
         List<TextChannel> tcArray = mcb.getRelayChannels();
         if (tcArray.size() == 0) {
-            Logger.warn("There are no bound relay channels");
             return;
         }
         tcArray.forEach((tc) -> tc.sendMessage(messageEmbed).queue());
@@ -87,7 +85,6 @@ public class Messenger {
     public void sendMessageToAllModChannel(String message) {
         List<TextChannel> tcArray = mcb.getModChannels();
         if (tcArray.size() == 0) {
-            Logger.warn("There are no bound Mod channels");
             return;
         }
         tcArray.forEach((tc) -> tc.sendMessage(message).queue());
@@ -96,7 +93,6 @@ public class Messenger {
     public void sendMessageEmbedToAllModChannel(MessageEmbed messageEmbed) {
         List<TextChannel> tcArray = mcb.getModChannels();
         if (tcArray.size() == 0) {
-            Logger.warn("There are no bound Mod channels");
             return;
         }
         tcArray.forEach((tc) -> tc.sendMessage(messageEmbed).queue());

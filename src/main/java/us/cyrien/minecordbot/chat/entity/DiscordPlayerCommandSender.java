@@ -1,4 +1,4 @@
-package us.cyrien.minecordbot.chat;
+package us.cyrien.minecordbot.chat.entity;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.*;
