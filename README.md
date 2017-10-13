@@ -6,10 +6,11 @@
 [![Documentation](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/button_documentation.png)](https://github.com/CyR1en/Minecordbot-v2/wiki)
 [![Bug Tracker](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/button_bug-tracker.png)](https://github.com/CyR1en/Minecordbot-v2/issues)
 
-__Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.0.5](https://dev.bukkit.org/projects/minecordbot-bukkit/files/2426990)*  | __Current Version:__ [MineCordBot 2.0.6](https://github.com/CyR1en/Minecordbot-v2/releases/tag/2.0.6)
+__Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.1.0](https://github.com/CyR1en/Minecordbot/releases/tag/2.1.0)*  | __Current Version:__ [MineCordBot 2.1.1](https://github.com/CyR1en/Minecordbot/releases/tag/v2.1.1-final)
 
 ---
 ### __Features:__
+* MCBSync™, an account sync system
 * Simple and Lightweight Installation
 * Intuitive command usage
 * Fully Configurable
@@ -26,7 +27,6 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.0
 ### You can also...  
 [![Auri](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/auri_16.png) Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone  
 [![Discord](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/discord-d_16.png) Join the Discord](https://discord.gg/bETVHje) - Talk with the developers and other server admins  
-[![Website](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/globe_16.png) Visit Cyrien.us](https://cyrien.us) - For the ocasional blogpost or announcement  
 
 ---
 __Third-Party Licenses__  
