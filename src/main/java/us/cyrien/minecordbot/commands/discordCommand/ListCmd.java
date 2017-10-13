@@ -83,7 +83,6 @@ public class ListCmd extends MCBCommand implements Listener {
     }
 
     private void updateList() {
-        System.out.println(mcb.getChatManager().getSavedMessage());
         scheduler.schedule(() -> {
             for (Message msg : mcb.getChatManager().getSavedMessage())
                 updateList(msg);
@@ -100,13 +99,11 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        System.out.println("Join");
         updateList();
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
-        System.out.println("Quit");
         updateList();
     }
 }
