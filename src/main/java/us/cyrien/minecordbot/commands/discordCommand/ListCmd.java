@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 public class ListCmd extends MCBCommand implements Listener {
 
-    private Message message;
-
     public ListCmd(Minecordbot minecordbot) {
         super(minecordbot);
         this.name = "list";
@@ -39,10 +37,9 @@ public class ListCmd extends MCBCommand implements Listener {
     protected void doCommand(CommandEvent e) {
         TextChannel tc = e.getTextChannel();
         tc.sendMessage("Listing....").queue(m -> {
-            message = m;
-            m.delete().queue();
+            respond(generateList(m), e).queue(msg -> mcb.getChatManager().addSavedMessage(msg));
+            updateList();
         });
-        respond(generateList(message), e).queue(m -> mcb.getChatManager().addSavedMessage(m));
     }
 
     private MessageEmbed generateList(@Nullable Message message) {
