@@ -45,7 +45,7 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        initInsantances();
+        initInstances();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             Frame.main();
             postInit();
@@ -72,7 +72,7 @@ public class Minecordbot extends JavaPlugin {
         return chatManager;
     }
 
-    private void initInsantances() {
+    private void initInstances() {
         localizationFiles = new LocalizationFiles(this, true);
         cfgManager = new ConfigManager(this);
         chatManager = new ChatManager(this);
@@ -166,13 +166,18 @@ public class Minecordbot extends JavaPlugin {
     }
 
     private void postInit() {
-        if (HookContainer.getEssentialsHook() != null)
+        if (HookContainer.getEssentialsHook() != null) {
             registerMinecraftEventModule(new HelpOpListener(this));
-        if (HookContainer.getSuperVanishHook() != null)
+            Logger.info("Successfully Hooked Essentials and now listening for events");
+        }
+        if (HookContainer.getSuperVanishHook() != null) {
             registerMinecraftEventModule(new SuperVanishListener(this));
-    }
-
-    private void initInstances() {
+            Logger.info("Successfully Hooked SuperVanish and now listening for events");
+        }
+        if (HookContainer.getMcMMOHook() != null) {
+            registerMinecraftEventModule(new McMMOListener(this));
+            Logger.info("Successfully Hooked mcMMO and now listening for events");
+        }
     }
 
     private boolean broadcastAvailable() {
@@ -198,7 +203,7 @@ public class Minecordbot extends JavaPlugin {
         tcID.forEach((s) -> {
             if (!s.isEmpty() && bot.getJda() != null) {
                 TextChannel tc = bot.getJda().getTextChannelById(s);
-                if(tc != null)
+                if (tc != null)
                     out.add(tc);
             }
         });
