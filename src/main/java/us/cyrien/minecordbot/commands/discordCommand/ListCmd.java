@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,9 +34,8 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @Override
     protected void doCommand(CommandEvent e) {
-        TextChannel tc = e.getTextChannel();
-        tc.sendMessage("Listing....").queue(m -> {
-            respond(generateList(m), e).queue(msg -> mcb.getChatManager().addSavedMessage(msg));
+        respond("Listing....", e).queue(m -> {
+            mcb.getChatManager().addSavedMessage(m);
             updateList();
         });
     }
