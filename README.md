@@ -23,6 +23,8 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.1
 * Four levels of permissions
 * Fun commands
 
+[Learn more about MineCordBot here](https://github.com/CyR1en/Minecordbot/wiki)
+
 ---
 ### You can also...  
 [![Auri](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/auri_16.png) Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone  
