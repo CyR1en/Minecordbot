@@ -1,5 +1,5 @@
 # ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__
-## A Powerful Way to Bridge Minecraft and Discord
+## A Powerful Way to Bridge Discord and Minecraft
 ### Configurable, Simple, Easy
 
 [![Download](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/button_download.png)](https://github.com/CyR1en/Minecordbot-v2/releases)
@@ -10,20 +10,19 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.1
 
 ---
 ### __Features:__
-* MCBSync™, an account sync system
+* Sync your Discord and Minecraft accounts with MCBSync™
 * Simple and Lightweight Installation
 * Intuitive command usage
-* Fully Configurable
-* Multiple channel binds
+* Capable of Explicit Configuration
+* Bind many channels, or one
 * Cross-server command execution
-* Localized in English, Polish, German, Romanian and Pirate(YARRRR!)
-* Works with various other chat plugins
+* Localized in English, Polish, German, Romanian and Pirate *YARRRR!*
+* Compatibility with many other chat plugins
 * Sleek command response interface
 * Tab auto-completion for in-game mentions
 * Four levels of permissions
-* Fun commands
 
-[Learn more about MineCordBot here](https://github.com/CyR1en/Minecordbot/wiki)
+[Learn more about MineCordBot](https://github.com/CyR1en/Minecordbot/wiki)
 
 ---
 ### You can also...  
@@ -32,4 +31,4 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.1
 
 ---
 __Third-Party Licenses__  
-_Minecordbot relies on some third-party applications to provide certain functions. Full licenses are available in the `/libs/licenses/` directory of the source code archives and in the [repository](https://github.com/CyR1en/Minecordbot-v2/tree/master/libs/licenses) in .txt format._
+_MineCordBot relies on some third-party apps and libraries to provide certain functions. Their licenses are available in the [`/libs/licenses/` directory](https://github.com/CyR1en/Minecordbot-v2/tree/master/libs/licenses)._
