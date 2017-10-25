@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 public class ListCmd extends MCBCommand implements Listener {
 
-    private Message message;
-
     public ListCmd(Minecordbot minecordbot) {
         super(minecordbot);
         this.name = "list";
@@ -37,12 +34,10 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @Override
     protected void doCommand(CommandEvent e) {
-        TextChannel tc = e.getTextChannel();
-        tc.sendMessage("Listing....").queue(m -> {
-            message = m;
-            m.delete().queue();
+        respond("Listing....", e).queue(m -> {
+            mcb.getChatManager().addSavedMessage(m);
+            updateList();
         });
-        respond(generateList(message), e).queue(m -> mcb.getChatManager().addSavedMessage(m));
     }
 
     private MessageEmbed generateList(@Nullable Message message) {
@@ -83,7 +78,6 @@ public class ListCmd extends MCBCommand implements Listener {
     }
 
     private void updateList() {
-        System.out.println(mcb.getChatManager().getSavedMessage());
         scheduler.schedule(() -> {
             for (Message msg : mcb.getChatManager().getSavedMessage())
                 updateList(msg);
@@ -100,13 +94,11 @@ public class ListCmd extends MCBCommand implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        System.out.println("Join");
         updateList();
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
-        System.out.println("Quit");
         updateList();
     }
 }

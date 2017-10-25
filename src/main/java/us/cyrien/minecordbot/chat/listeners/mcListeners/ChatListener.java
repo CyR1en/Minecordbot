@@ -2,8 +2,6 @@ package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import me.ryanhamshire.GriefPrevention.DataStore;
@@ -15,18 +13,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.chat.ChatStatus;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
     private final GriefPreventionHook griefPreventionHook = HookContainer.getGriefPreventionHook();
-    private ChatStatus stat;
 
     public ChatListener(Minecordbot mcb) {
         super(mcb);
-        stat = new ChatStatus();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -35,17 +30,6 @@ public class ChatListener extends MCBListener {
         String message = formatMessage(type, e);
         RelayMessage relayMessage = new RelayMessage(message, type);
         relay(relayMessage);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onmcMMOAdminChat(McMMOAdminChatEvent e) {
-        mcb.getChatManager().getChatStatus().setIsmcmmoAdminChat(true);
-    }
-
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onmcMMOPartyChat(McMMOPartyChatEvent e) {
-        mcb.getChatManager().getChatStatus().setmcmmopartychat(true);
     }
 
     private ChatType getChatType(AsyncPlayerChatEvent e) {

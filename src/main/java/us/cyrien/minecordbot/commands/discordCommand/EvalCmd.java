@@ -1,8 +1,6 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.EmbedBuilder;
-import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
@@ -20,6 +18,7 @@ public class EvalCmd extends MCBCommand {
         this.aliases = new String[]{"ev"};
         this.ownerCommand = true;
         this.category = Bot.OWNER;
+        this.type = Type.EMBED;
     }
 
     @Override
@@ -39,15 +38,15 @@ public class EvalCmd extends MCBCommand {
         scriptEngine.put("guild", event.getGuild());
         scriptEngine.put("cfgMngr", mcb.getMcbConfigsManager());
         scriptEngine.put("channel", event.getTextChannel());
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getColor());
+        StringBuilder builder = new StringBuilder();
         try {
-            eb.addField("Result:", "" + scriptEngine.eval(arg.trim()), false);
-            event.reply(eb.build());
+            builder.append("**Result**: ").append(scriptEngine.eval(arg.trim()));
+            respond(builder.toString(), event).queue();
         } catch (Exception e1) {
-            eb.addField("Error:" + e1.getClass().getSimpleName(), e1.getCause().toString(), false);
-            Logger.err("Eval command execution Error:" + e1.getClass().getSimpleName() + e1.getCause().toString());
-            event.reply(eb.build());
+            builder = new StringBuilder();
+            builder.append("**Error**: ").append(e1.getClass().getSimpleName()).append("\n");
+            builder.append("**Cause**: \n").append(e1.getCause().toString());
+            respond(builder.toString(), event).queue();
         }
     }
 }
