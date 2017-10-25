@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.1.4'
+version '2.2.0'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
@@ -35,6 +35,14 @@ repositories {
         name = 'sk89q-repo'
         url = 'http://maven.sk89q.com/repo'
     }
+    maven {
+        url = 'https://raw.githubusercontent.com/JRakNet/MavenRepository/master'
+    }
+    maven {
+        name = 'AOL yoava'
+        url = 'http://yoava.artifactoryonline.com/yoava/repo'
+
+    }
     flatDir {
         dirs 'libs'
     }
@@ -47,6 +55,12 @@ dependencies {
     compile 'com.jagrosh:JDA-Utilities:1.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'net.marfgamer', name: 'jraknet', version: '2.8.2'
+    compile group: 'dnsjava', name: 'dnsjava', version: '2.1.1'
+    compile group: 'gui.ava', name: 'html2image', version: '0.9'
 
     compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
     compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'

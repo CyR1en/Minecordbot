@@ -34,7 +34,7 @@ public class DeathListener extends MCBListener {
         Player player = event.getEntity();
         EntityDamageEvent.DamageCause deathCause = player.getLastDamageCause().getCause();
         if (player.getKiller() != null) {
-            String msg = Locale.getDeathMessage("deaths.pvp").finish();
+            String msg = Locale.getDeathMessage("pvp").finish();
             msg = langMessageParser.parse(msg, player.getDisplayName(), deathCause.name());
             messenger.sendMessageToAllBoundChannel("```css" + "\n[" + msg + "]\n```");
             if (bc)

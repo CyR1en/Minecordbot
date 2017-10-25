@@ -25,9 +25,12 @@ public class AuthToken implements Comparable {
         token = generateToken();
     }
 
-    public AuthToken(Player mcAcc, String token){
+    public AuthToken(Player mcAcc, String token) throws IllegalConfirmKeyException {
         AuthManager authManager = Minecordbot.getInstance().getAuthManager();
         AuthSession authSession = authManager.getSession(token);
+        if(authSession == null) {
+            throw new IllegalConfirmKeyException();
+        }
         this.mcAcc = mcAcc;
         this.token = token;
         this.sessionID = authSession.getSessionID();

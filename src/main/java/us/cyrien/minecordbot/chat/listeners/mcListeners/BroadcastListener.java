@@ -10,6 +10,8 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 import us.cyrien.minecordbot.utils.SRegex;
 
+import java.util.regex.Pattern;
+
 public class BroadcastListener extends MCBListener {
 
     public BroadcastListener(Minecordbot mcb) {
@@ -70,9 +72,9 @@ public class BroadcastListener extends MCBListener {
     }
 
     private Player findPlayer(String msg) {
-        SRegex sRegex = new SRegex();
-        sRegex.find(msg, "\\[.*?\\]");
-        String playerName = sRegex.getResults().get(0).replaceAll("\\[", "").replaceAll("]", "");
+        SRegex sRegex = new SRegex(msg);
+        sRegex.find(Pattern.compile("\\[.*?]"));
+        String playerName = sRegex.getResultsList().get(0).replaceAll("\\[", "").replaceAll("]", "");
         return Bukkit.getPlayer(playerName);
     }
 

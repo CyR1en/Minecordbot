@@ -1,11 +1,26 @@
 package us.cyrien.minecordbot.entity;
 
-public class UpTimer {
+import org.bukkit.Bukkit;
+import us.cyrien.minecordbot.Minecordbot;
+
+import java.util.concurrent.TimeUnit;
+
+public class UpTimer{
 
     private long startTime;
 
-    public UpTimer() {
+    public UpTimer(Minecordbot mcb) {
         startTime = System.currentTimeMillis();
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(mcb, new Lag(), 100L, 1L);
+        mcb.getScheduler().scheduleWithFixedDelay(() -> mcb.getBot().getUpdatables()
+                .get("tps").update(), 0, 5, TimeUnit.SECONDS);
+    }
+
+    public double getCurrentTps() {
+        double tps = Lag.getTPS();
+        if(tps > 20.0D)
+            tps = 20.0000D;
+        return tps;
     }
 
     public String getCurrentUptime() {

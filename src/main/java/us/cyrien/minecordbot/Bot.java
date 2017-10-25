@@ -3,20 +3,24 @@ package us.cyrien.minecordbot;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandClient;
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.utils.PermissionUtil;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.DiscordRelayListener;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.ModChannelListener;
+import us.cyrien.minecordbot.commands.MCBCommand;
+import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.commands.discordCommand.*;
+import us.cyrien.minecordbot.localization.Locale;
 
 import javax.security.auth.login.LoginException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Bot {
 
@@ -26,17 +30,39 @@ public class Bot {
     private JDA jda;
     private Minecordbot mcb;
 
+    private Map<String, Updatable> updatables;
+
     public static Command.Category ADMIN = new Command.Category("Admin", (e) -> {
         if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
+            return true;
+        }
+        if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             return true;
         }
         if (e.getGuild() == null) {
             return true;
         }
-        return PermissionUtil.checkPermission(e.getMember(), Permission.ADMINISTRATOR);
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
+        e.reply(embedMessage(e, eb.build()));
+        return false;
     });
 
-    public static Command.Category OWNER = new Command.Category("Owner");
+    public static Command.Category OWNER = new Command.Category("Owner", (e) -> {
+        if (e.getClient().getOwnerId().equals(e.getAuthor().getId())) {
+            return true;
+        }
+        for(String s : e.getClient().getCoOwnerIds())
+            if(s.equals(e.getAuthor().getId()))
+                return true;
+        if (e.getGuild() == null) {
+            return true;
+        }
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
+        e.reply(embedMessage(e, eb.build()));
+        return false;
+    });
 
     public static Command.Category INFO = new Command.Category("Info");
 
@@ -48,11 +74,12 @@ public class Bot {
 
     public Bot(Minecordbot minecordbot, EventWaiter waiter) {
         this.mcb = minecordbot;
+        updatables = new HashMap<>();
         eventWaiter = waiter;
         cb = new CommandClientBuilder();
         if (start()) {
-            initCommandClient();
             initListeners();
+            initCommandClient();
         }
     }
 
@@ -97,8 +124,11 @@ public class Bot {
     }
 
     public void registerDiscordCommandModule(Command... commands) {
-        for (Command c : commands)
+        for (Command c : commands) {
+            if(c instanceof Updatable)
+                updatables.put(c.getName(), (Updatable) c);
             cb.addCommand(c);
+        }
     }
 
     private void initListeners() {
@@ -128,6 +158,7 @@ public class Bot {
         cb.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
         cb.setPrefix(trigger);
         registerDiscordCommandModule(
+                new TpsCmd(mcb),
                 new HelpCmd(mcb),
                 new ListCmd(mcb),
                 new InfoCmd(mcb),
@@ -135,16 +166,36 @@ public class Bot {
                 new EvalCmd(mcb),
                 new PollCmd(mcb),
                 new PurgeCmd(mcb),
+                new McSkinCmd(mcb),
                 new ReloadCmd(mcb),
+                new McUUIDCmd(mcb),
                 new SpoilerCmd(mcb),
                 new SetGameCmd(mcb),
                 new SetNameCmd(mcb),
+                new McServerCmd(mcb),
                 new ShutdownCmd(mcb),
                 new MCCommandCmd(mcb),
                 new SetAvatarCmd(mcb),
+                new McUsernameCmd(mcb),
                 new SetTriggerCmd(mcb),
-                new TextChannelCmd(mcb));
+                new TextChannelCmd(mcb),
+                new McApiStatusCmd(mcb));
         client = cb.build();
         jda.addEventListener(client);
+    }
+
+    public Map<String, Updatable> getUpdatables() {
+        return updatables;
+    }
+
+    private static MessageEmbed embedMessage(CommandEvent event, MessageEmbed message) {
+        EmbedBuilder embedBuilder = new EmbedBuilder(message);
+        User bot = event.getJDA().getSelfUser();
+        embedBuilder.setAuthor(bot.getName() + " #" + bot.getDiscriminator(),
+                null, bot.getEffectiveAvatarUrl());
+        embedBuilder.setFooter("Response", null);
+        embedBuilder.setTimestamp(event.getMessage().getCreationTime());
+        embedBuilder.setColor(MCBCommand.ResponseLevel.LEVEL_2.getColor());
+        return embedBuilder.build();
     }
 }

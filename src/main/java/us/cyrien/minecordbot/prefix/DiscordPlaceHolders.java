@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import us.cyrien.minecordbot.entity.MCBUser;
 
-import java.util.List;
+import java.util.*;
 
 public enum DiscordPlaceHolders {
     CHANNEL {
@@ -14,13 +14,13 @@ public enum DiscordPlaceHolders {
             return mre.getTextChannel().getName();
         }
     },
-    GUILD{
+    GUILD {
         @Override
         public String toString() {
             return mre.getGuild().getName();
         }
     },
-    SENDER{
+    SENDER {
         @Override
         public String toString() {
             return mre.getAuthor().getName();
@@ -34,14 +34,26 @@ public enum DiscordPlaceHolders {
         }
     },
     ROLE {
-      @Override
+
+        @Override
         public String toString() {
-          Member member = mre.getGuild().getMember(mre.getAuthor());
-          List<Role> roles = member.getRoles();
-          return roles.get(0).getName();
-      }
+            Member member = mre.getGuild().getMember(mre.getAuthor());
+            Role role = getPrimaryRole(member);
+            return role == null ? "" : role.getName();
+        }
+
+        private Role getPrimaryRole(Member member) {
+           List<Role> roles = member.getRoles();
+           if(roles.size() == 0) return null;
+           Role role = roles.get(0);
+           for(Role r : roles)
+               if(role.getPosition() < r.getPosition())
+                   role = r;
+           return role;
+        }
+
     },
-    ENAME{
+    ENAME {
         @Override
         public String toString() {
             return mre.getMember().getEffectiveName();
