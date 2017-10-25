@@ -28,7 +28,7 @@ public class MentionListener extends MCBListener {
         if (e.getBuffer().endsWith("@")) {
             tcArray.forEach((tc) -> {
                 for (Member m : tc.getMembers())
-                    all.add("@" + m.getUser().getName().replaceAll(" ", "_"));
+                    all.add("@" + m.getUser().getName().replaceAll("_", "-").replaceAll(" ", "_"));
             });
             e.setCompletions(all);
         } else if (buffers[buffers.length - 1].startsWith("@")) {

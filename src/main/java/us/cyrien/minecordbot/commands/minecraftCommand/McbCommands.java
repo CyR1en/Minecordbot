@@ -4,17 +4,15 @@ package us.cyrien.minecordbot.commands.minecraftCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import us.cyrien.mcutils.annotations.Command;
-import us.cyrien.mcutils.annotations.Permission;
 import us.cyrien.mcutils.annotations.Sender;
 import us.cyrien.minecordbot.Minecordbot;
 
 public class McbCommands {
     @Command(aliases = {"minecordbot", "mcb"}, usage = "do /minecordbot help", desc = "general Minecordbot commands")
-    @Permission("minecordbot.reload")
     public void command(@Sender CommandSender commandSender, String s) {
         if (s.equalsIgnoreCase("help")) {
             help(commandSender);
-        } else if (s.equalsIgnoreCase("reload")) {
+        } else if (s.equalsIgnoreCase("reload") && commandSender.hasPermission("minecordbot.reload")) {
             Minecordbot.getInstance().getMcbConfigsManager().reloadAllConfig();
             Minecordbot.getInstance().getMcbConfigsManager().setupConfigurations();
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&6Minecordbot&a] Reloaded configuration!"));

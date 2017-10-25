@@ -25,7 +25,7 @@ public class SpoilerCmd extends MCBCommand {
         super(minecordbot);
         this.name = "spoiler";
         this.help = Locale.getCommandsMessage("spoiler.description").finish();
-        this.arguments = "<spoiler text>";
+        this.arguments = "<spoiler text...>";
         this.category = Bot.ADMIN;
         this.type = Type.EMBED;
     }

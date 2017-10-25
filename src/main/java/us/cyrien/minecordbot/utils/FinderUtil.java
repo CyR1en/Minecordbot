@@ -112,7 +112,7 @@ public class FinderUtil {
         for (Map.Entry<String, Object> map : config.entrySet()) {
             if (p != null && map.getValue().equals(p.getUniqueId())) {
                 String userID = SimplifiedDatabase.get(p.getUniqueId().toString());
-                if (!userID.equals("Not Synced yet")) {
+                if (userID != null && !userID.equals("Not Synced yet")) {
                     return Minecordbot.getInstance().getBot().getJda().getUserById(userID);
                 }
             }

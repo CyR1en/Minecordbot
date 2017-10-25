@@ -15,7 +15,6 @@ import us.cyrien.minecordbot.accountSync.listener.UserConnectionListener;
 import us.cyrien.minecordbot.chat.ChatManager;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.chat.listeners.mcListeners.*;
-import us.cyrien.minecordbot.commands.discordCommand.ListCmd;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
 import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 import us.cyrien.minecordbot.entity.UpTimer;
@@ -23,15 +22,19 @@ import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
+import us.cyrien.minecordbot.utils.UUIDFetcher;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Minecordbot extends JavaPlugin {
 
     private static Minecordbot instance;
 
+    private ScheduledExecutorService scheduler;
     private Messenger messenger;
     private AuthManager authManager;
     private UpTimer upTimer;
@@ -47,25 +50,28 @@ public class Minecordbot extends JavaPlugin {
     public void onEnable() {
         initInstances();
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            Frame.main();
-            postInit();
+            if (mcbConfigsManager.setupConfigurations()) {
+                Locale.init(mcbConfigsManager);
+                bot = new Bot(this, eventWaiter);
+                initDatabase();
+                initMCmds();
+                initPluginHooks();
+                Frame.main();
+                UUIDFetcher.init();
+                initMListener();
+                postInit();
+            } else {
+                this.getServer().shutdown();
+            }
         }, 1L);
-        if (mcbConfigsManager.setupConfigurations()) {
-            Locale.init(mcbConfigsManager);
-            bot = new Bot(this, eventWaiter);
-            initDatabase();
-            initMCmds();
-            initPluginHooks();
-            initMListener();
-        } else {
-            this.getServer().shutdown();
-        }
     }
 
     @Override
     public void onDisable() {
-        if (bot != null)
+        if (bot != null) {
+            chatManager.clearCache();
             bot.shutdown();
+        }
     }
 
     public ChatManager getChatManager() {
@@ -73,15 +79,14 @@ public class Minecordbot extends JavaPlugin {
     }
 
     private void initInstances() {
+        scheduler = Executors.newSingleThreadScheduledExecutor();
         localizationFiles = new LocalizationFiles(this, true);
         cfgManager = new ConfigManager(this);
         chatManager = new ChatManager(this);
         authManager = new AuthManager();
         eventWaiter = new EventWaiter();
-
         mcbConfigsManager = new MCBConfigsManager(cfgManager);
         messenger = new Messenger(this);
-        upTimer = new UpTimer();
         metrics = new Metrics(this);
         instance = this;
     }
@@ -135,7 +140,6 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new MentionListener(this));
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
-        registerMinecraftEventModule(new ListCmd(this));
         if (broadcastAvailable())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
@@ -178,6 +182,7 @@ public class Minecordbot extends JavaPlugin {
             registerMinecraftEventModule(new McMMOListener(this));
             Logger.info("Successfully Hooked mcMMO and now listening for events");
         }
+        upTimer = new UpTimer(this);
     }
 
     private boolean broadcastAvailable() {
@@ -210,6 +215,10 @@ public class Minecordbot extends JavaPlugin {
         return out;
     }
 
+    public ScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
+
     public EventWaiter getEventWaiter() {
         return eventWaiter;
     }
@@ -236,6 +245,10 @@ public class Minecordbot extends JavaPlugin {
 
     public String getUpTime() {
         return upTimer.getCurrentUptime();
+    }
+
+    public UpTimer getUpTimer() {
+        return upTimer;
     }
 
     public LocalizationFiles getLocalizationFiles() {

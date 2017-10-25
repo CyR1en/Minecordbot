@@ -28,6 +28,7 @@ public class UserQuitJoinListener extends MCBListener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
+        mcb.getBot().getUpdatables().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = Locale.getMcMessage("logout").finish();
         boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
@@ -57,6 +58,7 @@ public class UserQuitJoinListener extends MCBListener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
+        mcb.getBot().getUpdatables().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = Locale.getMcMessage("login").finish();
         boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");

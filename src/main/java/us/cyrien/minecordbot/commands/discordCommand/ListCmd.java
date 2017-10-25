@@ -7,21 +7,18 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.MetadataValue;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
+import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.localization.Locale;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ListCmd extends MCBCommand implements Listener {
+public class ListCmd extends MCBCommand implements Updatable {
 
     public ListCmd(Minecordbot minecordbot) {
         super(minecordbot);
@@ -35,8 +32,8 @@ public class ListCmd extends MCBCommand implements Listener {
     @Override
     protected void doCommand(CommandEvent e) {
         respond("Listing....", e).queue(m -> {
-            mcb.getChatManager().addSavedMessage(m);
-            updateList();
+            mcb.getChatManager().addSavedList(m, e);
+            update();
         });
     }
 
@@ -73,16 +70,9 @@ public class ListCmd extends MCBCommand implements Listener {
         return eb.build();
     }
 
-    private void updateList(Message message) {
-        message.editMessage(generateList(message)).queue();
-    }
-
-    private void updateList() {
-        scheduler.schedule(() -> {
-            for (Message msg : mcb.getChatManager().getSavedMessage())
-                updateList(msg);
-        }, 1, TimeUnit.SECONDS);
-
+    public void update() {
+        scheduler.schedule(() -> mcb.getChatManager().getSavedLists().forEach((msg, event) ->
+                msg.editMessage(embedMessage(event, generateList(msg), ResponseLevel.DEFAULT)).queue()), 1, TimeUnit.SECONDS);
     }
 
     private boolean isVanished(Player player) {
@@ -90,15 +80,5 @@ public class ListCmd extends MCBCommand implements Listener {
             if (meta.asBoolean()) return true;
         }
         return false;
-    }
-
-    @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        updateList();
-    }
-
-    @EventHandler
-    public void onPlayerQuitEvent(PlayerQuitEvent e) {
-        updateList();
     }
 }

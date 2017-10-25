@@ -1,10 +1,13 @@
 package us.cyrien.minecordbot.handle;
 
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.Member;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.utils.FinderUtil;
+import us.cyrien.minecordbot.utils.SRegex;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class MinecraftMentionHandler {
 
@@ -15,30 +18,16 @@ public class MinecraftMentionHandler {
     }
 
     public String handleMention(String s) {
-        ArrayList<User> list;
-        String[] strings = s.split(" ");
-        if(strings.length < 2 && strings[0].trim().equals("@"))
-            return s;
-        for (int i = 0; i < strings.length; i++)
-            if (strings[i].startsWith("@")) {
-                list = (ArrayList) jda.getUsersByName(strings[i]
-                        .replaceAll("@", "")
-                        .replaceAll("_", " "), false);
-                if (list.size() > 0) {
-                    String uID = list.get(0).getId();
-                    strings[i] = "<@" + uID + ">";
-                }
+        List<String> mentions = new SRegex(s).find(Pattern.compile("@[!-\\/:-@A-Z\\[-~\\d]+")).getResultsList();
+        for (String m : mentions) {
+            m = m.replaceAll("_", " ").replaceAll("-", "_").replaceAll("@", "");
+            Member member = FinderUtil.findMember(m);
+            if(member != null) {
+                m = m.replaceAll("[^\\w\\s]", "\\\\$0");
+                s = s.replaceAll("@" + m, "<@" + member.getUser().getId() + ">");
+            } else {
             }
-        return concat(strings);
-    }
-
-    private String concat(String[] arr) {
-        String out = "";
-        if (arr.length > 1)
-            for (String s : arr)
-                out += s + " ";
-        else
-            out = arr[0];
-        return out;
+        }
+        return s;
     }
 }
