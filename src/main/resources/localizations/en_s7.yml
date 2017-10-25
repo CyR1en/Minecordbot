@@ -39,6 +39,30 @@ mcb:
     invalid-tc: "Yer usin' th' wrong chat."
     no-alias: "Ya betta' use me propper name, boy!"
   commands:
+    mcserver:
+      description: "Look up server's information."
+      cannot-find: "Cannot ping server."
+      error: "There was an error pinging the server."
+    mcskin:
+      description: "Look up someone's skin."
+      cannot-find: "Cannot find player's skin."
+      error: "There was an error processing your request."
+    tps:
+      description: "Check your server's tps and other stats."
+      title: "Server ticks every second and memory usage."
+    mcusername:
+      description: "Get username of a uuid."
+      cannot-find: "Cannot find username for uuid! does this player have a premium account?"
+      error: "Could not process request. Is Mojang down?"
+    mcuuid:
+      description: "Get uuid of a player."
+      cannot-find: "Cannot find player! does this player have a premium account?"
+      error: "Could not process request. Is Mojang down?"
+    mcstat:
+      description: "Show all Mojang service status"
+    start:
+      description: "start the bod."
+      starting: "Starting bot...."
     spoiler:
       description: "creates a spoiler gif"
       includeText: "please provide a text for the spoiler"
