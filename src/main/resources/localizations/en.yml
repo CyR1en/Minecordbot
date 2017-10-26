@@ -61,7 +61,7 @@ mcb:
     mcstat:
       description: "Show all Mojang service status"
     start:
-      description: "start the bod."
+      description: "start the bot."
       starting: "Starting bot...."
     spoiler:
       description: "creates a spoiler gif."
