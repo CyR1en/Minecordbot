@@ -5,11 +5,3 @@ before_install:
   - wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev latest
 notifications:
   email: false
-  webhooks:
-    urls:
-      - https://discordapp.com/api/webhooks/375056437019279360/ey8gw8Cg8CCN9EggW-LjwehJUCIsADoEPsb-Fb0H7JIf-vzfdA2dvCnuChiVv--wIBMS
-    on_success: change # default: always
-    on_failure: never # default: always
-    on_start: never   # default: never
-    on_cancel: never # default: always
-    on_error: never # default: always
