@@ -30,14 +30,14 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
     @Override
     public void sendMessage(String s) {
         e.getTextChannel().sendMessage("`" + ChatColor.stripColor(s) + "`").queue();
+
     }
 
     @Override
     public void sendMessage(String[] strings) {
-        String message = "```\n";
-        for (String s : strings)
-            message += s + "\n";
-        e.getTextChannel().sendMessage(ChatColor.stripColor(message) + "```").queue();
+        for (String message : strings) {
+            sendMessage(message);
+        }
     }
 
     @Override

@@ -10,6 +10,7 @@ public class MCBConfigsManager {
     private final String[] BROADCASTCONFIG_HEADER = new String[]{"Broadcast Configuration", "All broadcast configuration",
             "Some nodes below will also be", "effective to Mod Channels"};
     private final String[] MODCHANNELCONFIG_HEADER = new String[]{"Mod Channel Configuration", "All mod channel configuration"};
+    private final String[] PERMISSIONCONFIG_HEADER = new String[]{"Permission Configuration", " ", "can be configured using perm command"};
 
     private ConfigManager manager;
     private BaseConfig[] configs;
@@ -17,7 +18,8 @@ public class MCBConfigsManager {
     public MCBConfigsManager(ConfigManager manager) {
         this.manager = manager;
         configs = new BaseConfig[]{new BotConfig(manager, BOTCONFIG_HEADER), new ChatConfig(manager, CHATCONFIG_HEADER),
-                new BroadcastConfig(manager, BROADCASTCONFIG_HEADER), new ModChannelConfig(manager, MODCHANNELCONFIG_HEADER)};
+                new BroadcastConfig(manager, BROADCASTCONFIG_HEADER), new ModChannelConfig(manager, MODCHANNELCONFIG_HEADER),
+                new PermissionConfig(manager, PERMISSIONCONFIG_HEADER)};
     }
 
     public boolean setupConfigurations() {
@@ -53,6 +55,10 @@ public class MCBConfigsManager {
 
     public Config getModChannelConfig() {
         return configs[3].getConfig();
+    }
+
+    public Config getPermConfig() {
+        return configs[4].getConfig();
     }
 
 

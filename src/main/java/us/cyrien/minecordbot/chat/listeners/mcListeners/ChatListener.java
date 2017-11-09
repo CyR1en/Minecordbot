@@ -98,7 +98,7 @@ public class ChatListener extends MCBListener {
     }
 
     public enum ChatType {
-        GRIEF_PROTECTION_SOFT_MUTE("GriefProtection-SoftMute| "),
+        GRIEF_PROTECTION_SOFT_MUTE("GriefPrevention-SoftMute | "),
         MCMMO_PARTY("mcMMO-party | "),
         MCMMO_ADMIN("mcMMO-admin | "),
         CANCELLED("\uD83D\uDD15 | "),

@@ -19,7 +19,7 @@ mc:
     ocelot: "{player} was slain by an Ocelot"
     zombie: "{player} was slain by a Zombie"
     skeleton: "{player} was shot by a Skeleton"
-    pigzombie: "{player} was slain by a Pig Zombie"
+    pigzombie: "{player} was slain by a Pigman"
     spider: "{player} was slain by a Spider"
     cavespider: "{player} was slain by a Cave Spider"
     silverfish: "{player} was slain by a Silverfish"
@@ -39,6 +39,16 @@ mcb:
     invalid-tc: "Invalid text channel for command."
     no-alias: "There are no other alias for this command"
   commands:
+    perm:
+      description: "Manage permissions for categories."
+      invalid-sub: "% is not a sub command"
+      sub:
+        set:
+          description: "Set a role for certain categories."
+          no-role: "%s role does not exist in this guild."
+          no-category: "%s is not a command category"
+        remove:
+          description: "Remove a role that have been assigned to a category."
     mcserver:
       description: "Look up server's information."
       cannot-find: "Cannot ping server."

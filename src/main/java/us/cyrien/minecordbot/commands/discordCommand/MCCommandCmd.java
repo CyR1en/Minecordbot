@@ -42,10 +42,10 @@ public class MCCommandCmd extends MCBCommand {
                 commandSender = new DiscordCommandSender(e);
             else
                 commandSender = new DiscordConsoleCommandSender(e);
-            Bukkit.getServer().dispatchCommand(commandSender, arg);
+            Bukkit.getScheduler().runTaskLater(mcb,() -> Bukkit.getServer().dispatchCommand(commandSender, arg), 1L);
         } else if (p != null) {
-            commandSender = new DiscordPlayerCommandSender(p, e);
-            Bukkit.getServer().dispatchCommand(commandSender, arg);
+            DiscordPlayerCommandSender dcs = new DiscordPlayerCommandSender(p, e);
+            Bukkit.getScheduler().runTaskLater(mcb,() -> Bukkit.getServer().dispatchCommand(dcs, arg), 1L);
         } else {
             respond(e, noPermissionMessageEmbed());
         }

@@ -115,6 +115,7 @@ mcb:
     help:
       description: "lister les commandes/obtenir les infos sur une commande."
       too-much-args: "trop d'arguments."
+      more: "For more detailed help, do %s<command> help."
       no-such-command: "La commande %s n'existe pas."
       list:
         header: "Commandes MineCordBot"
