@@ -33,7 +33,7 @@ public class HTTPUtils {
      * If the server returns an error without any body, a relevant {@link java.io.IOException} will be thrown.
      *
      * @param url         URL to submit the POST request to
-     * @param post        POST data in the correct format to be submitted
+     * @param post        POST data in the correct f to be submitted
      * @param contentType Content type of the POST data
      * @return Raw text response from the server
      * @throws IOException The request was not successful
@@ -85,7 +85,7 @@ public class HTTPUtils {
      * If the server returns an error without any body, a relevant {@link java.io.IOException} will be thrown.
      *
      * @param url         URL to submit the POST request to
-     * @param post        POST data in the correct format to be submitted
+     * @param post        POST data in the correct f to be submitted
      * @param contentType Content type of the POST data
      * @return Raw text response from the server
      * @throws IOException The request was not successful

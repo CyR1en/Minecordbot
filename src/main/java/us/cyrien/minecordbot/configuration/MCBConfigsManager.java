@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.configuration;
 import us.cyrien.mcutils.config.Config;
 import us.cyrien.mcutils.config.ConfigManager;
 
+
 public class MCBConfigsManager {
 
     private final String[] BOTCONFIG_HEADER = new String[]{"Bot Configuration", "All bot configuration"};

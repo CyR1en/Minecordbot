@@ -34,7 +34,7 @@ public class McSkinCmd extends MCBCommand {
             return;
         }
 
-        String s = null;
+        String s;
         try {
             s = HTTPUtils.performGetRequest(HTTPUtils.constantURL("https://api.mojang.com/users/profiles/minecraft/" + e.getArgs()));
         } catch (IOException ex) {
@@ -48,10 +48,10 @@ public class McSkinCmd extends MCBCommand {
             byte[] image = MessageUtils.downloadImage("https://crafatar.com/renders/body/" + UUIDFetcher.getUUID(json.get("id").getAsString()).toString() + "?overlay&default=MHF_Steve");
             eb.addField("**" + e.getArgs() + "'s Skin**:", "", false);
             eb.setImage("attachment://image.png");
-            respond("querying skin...", e).queue((m) -> scheduler.schedule(() ->  {
+            respond("querying skin...", e).queue((m) -> scheduler.schedule(() -> {
                 m.delete().queue();
                 e.getTextChannel().sendFile(image, "image.png", new MessageBuilder().setEmbed(embedMessage(e, eb.build(), ResponseLevel.DEFAULT, "Information")).build()).queue();
-            }, 1,TimeUnit.SECONDS));
+            }, 1, TimeUnit.SECONDS));
         } catch (IllegalStateException ex) {
             respond(ResponseLevel.LEVEL_3, Locale.getCommandsMessage("mcskin.cannot-find").finish(), e).queue();
         } catch (Exception ex) {

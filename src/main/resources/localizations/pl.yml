@@ -1,44 +1,28 @@
-mc:
-  message:
-    login: "{player} dołączył do gry"
-    logout: "{player} opuścił gre"
-  deaths:
-    drowning: "{player} utonął"
-    suffocation: "{player} udusił się w ścianie"
-    suicide: "{player} popełnił samobójstwo"
-    fall: "{player} zbyt mocno uderzył w ziemię"
-    void: "{player} wypadł za mapę"
-    lava: "{player} próbował pływać w lawie"
-    fire: "{player} spłonął"
-    cactus: "{player} został zakłuty na śmierć"
-    pvp: "{player} został zabity przez {killer}"
-    wither: "{player} zosał zabity przez Withera"
-    anvil: "{player} został zmiażdżony przez kowadło"
-  mobs:
-    wolf: "{player} został zabity przez Wilkailka"
-    ocelot: "{player} został zabity przez Ocelota"
-    zombie: "{player} został zabity przez Zombie"
-    skeleton: "{player} został zastrzelony przez Szkieleta"
-    pigzombie: "{player} został zabity przez Świnie-Zombie"
-    spider: "{player} został zabity przez Pająka"
-    cavespider: "{player} został zabity przez Pająka jaskiniowego"
-    silverfish: "{player} został zabity przez Silverfish-a"
-    slime: "{player} został zabity przez Szlam"
-    creeper: "{player} wyleciał w powietrze"
-    enderman: "{player} został zabity przez Endermana"
-    ghast: "{player} został zabity przez Ghasta"
-    blaze: "{player} został zabity przez Płomyka"
-    enderdragon: "{player} został zabity przez Smoka Kresu"
-    wither: "{player} został zabity przez Withera"
-    witherskeleton: "{player} został zabity przez Mrocznego Szkieleta"
-    witch: "{player} został zabity przez Wiedźmę"
 mcb:
   command:
     no-perm-message: "Nie masz dostępu do tej komendy."
     invalid-arguments: "błędny arguments."
     invalid-tc: "błędny kanał dla tej komendy."
     no-alias: "Nie ma innych aliasów dla tej komendy"
+    fatal-error: "A fatal error have occurred before %s command execution finishes."
   commands:
+    perm:
+        description: "Manage permissions for categories."
+        invalid-sub: "% is not a sub command"
+        no-role: "%s role does not exist in this guild."
+        sub:
+          set:
+            description: "Set a role for certain categories. \nUsage: {+} to allow {-} to prevent. \nFlags: {-<command|category|all>} or {+<command|category|all}. \nie: {-tps} | {+info}"
+            invalid-flag: "%s is an invalid flag."
+            flag-not-null: "You must provide a flag(s)!"
+            all-invalid-flags: "All provided flags are invalid."
+            success: "Successfully set permissions for %s"
+            omitted-flags: "The following flag(s) is/are invalid and have been omitted: %s"
+            added: "The following have been added: %s"
+          check:
+            description: "Check the current permission flags of a role"
+            success: "%s permission flags"
+            role-no-perm: "%s does not have any permission flags"
     mcserver:
       description: "Look up server's information."
       cannot-find: "Cannot ping server."

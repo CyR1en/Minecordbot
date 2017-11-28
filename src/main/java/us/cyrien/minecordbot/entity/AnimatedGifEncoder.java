@@ -149,7 +149,7 @@ public class AnimatedGifEncoder {
                 setSize(im.getWidth(), im.getHeight());
             }
             image = im;
-            getImagePixels(); // convert to correct format if necessary
+            getImagePixels(); // convert to correct f if necessary
             analyzePixels(); // build color table & map pixels
             if (firstFrame) {
                 writeLSD(); // logical screen descriptior
@@ -359,7 +359,7 @@ public class AnimatedGifEncoder {
         int h = image.getHeight();
         int type = image.getType();
         if ((w != width) || (h != height) || (type != BufferedImage.TYPE_3BYTE_BGR)) {
-            // create new image with right size/format
+            // create new image with right size/f
             BufferedImage temp = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = temp.createGraphics();
             g.drawImage(image, 0, 0, null);

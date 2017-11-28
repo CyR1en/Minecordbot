@@ -1,44 +1,28 @@
-mc:
-  message:
-    login: "{player} a rejoint la partie"
-    logout: "{player} a quitté la partie"
-  deaths:
-    drowning: "{player} s'est noyé(e)"
-    suffocation: "{player} a suffoqué dans un mur"
-    suicide: "{player} s'est suicidé(e)"
-    fall: "{player} s'est écrasé(e) au sol"
-    void: "{player} a littéralement quitté notre monde"
-    lava: "{player} a essayé de nager dans la lave"
-    fire: "{player} s'est fait carboniser à mort"
-    cactus: "{player} s'est fait piquer à mort"
-    pvp: "{player} s'est fait tuer par {killer}"
-    wither: "{player} est mort(e) de décomposition"
-    anvil: "{player} s'est fait écraser par une enclume"
-  mobs:
-    wolf: "{player} s'est fait tuer par un Loup"
-    ocelot: "{player} s'est fait tuer par un Ocelot"
-    zombie: "{player} s'est fait tuer par un Zombie"
-    skeleton: "{player} s'est fait tirer dessus par un Squelette"
-    pigzombie: "{player} s'est fait tuer par un Cochon Zombie"
-    spider: "{player} s'est fait tuer par une Arraignée"
-    cavespider: "{player} s'est fait tuer par une Arraignée venimeuse"
-    silverfish: "{player} s'est fait tuer par un Poission d'Argent'"
-    slime: "{player} s'est fait tuer par un Slime"
-    creeper: "{player} a péri dans une explosion"
-    enderman: "{player} s'est fait tuer par un Enderman"
-    ghast: "{player} s'est fait tuer par un Ghast"
-    blaze: "{player} s'est fait tuer par un Blaze"
-    enderdragon: "{player} s'est fait tuer par un Ender Dragon"
-    wither: "{player} s'est fait tuer par un' Wither"
-    witherskeleton: "{player} s'est fait tuer par un Wither Squelette"
-    witch: "{player} s'est fait tuer par une Sorcière"
 mcb:
   command:
     no-perm-message: "Vous n'avez pas accès à cette commande."
     invalid-arguments: "Arguments invalides."
     invalid-tc: "Salon textuel invalide pour la commande."
     no-alias: "Il n'y a pas d'autre alias pour cette commande."
+    fatal-error: "A fatal error have occurred before %s command execution finishes."
   commands:
+    perm:
+        description: "Manage permissions for categories."
+        invalid-sub: "% is not a sub command"
+        no-role: "%s role does not exist in this guild."
+        sub:
+          set:
+            description: "Set a role for certain categories. \nUsage: {+} to allow {-} to prevent. \nFlags: {-<command|category|all>} or {+<command|category|all}. \nie: {-tps} | {+info}"
+            invalid-flag: "%s is an invalid flag."
+            flag-not-null: "You must provide a flag(s)!"
+            all-invalid-flags: "All provided flags are invalid."
+            success: "Successfully set permissions for %s"
+            omitted-flags: "The following flag(s) is/are invalid and have been omitted: %s"
+            added: "The following have been added: %s"
+          check:
+            description: "Check the current permission flags of a role"
+            success: "%s permission flags"
+            role-no-perm: "%s does not have any permission flags"
     mcserver:
       description: "Look up server's information."
       cannot-find: "Cannot ping server."

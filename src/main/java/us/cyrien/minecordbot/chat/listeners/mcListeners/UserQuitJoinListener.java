@@ -13,7 +13,6 @@ import org.bukkit.metadata.MetadataValue;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.hooks.SuperVanishHook;
-import us.cyrien.minecordbot.localization.Locale;
 
 import java.awt.*;
 
@@ -26,13 +25,15 @@ public class UserQuitJoinListener extends MCBListener {
         super(mcb);
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
+        System.out.println("Quit");
         mcb.getBot().getUpdatables().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-        String msg = Locale.getMcMessage("logout").finish();
+        String msg = ChatColor.stripColor(e.getQuitMessage());
         boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
         boolean seeQuit = configsManager.getModChannelConfig().getBoolean("See_Player_Quit");
+        System.out.println("seeQuit = " + seeQuit);
         if (seeQuit) {
             String m = msg;
             if (svHook != null) {
@@ -41,26 +42,29 @@ public class UserQuitJoinListener extends MCBListener {
                     m = "(Vanish) " + m;
             }
             messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                    .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                    .setTitle(m, null).build());
+            System.out.println("Message sent to discord");
         }
+        System.out.println("isLeaveBroadcast = " + isLeaveBroadcast);
         if (isLeaveBroadcast) {
-            boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
             if (e.getQuitMessage().equals("Fake")) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                        .setTitle(msg, null).build());
                 e.setQuitMessage("");
             } else if (check(e)) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                        .setTitle(msg, null).build());
+                System.out.println("Message sent to discord");
             }
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
+        System.out.println("Join");
         mcb.getBot().getUpdatables().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-        String msg = Locale.getMcMessage("login").finish();
+        String msg = ChatColor.stripColor(e.getJoinMessage());
         boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");
         boolean seeJoin = configsManager.getModChannelConfig().getBoolean("See_Player_Join");
         if (seeJoin) {
@@ -71,16 +75,16 @@ public class UserQuitJoinListener extends MCBListener {
                     m = "(Vanish) " + m;
             }
             messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                    .setTitle(langMessageParser.parsePlayer(m, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                    .setTitle(m, null).build());
         }
         if (isJoinBroadCast) {
             if (e.getJoinMessage().equals("Fake")) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                        .setTitle(msg, null).build());
                 e.setJoinMessage("");
             } else if (check(e)) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                        .setTitle(langMessageParser.parsePlayer(msg, ChatColor.stripColor(e.getPlayer().getName())), null).build());
+                        .setTitle(msg, null).build());
             }
         }
     }

@@ -279,7 +279,7 @@ public class Metrics {
         connection.addRequestProperty("Connection", "close");
         connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
         connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-        connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
+        connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON f
         connection.setRequestProperty("MCBUser-Agent", "MC-Server/" + B_STATS_VERSION);
 
         // Send data

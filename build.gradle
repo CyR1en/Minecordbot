@@ -41,7 +41,6 @@ repositories {
     maven {
         name = 'AOL yoava'
         url = 'http://yoava.artifactoryonline.com/yoava/repo'
-
     }
     flatDir {
         dirs 'libs'
@@ -64,7 +63,7 @@ dependencies {
 
     compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
     compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
-    compileOnly 'org.natrolite:vault-api:1.6.1'
+    compileOnly name: 'OnTime'
     compileOnly name: 'mv'
     compileOnly name: 'PermissionsEx-1.23.4'
     compileOnly name: 'mcMMO'
