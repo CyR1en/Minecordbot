@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.localization.Locale;
 
 public class SuperVanishListener extends MCBListener {
 
@@ -19,18 +18,16 @@ public class SuperVanishListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerHide(PlayerHideEvent event) {
-        if(VanishAPI.getConfiguration().getBoolean("Configuration.Messages.VanishReappearMessages.BroadcastMessageOnVanish")) {
-            PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(event.getPlayer(), Locale.getMcMessage("logout").finish());
-            playerQuitEvent.setQuitMessage("Fake");
+        if (VanishAPI.getConfiguration().getBoolean("Configuration.Messages.VanishReappearMessages.BroadcastMessageOnVanish")) {
+            PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(event.getPlayer(), "Fake");
             Bukkit.getServer().getPluginManager().callEvent(playerQuitEvent);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerShow(PlayerShowEvent event) {
-        if(VanishAPI.getConfiguration().getBoolean("Configuration.Messages.VanishReappearMessages.BroadcastMessageOnReappear")) {
-            PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(event.getPlayer(), Locale.getMcMessage("login").finish());
-            playerJoinEvent.setJoinMessage("Fake");
+        if (VanishAPI.getConfiguration().getBoolean("Configuration.Messages.VanishReappearMessages.BroadcastMessageOnReappear")) {
+            PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(event.getPlayer(), "Fake");
             Bukkit.getServer().getPluginManager().callEvent(playerJoinEvent);
         }
     }

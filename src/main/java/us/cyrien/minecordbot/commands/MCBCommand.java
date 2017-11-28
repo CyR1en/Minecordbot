@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.requests.RestAction;
@@ -15,15 +16,18 @@ import us.cyrien.minecordbot.utils.SRegex;
 import us.cyrien.minecordbot.utils.mcpinger.MCPing;
 
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 
-public abstract class MCBCommand extends Command implements Comparable<Command>{
+public abstract class MCBCommand extends Command implements Comparable<Command> {
 
     protected static final long RESPONSE_DURATION = 5;
 
@@ -48,17 +52,42 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
 
     @Override
     protected void execute(CommandEvent event) {
-        int countedReqArgs = countRequiredArgs();
-        int countedArgsProvided = event.getArgs().isEmpty() ? 0 : event.getArgs().split(" ").length;
-        if ((countedReqArgs > countedArgsProvided || countedReqArgs < countedArgsProvided) && countRequiredArgs() != -1) {
-            respond(event, invalidArgumentsMessageEmbed());
-            respond(event, getHelpCard(event, this));
-            return;
+        try {
+            int countedReqArgs = countRequiredArgs();
+            int countedArgsProvided = event.getArgs().isEmpty() ? 0 : event.getArgs().split(" ").length;
+            if ((countedReqArgs > countedArgsProvided || countedReqArgs < countedArgsProvided) && countRequiredArgs() != -1) {
+                respond(event, invalidArgumentsMessageEmbed());
+                respond(event, getHelpCard(event, this));
+                return;
+            }
+            if (!checkRoleBasedPerm(event.getMember())) {
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
+                event.reply(embedMessage(event, eb.build(), ResponseLevel.LEVEL_3));
+                return;
+            }
+            doCommand(event);
+            Logger.info(event.getAuthor().getName() + " executed " + this.getName() + " command.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ex.printStackTrace(new PrintStream(baos));
+            byte[] out = baos.toByteArray();
+                /*
+                File file = new File("StackTrace.txt");
+                PrintStream ps = new PrintStream(file);
+                ex.printStackTrace(ps);
+                */
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setTitle(Locale.getCommandMessage("fatal-error").f(this.getClass().getSimpleName()), "attachment://stacktrace.txt");
+            eb.setDescription(ex.getClass().getSimpleName());
+            eb.addField("StackTrace", "Send a report to the Dev! Click the title of this message to download the stacktrace.", false);
+            MessageEmbed formatted = embedMessage(event, eb.build(), ResponseLevel.LEVEL_3);
+            respond(event, "Generating stacktrace...", (msg) -> scheduler.schedule(() -> {
+                msg.delete().queue();
+                event.getTextChannel().sendFile(out, "stacktrace.txt", new MessageBuilder().setEmbed(formatted).build()).queue();
+            }, 1, TimeUnit.SECONDS));
         }
-        if (category != null && !category.test(event))
-            respond(event, noPermissionMessageEmbed());
-        doCommand(event);
-        Logger.info(event.getAuthor().getName() + " executed " + this.getName() + " command.");
     }
 
     public void respond(CommandEvent event, String message) {
@@ -105,11 +134,24 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
         respond(event, message, duration, timeUnit, null);
     }
 
+    public void respond(CommandEvent event, String message, ResponseLevel level) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setDescription(message);
+        respond(event, embedMessage(event, eb.build(), level));
+    }
+
+    public void respond(CommandEvent event, MessageEmbed message, ResponseLevel level) {
+        respond(event, embedMessage(event, message, level));
+    }
+
+
+    //new RespondAPI below. Omit above methods after
     public void respond(CommandEvent event, String message, long duration, TimeUnit timeUnit, ResponseLevel level) {
-        Consumer<Message> consumer = (msg) -> scheduler.schedule(() -> {
+        Consumer<Message> consumer = auto ? (msg) -> scheduler.schedule(() -> {
             msg.delete().queue();
             event.getMessage().delete().queue();
-        }, duration, timeUnit);
+        }, duration, timeUnit) : msg -> {
+        };
         if (type == Type.EMBED) {
             level = level == null ? ResponseLevel.DEFAULT : level;
             event.reply(embedMessage(event, message, level), consumer);
@@ -118,10 +160,11 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
     }
 
     public void respond(CommandEvent event, MessageEmbed messageEmbed, long duration, TimeUnit timeUnit) {
-        Consumer<Message> consumer = (msg) -> scheduler.schedule(() -> {
+        Consumer<Message> consumer = auto ? (msg) -> scheduler.schedule(() -> {
             msg.delete().queue();
             event.getMessage().delete().queue();
-        }, duration, timeUnit);
+        }, duration, timeUnit) : msg -> {
+        };
         event.reply(messageEmbed, consumer);
     }
 
@@ -202,7 +245,6 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
     protected MessageEmbed embedMessage(CommandEvent event, String message, ResponseLevel level, String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         User bot = event.getJDA().getSelfUser();
-        Guild g = event.getGuild();
         embedBuilder.setAuthor(bot.getName() + " #" + bot.getDiscriminator(),
                 null, bot.getEffectiveAvatarUrl());
         embedBuilder.setDescription(message);
@@ -256,7 +298,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
             return MCPing.pingPc(ipPort[0], 25565, true);
         } else if (ipPort.length == 2) {
             try {
-               return MCPing.pingPc(ipPort[0], Integer.parseInt(ipPort[1]), true);
+                return MCPing.pingPc(ipPort[0], Integer.parseInt(ipPort[1]), true);
             } catch (NumberFormatException ex) {
                 eb.setDescription("Error getting server info: `java.lang.NumberFormatException`");
                 respond(e, embedMessage(e, eb.build(), ResponseLevel.LEVEL_3));
@@ -272,6 +314,40 @@ public abstract class MCBCommand extends Command implements Comparable<Command>{
     protected boolean isModChannel(TextChannel c) {
         List<TextChannel> tcs = mcb.getModChannels();
         return tcs.contains(c);
+    }
+
+    private boolean checkRoleBasedPerm(Member m) {
+        for (Role r : m.getRoles()) {
+            if (exists(r))
+                if (!allowed(mcb.getMcbConfigsManager().getPermConfig().get(r.getId() + ".Permission").toString()))
+                    return false;
+        }
+        return true;
+    }
+
+    private boolean exists(Role role) {
+        Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getKeys();
+        return keys.contains(role.getId());
+    }
+
+    private boolean allowed(String rolePerm) {
+        String perm = rolePerm;
+        if (perm == null || perm.isEmpty())
+            return true;
+        perm = perm.toLowerCase();
+        String lowerName = name.toLowerCase();
+        if (perm.contains("{" + lowerName + "}"))
+            return true;
+        if (perm.contains("{-" + lowerName + "}"))
+            return false;
+        String lowerCat = category == null ? null : category.getName().toLowerCase();
+        if (lowerCat != null) {
+            if (perm.contains("{" + lowerCat + "}"))
+                return true;
+            if (perm.contains("{-" + lowerCat + "}"))
+                return false;
+        }
+        return !perm.contains("{-all}");
     }
 
     public enum Type {

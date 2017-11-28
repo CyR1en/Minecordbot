@@ -23,8 +23,8 @@ public class SetGameCmd extends MCBCommand {
     protected void doCommand(CommandEvent event) {
         try {
             event.getJDA().getPresence().setGame(event.getArgs().isEmpty() ? null : Game.of(event.getArgs()));
-            String notPlaying = Locale.getCommandsMessage("setgame.notplaying").format(event.getJDA().getSelfUser().getName());
-            String playing = Locale.getCommandsMessage("setgame.playing").format(event.getJDA().getSelfUser().getName());
+            String notPlaying = Locale.getCommandsMessage("setgame.notplaying").f(event.getJDA().getSelfUser().getName());
+            String playing = Locale.getCommandsMessage("setgame.playing").f(event.getJDA().getSelfUser().getName());
             respond(event, event.getClient().getSuccess() + (event.getArgs().isEmpty() ? notPlaying : playing + "`" + event.getArgs() + "`"));
         } catch (Exception e) {
             event.reply(event.getClient().getError() + " The game could not be set!");

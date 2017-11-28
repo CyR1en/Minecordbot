@@ -16,6 +16,7 @@ import us.cyrien.minecordbot.chat.listeners.discordListeners.ModChannelListener;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.commands.discordCommand.*;
+import us.cyrien.minecordbot.handle.RoleNameChangeHandler;
 import us.cyrien.minecordbot.localization.Locale;
 
 import javax.security.auth.login.LoginException;
@@ -32,10 +33,13 @@ public class Bot {
 
     private Map<String, Updatable> updatables;
 
-    public static Command.Category ADMIN = new Command.Category("Admin", (e) -> {
+    public static Command.Category ADMIN = new Command.Category("Admin", (CommandEvent e) -> {
         if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
             return true;
         }
+        for (String s : e.getClient().getCoOwnerIds())
+            if (s.equals(e.getAuthor().getId()))
+                return true;
         if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             return true;
         }
@@ -52,8 +56,8 @@ public class Bot {
         if (e.getClient().getOwnerId().equals(e.getAuthor().getId())) {
             return true;
         }
-        for(String s : e.getClient().getCoOwnerIds())
-            if(s.equals(e.getAuthor().getId()))
+        for (String s : e.getClient().getCoOwnerIds())
+            if (s.equals(e.getAuthor().getId()))
                 return true;
         if (e.getGuild() == null) {
             return true;
@@ -102,7 +106,7 @@ public class Bot {
             if (gameStr != null && !gameStr.equals("default") && !gameStr.isEmpty()) {
                 game = Game.of(gameStr);
             } else {
-                 game = Game.of("Type " + trigger + "help");
+                game = Game.of("Type " + trigger + "help");
             }
             builder.setGame(game);
             cb.setGame(game);
@@ -125,7 +129,7 @@ public class Bot {
 
     public void registerDiscordCommandModule(Command... commands) {
         for (Command c : commands) {
-            if(c instanceof Updatable)
+            if (c instanceof Updatable)
                 updatables.put(c.getName(), (Updatable) c);
             cb.addCommand(c);
         }
@@ -134,6 +138,7 @@ public class Bot {
     private void initListeners() {
         jda.addEventListener(new DiscordRelayListener(mcb));
         jda.addEventListener(new ModChannelListener(mcb));
+        jda.addEventListener(new RoleNameChangeHandler(mcb));
         jda.addEventListener(eventWaiter);
     }
 
@@ -176,6 +181,7 @@ public class Bot {
                 new ShutdownCmd(mcb),
                 new MCCommandCmd(mcb),
                 new SetAvatarCmd(mcb),
+                new PermissionCmd(mcb),
                 new McUsernameCmd(mcb),
                 new SetTriggerCmd(mcb),
                 new TextChannelCmd(mcb),
