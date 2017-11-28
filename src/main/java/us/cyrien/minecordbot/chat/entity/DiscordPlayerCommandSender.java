@@ -30,11 +30,11 @@ import java.util.*;
 
 public class DiscordPlayerCommandSender implements Player {
 
-    private Player player;
+    private static Player player;
     private CommandEvent e;
 
     public DiscordPlayerCommandSender(Player player, CommandEvent e) {
-        this.player = player;
+        DiscordPlayerCommandSender.player = player;
         this.e = e;
     }
 
@@ -1519,4 +1519,5 @@ public class DiscordPlayerCommandSender implements Player {
     public <T extends Projectile> T launchProjectile(Class<? extends T> projectile, Vector velocity) {
         return player.launchProjectile(projectile, velocity);
     }
+
 }

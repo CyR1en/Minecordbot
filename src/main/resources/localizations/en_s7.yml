@@ -39,20 +39,44 @@ mcb:
     invalid-tc: "Yer usin' th' wrong chat."
     no-alias: "Ya betta' use me propper name, boy!"
   commands:
+    mcserver:
+      description: "Search th' logs fer information on a ship"
+      cannot-find: "No vessal by that name be constructed..."
+      error: "There seems t' be some pages missin'."
+    mcskin:
+      description: "Lets check if yer face matches yer wanted portrait."
+      cannot-find: "Are ye sure that`s a swashbuckler? Dasn't seem t' be wanted."
+      error: "Appears a soldier tookst some portraits down."
+    tps:
+      description: "Check fer a pulse an' cognitive function."
+      title: "Ser'er ticks ever' second an' memory usage."
+    mcusername:
+      description: "Check th' name o' th' shipmate bearin' that scar."
+      cannot-find: "Nobody matches that description! Be they a ghost?"
+      error: "Couldna process request. Be Mojang down?"
+    mcuuid:
+      description: "Observe that swashbuckler fer unique scars."
+      cannot-find: "Nobody matches that description! Be they a ghost?"
+      error: "Couldna process request. Be Mojang down?"
+    mcstat:
+      description: "Check th' docks fer amenities"
+    start:
+      description: "Hoist th' anchor!"
+      starting: "Hoisting th' anchor..."
     spoiler:
-      description: "creates a spoiler gif"
-      includeText: "please provide a text for the spoiler"
-      tooManyLines: "there's too many lines. Cannot be greater than 8"
-      spoilerPreview: "[ Hover to see spoiler ]"
-      failedToGenerate: "failed to generate spoiler image"
+      description: "Create a secret haunted paintin'."
+      includeText: "Please provide a text fer th' secret"
+      tooManyLines: "There be too many rows. Ortin' ta be less than or equal t' 8. "
+      spoilerPreview: "[ Ho'er o'er t' reveal secret. ]"
+      failedToGenerate: "Failed t' generate secret paintin'..."
     purge:
-      description: "delete up to 100 previous messages"
-      invalidNum: "invalid number, must be 1 to 100"
-      deleting: "deleting messages..."
-      failedToRetrieve: "failed to retrieve messages"
-      couldNotRetrieve: "could not retrieve messages"
+      description: "Take aft yer words, up t' 100."
+      invalidNum: "That number dasn't fit on me abacus."
+      deleting: "Burnin' messages..."
+      failedToRetrieve: "Failed t' retrieve messages."
+      couldNotRetrieve: "Couldna retrieve messages"
     poll:
-      description: "make a poll"
+      description: "Ask yer crew fer the'r opinions."
     settrigger:
       description: "Fetch me some new gun powd'r - can't fire this grapeshot w'thout it."
     shutdown:
@@ -67,20 +91,20 @@ mcb:
       description: "Fire th' ship's cannons, First Mate Minecord!."
     setgame:
       description: "Hoist the flag high!"
-      changed: "Game set to %s!"
+      changed: "Setting sail towards %s!"
       notplaying: "%s no longer playing anything"
       playing: "%s now playing"
     setavatar:
       description: "Make ye First Mate don another colour."
-      changed: "successfully changed avatar"
-      invalid: "invalid or missing URL"
-      failed: "failed to set avatar"
-      couldNotLoad: "could not load image from provided URL"
+      changed: "Ye First Mate be wear'n propper colours, now!"
+      invalid: "Tha's th' smithy, not th' seamstress..."
+      failed: "Looks like th' First Mate be too fat."
+      couldNotLoad: "Looks like th' fabric be soiled. We`ll be havin' t' find a new supply."
     setusername:
       description: "Mattie, ye need a new name."
-      changed: "username Changed from %s to %s"
-      limit: "username can only be changed twice per hour"
-      invalid: "username is invalid"
+      changed: "%s changed their name to '%s'"
+      limit: "Names can only be changed twice per hour"
+      invalid: "Quit speakin' in tounges!"
     ping:
       description: "How long till we reach land?"
     help:
@@ -126,10 +150,10 @@ mcb:
         channel_name: "Runner's Name"
       subcommand:
         list:
-          description: "lists all bound text channels"
+          description: "Lists all courier routes"
         add:
-          description: "add a new bound channel"
+          description: "Add a new route"
         remove:
-          description: "remove bound channel"
+          description: "Remove a route"
   messenger:
     no-player: "{player} ain't on the ship."

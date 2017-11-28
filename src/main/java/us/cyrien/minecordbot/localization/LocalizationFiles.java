@@ -1,6 +1,5 @@
 package us.cyrien.minecordbot.localization;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.cyrien.minecordbot.Minecordbot;
 
@@ -8,16 +7,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class LocalizationFiles {
 
-    private HashedMap<String, File> languages;
+    private Map<String, File> languages;
     private Minecordbot mcb;
 
     public LocalizationFiles(Minecordbot p, boolean copy) {
         mcb = p;
-        languages = new HashedMap<>();
+        languages = new HashMap<>();
         languages.put("en", new File(p.getDataFolder().toString() + "/localizations/en.yml"));
         languages.put("en_s7", new File(p.getDataFolder().toString() + "/localizations/en_s7.yml"));
         languages.put("es", new File(p.getDataFolder().toString() + "/localizations/es.yml"));
@@ -78,7 +79,7 @@ public class LocalizationFiles {
         return YamlConfiguration.loadConfiguration(lang1);
     }
 
-    public HashedMap<String, File> getLanguages() {
+    public Map<String, File> getLanguages() {
         return languages;
     }
 
