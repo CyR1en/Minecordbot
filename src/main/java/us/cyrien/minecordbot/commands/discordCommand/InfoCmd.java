@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
@@ -48,7 +49,12 @@ public class InfoCmd extends MCBCommand {
         embedBuilder.addField(Locale.getCommandsMessage(path + "generalinfo_header").finish(), mcbInfo, false);
         embedBuilder.addField(Locale.getCommandsMessage(path + "botinfo_header").finish(), botInfo, false);
         //embedBuilder.addBlankField(false);
-        embedBuilder.setFooter("- C Y R I \u039E N -", "https://yt3.ggpht.com/-uuXItiIhgcU/AAAAAAAAAAI/AAAAAAAAAAA/3xzbfTTz9oU/s88-c-k-no-mo-rj-c0xffffff/photo.jpg");
+        User user = mcb.getBot().getJda().getUserById("193970511615623168");
+        if (user != null) {
+            embedBuilder.setFooter(user.getName(), user.getAvatarUrl());
+        } else {
+            embedBuilder.setFooter("- C Y R I \u039E N -", "https://yt3.ggpht.com/-uuXItiIhgcU/AAAAAAAAAAI/AAAAAAAAAAA/3xzbfTTz9oU/s88-c-k-no-mo-rj-c0xffffff/photo.jpg");
+        }
         respond(e, embedBuilder.build());
     }
 }

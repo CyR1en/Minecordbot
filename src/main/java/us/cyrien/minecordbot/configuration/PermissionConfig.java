@@ -10,37 +10,13 @@ public class PermissionConfig extends BaseConfig {
 
     @Override
     public void initialize() {
-        String[] commentArr;
-        if (config.get("Admin-Role") == null) {
-            commentArr = new String[]{"ID of the role that's",
-                    "allowed to use Minecordbot Admin commands", "Leave default if you no role."};
-            config.set("Admin-Role", new String[]{"123123123", "123123123"}, commentArr);
+        if (config.get("RoleID.RoleName") == null) {
+            config.set("RoleID.RoleName", "sample");
             config.saveConfig();
         }
-        if (config.get("Info-Role") == null) {
-            commentArr = new String[]{"ID of the role that's",
-                    "allowed to use Minecordbot Info commands", "Leave default if you no role."};
-            config.set("Admin-Role", new String[]{"123123123", "123123123"}, commentArr);
+        if (config.get("RoleID.Permission") == null) {
+            config.set("RoleID.Permission", "{-category} {+command}");
             config.saveConfig();
         }
-        if (config.get("Misc-Role") == null) {
-            commentArr = new String[]{"ID of the role that's",
-                    "allowed to use Minecordbot Misc commands", "Leave default if you no role."};
-            config.set("Admin-Role", new String[]{"123123123", "123123123"}, commentArr);
-            config.saveConfig();
-        }
-        if (config.get("Fun-Role") == null) {
-            commentArr = new String[]{"ID of the role that's",
-                    "allowed to use Minecordbot Fun commands", "Leave default if you no role."};
-            config.set("Admin-Role", new String[]{"123123123", "123123123"}, commentArr);
-            config.saveConfig();
-        }
-        if (config.get("Help-Role") == null) {
-            commentArr = new String[]{"ID of the role that's",
-                    "allowed to use Minecordbot Help commands", "Leave default if you no role."};
-            config.set("Admin-Role", new String[]{"123123123", "123123123"}, commentArr);
-            config.saveConfig();
-        }
-
     }
 }

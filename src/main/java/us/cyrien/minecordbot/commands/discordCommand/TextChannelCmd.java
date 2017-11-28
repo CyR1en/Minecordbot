@@ -18,9 +18,9 @@ import java.util.ArrayList;
 public class TextChannelCmd extends MCBCommand {
 
     public TextChannelCmd(Minecordbot minecordbot) {
-        super( minecordbot);
+        super(minecordbot);
         this.name = "textchannel";
-        this.aliases = new String[]{"tchannel","tc"};
+        this.aliases = new String[]{"tchannel", "tc"};
         this.arguments = "<list | add | remove> [sub command args]...";
         this.help = Locale.getCommandsMessage("textchannel.description").finish();
         this.category = Bot.ADMIN;
@@ -44,13 +44,14 @@ public class TextChannelCmd extends MCBCommand {
 
         @Override
         protected void doCommand(CommandEvent e) {
-            respond(e, generateListEmbed(e));
+            MessageEmbed embed = generateListEmbed(e);
+            respond(e, embed, ResponseLevel.DEFAULT);
         }
 
         private MessageEmbed generateListEmbed(CommandEvent e) {
             String path = "textchannel.list.";
             EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle("- " + Locale.getCommandsMessage((path + "header")).finish() + " -", null);
+            eb.setDescription(Locale.getCommandsMessage((path + "header")).finish());
             eb.setColor(e.getGuild().getMember(e.getJDA().getSelfUser()).getColor());
             java.util.List<TextChannel> tcArray = mcb.getRelayChannels();
             tcArray.forEach((tc) -> {
@@ -58,7 +59,7 @@ public class TextChannelCmd extends MCBCommand {
                 String tcName = tc.getName();
                 String str = Locale.getCommandsMessage(path + "guild_name").finish() + ": " + gName + "\n";
                 str += Locale.getCommandsMessage(path + "channel_name").finish() + ": " + tcName;
-                eb.addField( "\uD83D\uDD18" + ". " + "[" + tc + "]" + ": ", str, false);
+                eb.addField("[" + tc + "]" + ": ", str, false);
             });
             return eb.build();
         }
@@ -83,40 +84,35 @@ public class TextChannelCmd extends MCBCommand {
             String arg = e.getArgs();
             java.util.List<TextChannel> tcArray = mcb.getRelayChannels();
             String response;
-            boolean withID = e.getJDA().getTextChannelById(arg) != null;
-            if(withID) {
-                TextChannel tc = e.getJDA().getTextChannelById(arg);
-                if (tc != null) {
-                    tcArray.add(tc);
-                    java.util.List<String> strs = new ArrayList<>();
-                    tcArray.forEach((c) -> strs.add(tc.getId()));
-                    configsManager.getChatConfig().set("Relay_Channels", strs);
-                    configsManager.getChatConfig().saveConfig();
-                } else {
-                    response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
-                    respond(e, String.format(response, arg));
-                    return;
-                }
+            boolean withID = StringUtils.isNumeric(arg) && e.getJDA().getTextChannelById(arg) != null;
+            TextChannel tc;
+            if (withID) {
+                tc = e.getJDA().getTextChannelById(arg);
             } else {
                 java.util.List<TextChannel> result = FinderUtil.findTextChannel(arg, e.getGuild());
-                TextChannel tc = result.size() > 0 ? result.get(0): null;
-                if(tc != null) {
-                    tcArray.add(tc);
-                    java.util.List<String> strs = new ArrayList<>();
-                    tcArray.forEach((c) -> strs.add(tc.getId()));
-                    configsManager.getChatConfig().set("Relay_Channels", strs);
-                    configsManager.getChatConfig().saveConfig();
-                } else {
-                    response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
-                    respond(e, String.format(response, arg));
-                    return;
-                }
+                tc = result.size() > 0 ? result.get(0) : null;
+            }
+            if (tc != null) {
+                tcArray.add(tc);
+                configsManager.getChatConfig().set("Relay_Channels", asStringList(tcArray));
+                configsManager.getChatConfig().saveConfig();
+            } else {
+                response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
+                respond(e, String.format(response, arg), ResponseLevel.LEVEL_3);
+                return;
             }
             response = Locale.getCommandsMessage("textchannel.added-tc").finish();
-            respond(e, String.format(response, arg));
+            respond(e, String.format(response, arg), ResponseLevel.LEVEL_1);
             Logger.info("Added text channel " + arg);
         }
 
+        private java.util.List<String> asStringList(java.util.List<TextChannel> tcs) {
+            java.util.List<String> strs = new ArrayList<>();
+            for(TextChannel c : tcs) {
+                strs.add(c.getId());
+            }
+            return strs;
+        }
     }
 
     private class Remove extends MCBCommand {
@@ -142,19 +138,19 @@ public class TextChannelCmd extends MCBCommand {
             String tcID = withID ? arg : FinderUtil.findTextChannel(arg, e.getGuild()).get(0).getId();
             if (!containsID(tcID)) {
                 response = Locale.getCommandsMessage("textchannel.tc-not-bound").finish();
-                respond(e, String.format(response, arg));
+                respond(e, String.format(response, arg), ResponseLevel.LEVEL_2);
                 return;
             }
             if (tcArray.size() == 1) {
                 response = Locale.getCommandsMessage("textchannel.last-tc").finish();
-                respond(e, String.format(response, arg));
+                respond(e, String.format(response, arg), ResponseLevel.LEVEL_2);
                 return;
             }
             tcArray.remove(mcb.getBot().getJda().getTextChannelById(tcID));
             configsManager.getChatConfig().set("Relay_Channels", tcArray);
             configsManager.getChatConfig().saveConfig();
             response = Locale.getCommandsMessage("textchannel.removed-tc").finish();
-            respond(e, String.format(response, arg));
+            respond(e, String.format(response, arg), ResponseLevel.LEVEL_1);
             Logger.info("Removed text channel " + arg);
         }
 

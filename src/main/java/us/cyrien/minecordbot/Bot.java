@@ -8,16 +8,15 @@ import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.apache.commons.lang3.StringUtils;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.DiscordRelayListener;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.ModChannelListener;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.commands.discordCommand.*;
+import us.cyrien.minecordbot.handle.RoleNameChangeHandler;
 import us.cyrien.minecordbot.localization.Locale;
 
 import javax.security.auth.login.LoginException;
@@ -34,7 +33,7 @@ public class Bot {
 
     private Map<String, Updatable> updatables;
 
-    public static Command.Category ADMIN = new Command.Category("Admin", (e) -> {
+    public static Command.Category ADMIN = new Command.Category("Admin", (CommandEvent e) -> {
         if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
             return true;
         }
@@ -47,8 +46,6 @@ public class Bot {
         if (e.getGuild() == null) {
             return true;
         }
-        if(checkRole(e, "Admin-Role"))
-            return true;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
         e.reply(embedMessage(e, eb.build()));
@@ -65,49 +62,19 @@ public class Bot {
         if (e.getGuild() == null) {
             return true;
         }
-        if(checkRole(e, "Owner-Role"))
-            return true;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
         e.reply(embedMessage(e, eb.build()));
         return false;
     });
 
-    public static Command.Category INFO = new Command.Category("Info", (e) -> {
-        if(checkRole(e, "Info-Role"))
-            return true;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
-        e.reply(embedMessage(e, eb.build()));
-        return false;
-    });
+    public static Command.Category INFO = new Command.Category("Info");
 
-    public static Command.Category MISC = new Command.Category("Misc", (e) -> {
-        if(checkRole(e, "Misc-Role"))
-            return true;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
-        e.reply(embedMessage(e, eb.build()));
-        return false;
-    });
+    public static Command.Category MISC = new Command.Category("Misc");
 
-    public static Command.Category FUN = new Command.Category("Fun", (e) -> {
-        if(checkRole(e, "Fun-Role"))
-            return true;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
-        e.reply(embedMessage(e, eb.build()));
-        return false;
-    });
+    public static Command.Category FUN = new Command.Category("Fun");
 
-    public static Command.Category HELP = new Command.Category("Help", (e) -> {
-        if(checkRole(e, "Help-Role"))
-            return true;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
-        e.reply(embedMessage(e, eb.build()));
-        return false;
-    });
+    public static Command.Category HELP = new Command.Category("Help");
 
     public Bot(Minecordbot minecordbot, EventWaiter waiter) {
         this.mcb = minecordbot;
@@ -118,18 +85,6 @@ public class Bot {
             initListeners();
             initCommandClient();
         }
-    }
-
-    private static boolean checkRole(CommandEvent e, String path) {
-        JDA jda = Minecordbot.getInstance().getBot().getJda();
-        String id = (String) Minecordbot.getInstance().getMcbConfigsManager().getPermConfig().get(path);
-        if(!StringUtils.isNumeric(id))
-            return false;
-        Role role = jda.getRoleById(Long.valueOf(id));
-        if(role != null)
-            if(e.getGuild().getMember(e.getAuthor()).getRoles().contains(role))
-                return true;
-        return false;
     }
 
     public boolean start() {
@@ -183,6 +138,7 @@ public class Bot {
     private void initListeners() {
         jda.addEventListener(new DiscordRelayListener(mcb));
         jda.addEventListener(new ModChannelListener(mcb));
+        jda.addEventListener(new RoleNameChangeHandler(mcb));
         jda.addEventListener(eventWaiter);
     }
 
@@ -225,6 +181,7 @@ public class Bot {
                 new ShutdownCmd(mcb),
                 new MCCommandCmd(mcb),
                 new SetAvatarCmd(mcb),
+                new PermissionCmd(mcb),
                 new McUsernameCmd(mcb),
                 new SetTriggerCmd(mcb),
                 new TextChannelCmd(mcb),

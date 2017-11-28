@@ -23,7 +23,7 @@ public class CommandListener extends MCBListener {
         String msg = "**" + ChatColor.stripColor(s.getName()) + "**: " + e.getMessage();
         if (seeCommands) {
             EmbedBuilder eb = new EmbedBuilder().setColor(new Color(60, 92, 243));
-            eb.addField("Command-Event", langMessageParser.parsePlayer(msg, ChatColor.stripColor(s.getName())), false);
+            eb.addField("Command-Event", "**" + ChatColor.stripColor(s.getName()) + "**: " + msg, false);
             messenger.sendMessageEmbedToAllModChannel(eb.build());
         }
     }

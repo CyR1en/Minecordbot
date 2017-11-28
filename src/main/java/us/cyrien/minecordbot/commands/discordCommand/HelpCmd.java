@@ -27,13 +27,13 @@ public class HelpCmd extends MCBCommand {
         EmbedBuilder eb = new EmbedBuilder();
         JDA jda = getMcb().getBot().getJda();
         eb.setColor(e.getGuild().getMember(jda.getSelfUser()).getColor());
-        eb.setDescription(Locale.getCommandsMessage("help.more").format(e.getClient().getPrefix()));
-        if(e.getArgs().isEmpty()) {
-            eb.setAuthor("MineCordBot Commands", "https://dev.bukkit.org/projects/minecordbot-bukkit", "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png" );
+        eb.setDescription(Locale.getCommandsMessage("help.more").f(e.getClient().getPrefix()));
+        if (e.getArgs().isEmpty()) {
+            eb.setAuthor("MineCordBot Commands", "https://dev.bukkit.org/projects/minecordbot-bukkit", "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
             eb = listCommands(eb);
             User user = jda.getUserById("193970511615623168");
             if (user != null) {
-                eb.setFooter("For more help, contact CyRien#9503 or join https://discord.gg/rEK5XmV", user.getAvatarUrl());
+                eb.setFooter("For more help, contact " + user.getName() + "#" + user.getDiscriminator() + " or join [dev's guild](https://discord.gg/rEK5XmV)", user.getAvatarUrl());
                 respond(e, eb.build());
             }
         }
@@ -60,7 +60,7 @@ public class HelpCmd extends MCBCommand {
         ArrayList<MCBCommand> commands = new ArrayList<>();
         for (Command c : getMcb().getBot().getClient().getCommands()) {
             if (c.getCategory().equals(category))
-                commands.add((MCBCommand)c);
+                commands.add((MCBCommand) c);
         }
         Collections.sort(commands);
         return commands;
