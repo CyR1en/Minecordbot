@@ -48,7 +48,6 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
 
     compile 'net.dv8tion:JDA:3.3.1_286'
     compile 'com.jagrosh:JDA-Utilities:1.8'
@@ -62,6 +61,7 @@ dependencies {
     compile group: 'gui.ava', name: 'html2image', version: '0.9'
 
     compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
+    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
     compileOnly name: 'OnTime'
     compileOnly name: 'mv'
