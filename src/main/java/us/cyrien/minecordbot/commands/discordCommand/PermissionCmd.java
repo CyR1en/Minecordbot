@@ -61,6 +61,12 @@ public class PermissionCmd extends MCBCommand {
         return keys.contains(role.getId());
     }
 
+    private String addEscapeCharacters(String s) {
+        s = s.replaceAll("[{}]", "\\\\$0");
+        s = s.replaceAll("[+|-]", "\\\\$0");
+        return s;
+    }
+
     private ArrayList<String> omitInvalid(ArrayList<String> s) {
         for (int i = 0; i < s.size(); i++) {
             String arg = s.get(i).trim();
@@ -251,10 +257,14 @@ public class PermissionCmd extends MCBCommand {
                 ArrayList<String> ignored = new ArrayList<>();
                 for (String s : permsList) {
                     if (savedPerm.contains(s)) {
-                        savedPerm = savedPerm.replaceAll(s + "\\s+", "");
+                        s = addEscapeCharacters(s);
+                        System.out.println("regex: " + s);
+                        System.out.println("Saved Perms: " + savedPerm);
+                        savedPerm = savedPerm.replaceAll(s, "");
                     } else
                         ignored.add(s);
                 }
+                savedPerm = savedPerm.replaceAll("\\s+", " ");
                 savedPerm = savedPerm.trim();
                 if(savedPerm.isEmpty())  {
                     removeAll(role, e, cleanConcat(permsList));
