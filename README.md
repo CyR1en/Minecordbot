@@ -1,4 +1,4 @@
-![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master)
+![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us)
 
 # ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__
 ## A Powerful Way to Bridge Discord and Minecraft
