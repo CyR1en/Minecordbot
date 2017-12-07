@@ -7,22 +7,34 @@ mcb:
     fatal-error: "A fatal error have occurred before %s command execution finishes."
   commands:
     perm:
-        description: "Manage permissions for categories."
-        invalid-sub: "% is not a sub command"
-        no-role: "%s role does not exist in this guild."
-        sub:
-          set:
-            description: "Set a role for certain categories. \nUsage: {+} to allow {-} to prevent. \nFlags: {-<command|category|all>} or {+<command|category|all}. \nie: {-tps} | {+info}"
-            invalid-flag: "%s is an invalid flag."
-            flag-not-null: "You must provide a flag(s)!"
-            all-invalid-flags: "All provided flags are invalid."
-            success: "Successfully set permissions for %s"
-            omitted-flags: "The following flag(s) is/are invalid and have been omitted: %s"
-            added: "The following have been added: %s"
-          check:
-            description: "Check the current permission flags of a role"
-            success: "%s permission flags"
-            role-no-perm: "%s does not have any permission flags"
+      description: "Manage permissions for categories."
+      invalid-sub: "% is not a sub command"
+      no-role: "%s role does not exist in this guild."
+      sub:
+        set:
+          description: "Set a role for certain categories. \nUsage: {+} to allow {-} to prevent. \nFlags: {-<command|category|all>} or {+<command|category|all}. \nie: {-tps} | {+info}"
+          invalid-flag: "%s is an invalid flag."
+          flag-not-null: "You must provide a flag(s)!"
+          all-invalid-flags: "All provided flags are invalid."
+          success: "Successfully set permissions for %s"
+          omitted-flags: "The following flag(s) is/are invalid and have been omitted: %s"
+          added: "The following have been added: %s"
+        check:
+          description: "Check the current permission flags of a role."
+          all-description: "All roles that have permission flags and their corresponding flags"
+          success: "%s permission flags."
+          role-no-perm: "%s does not have any permission flags."
+        remove:
+          description: "Remove a permission flag or all flags of a role."
+          success-single: "%s permission flag have been removed from %s."
+          success-ignore: "Successfully removed permission flags from %s"
+          success-ignore-detail: "%s doesn't have the following flags and have been ignored: %s"
+          success-provided: "Successfully removed permission flags from %s"
+          success-provided-detail: "New permission: %s"
+          success-all: "All permission flag have been removed from %s"
+          success-all-detail: "Removed: %s"
+          role-no-perm: "%s does not have any permission flags."
+          role-no-specific-perm: "%s does not have the following permission flag(s): %s."
     mcserver:
       description: "Look up server's information."
       cannot-find: "Cannot ping server."
@@ -77,32 +89,23 @@ mcb:
       description: "Wykonaj komendę na serwerze."
     setgame:
       description: "ustaw grę bota."
-<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "Game set to %s!"
       notplaying: "%s no longer playing anything"
       playing: "%s now playing"
-=======
       changed: "Gra zmieniona na %s!"
->>>>>>> master:res/localizations/pl.yml
     setavatar:
       description: "ustaw awatar bota."
-<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "successfully changed avatar"
       invalid: "invalid or missing URL"
       failed: "failed to set avatar"
       couldNotLoad: "could not load image from provided URL"
-=======
       changed: "zmieniono awatar bota."
->>>>>>> master:res/localizations/pl.yml
     setusername:
       description: "ustaw nazwę bota."
-<<<<<<< HEAD:src/main/resources/localizations/pl.yml
       changed: "username Changed from %s to %s"
       limit: "username can only be changed twice per hour"
       invalid: "username is invalid"
-=======
       changed: "zmieniono nazwę!"
->>>>>>> master:res/localizations/pl.yml
     setnickname:
        description: "ustaw nick bota."
        changed: "zmieniono nick bota!"
@@ -110,6 +113,9 @@ mcb:
       description: "Sprawdź czas reakcji bot'a."
     help:
       description: "Pokaż listę komend bądź sposób użycia komendy."
+      required: "Required arguments"
+      optional: "Optional arguments"
+      more: "For more detailed help, do %s<command> help."
       too-much-args: "zbyt dużo argumentów."
       no-such-command: "Nie ma takiej komendy."
       list:

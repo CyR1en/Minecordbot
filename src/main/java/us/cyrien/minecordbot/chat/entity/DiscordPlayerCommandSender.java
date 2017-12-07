@@ -10,7 +10,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.*;
@@ -977,12 +981,22 @@ public class DiscordPlayerCommandSender implements Player {
 
     @Override
     public void hidePlayer(Player player) {
-        player.hidePlayer(player);
+        DiscordPlayerCommandSender.player.hidePlayer(player);
+    }
+
+    @Override
+    public void hidePlayer(Plugin plugin, Player player) {
+        DiscordPlayerCommandSender.player.hidePlayer(plugin, player);
     }
 
     @Override
     public void showPlayer(Player player) {
-        player.showPlayer(player);
+        DiscordPlayerCommandSender.player.showPlayer(player);
+    }
+
+    @Override
+    public void showPlayer(Plugin plugin, Player player) {
+        DiscordPlayerCommandSender.player.showPlayer(plugin, player);
     }
 
     @Override

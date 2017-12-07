@@ -79,9 +79,9 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
                 ex.printStackTrace(ps);
                 */
             EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle(Locale.getCommandMessage("fatal-error").f(this.getClass().getSimpleName()), "attachment://stacktrace.txt");
+            eb.setTitle(Locale.getCommandMessage("fatal-error").f(this.getClass().getSimpleName()));
             eb.setDescription(ex.getClass().getSimpleName());
-            eb.addField("StackTrace", "Send a report to the Dev! Click the title of this message to download the stacktrace.", false);
+            eb.addField("StackTrace", "Send a report to the Dev! Click the [here](attachment://stacktrace.txt) to download the stacktrace.", false);
             MessageEmbed formatted = embedMessage(event, eb.build(), ResponseLevel.LEVEL_3);
             respond(event, "Generating stacktrace...", (msg) -> scheduler.schedule(() -> {
                 msg.delete().queue();
@@ -316,7 +316,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         return tcs.contains(c);
     }
 
-    private boolean checkRoleBasedPerm(Member m) {
+    protected boolean checkRoleBasedPerm(Member m) {
         for (Role r : m.getRoles()) {
             if (exists(r))
                 if (!allowed(mcb.getMcbConfigsManager().getPermConfig().get(r.getId() + ".Permission").toString()))

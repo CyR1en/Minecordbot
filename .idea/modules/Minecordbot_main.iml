@@ -40,22 +40,22 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: net.md-5:bungeecord-chat:1.12-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:jchronic:0.2.4a" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.milkbowl.vault:VaultAPI:1.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: :mcMMO:" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:worldguard:6.1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: :OnTime:" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:worldedit:5.5.8" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.TechFortress:GriefPrevention:16.7.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: rhino:js:1.7R2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.thoughtworks.paranamer:paranamer:2.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:worldguard:6.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: :EssentialsX:" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.milkbowl.vault:VaultAPI:1.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q.lib:jlibnoise:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q.worldedit:worldedit-bukkit:6.1.4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: :SuperVanish:" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: net.sf.opencsv:opencsv:2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q.worldedit:worldedit-core:6.1.4-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.TechFortress:GriefPrevention:16.7.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:worldedit:5.5.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q.spigot:bukkit-classloader-check:1.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:commandbook:2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sk89q:dummypermscompat:1.8" level="project" />
@@ -65,8 +65,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: de.schlichtherle:truezip:6.8.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:21.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: :PermissionsEx-1.23.4:" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.yaml:snakeyaml:1.18" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: :OnTime:" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.yaml:snakeyaml:1.19" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: :mcMMO:" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.bukkit:bukkit:1.9.4-R0.1-SNAPSHOT" level="project" />
   </component>

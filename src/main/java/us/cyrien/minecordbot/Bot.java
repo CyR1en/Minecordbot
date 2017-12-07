@@ -124,6 +124,7 @@ public class Bot {
     public void shutdown() {
         if (jda != null) {
             jda.shutdown();
+            jda = null;
         }
     }
 
