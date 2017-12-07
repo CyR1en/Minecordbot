@@ -36,8 +36,9 @@ public class MCCommandCmd extends MCBCommand {
         String[] args = arg.split("\\s");
         Player p = FinderUtil.findPlayerInDatabase(e.getMember().getUser().getId());
         CommandSender commandSender;
-        if (p == null && (PermissionUtil.checkPermission(e.getTextChannel(), e.getMember(), Permission.ADMINISTRATOR) ||
-                e.getAuthor().getId().equals(e.getClient().getOwnerId()))) {
+        boolean allowed = checkRoleBasedPerm(e.getMember())|| (PermissionUtil.checkPermission(e.getTextChannel(), e.getMember(), Permission.ADMINISTRATOR) ||
+                e.getAuthor().getId().equals(e.getClient().getOwnerId()));
+        if (p == null && allowed) {
             if (args[0].equalsIgnoreCase("help"))
                 commandSender = new DiscordCommandSender(e);
             else
