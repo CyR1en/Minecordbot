@@ -73,6 +73,8 @@ public class PermissionCmd extends MCBCommand {
             if ((arg.startsWith("{-") || arg.startsWith("{+")) && arg.endsWith("}")) {
                 boolean valid = false;
                 arg = arg.replaceAll("\\W", "");
+                if(arg.equalsIgnoreCase("all"))
+                    continue;
                 for (Command.Category c : CATEGORIES) {
                     if (arg.equalsIgnoreCase(c.getName())) {
                         valid = true;
@@ -81,17 +83,19 @@ public class PermissionCmd extends MCBCommand {
                 }
                 if (!valid) {
                     for (Command c : mcb.getBot().getClient().getCommands()) {
-                        if (arg.equalsIgnoreCase(c.getName())) {
+                        if (arg.equalsIgnoreCase(c.getName()) || Arrays.asList(c.getAliases()).contains(arg)) {
                             valid = true;
                             break;
                         }
                     }
                 }
-                if (!valid && !arg.equalsIgnoreCase("all")) {
+                if (!valid) {
+                    System.out.println("omit " + s.get(i));
                     s.remove(i);
                     i--;
                 }
             } else {
+                System.out.println("omit " + s.get(i));
                 s.remove(i);
                 i--;
             }

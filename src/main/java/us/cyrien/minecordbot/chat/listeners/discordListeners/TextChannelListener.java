@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.Messenger;
@@ -83,6 +84,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
         List<TextChannel> tcs = mcb.getModChannels();
         return tcs.contains(c);
     }
+
     private boolean isRelayChannel(TextChannel c) {
         List<TextChannel> tcs = mcb.getRelayChannels();
         return tcs.contains(c);
@@ -90,6 +92,17 @@ public abstract class TextChannelListener extends ListenerAdapter {
 
     protected void relayMessage(MessageReceivedEvent event) {
         String msg = event.getMessage().getContent();
+        /*
+        if (mcb.supportNewFeat() && isSpigot()) {
+            TextComponent all = PrefixParser.parseDiscordPrefixesAsTC(configsManager.getChatConfig().getString("Discord_Prefix"), event);
+            String format = configsManager.getChatConfig().getString("Message_Format");
+            TextComponent content = new TextComponent((format + msg));
+            all.addExtra(content);
+            getMessenger().sendGlobalMessageToMC(all);
+        } else {
+
+        }
+         */
         String prefix = PrefixParser.parseDiscordPrefixes(configsManager.getChatConfig().getString("Discord_Prefix"), event);
         String format = configsManager.getChatConfig().getString("Message_Format");
         getMessenger().sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + " " + (format + msg)).trim());
@@ -110,4 +123,13 @@ public abstract class TextChannelListener extends ListenerAdapter {
         DEFAULT_CHANNEL
     }
 
+    private boolean isSpigot() {
+        Class clazz = null;
+        try {
+            clazz = Class.forName("org.spigotmc.SpigotConfig");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return clazz != null;
+    }
 }
