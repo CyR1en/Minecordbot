@@ -1,6 +1,4 @@
-![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us)
-
-# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__
+# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__              ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://cyrien.us/donate)
 ## A Powerful Way to Bridge Discord and Minecraft
 ### Configurable, Simple, Easy
 
