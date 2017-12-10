@@ -22,7 +22,7 @@ mcb:
         check:
           description: "Regarder les permissions actuelles pour un rôle."
           all-description: "Tous les rôles qui ont des permissions et leurs flags."
-          success: "%s permission flags."
+          success: "Indicateurs de permissions : %s."
           role-no-perm: "%s n'a pas de flag de permission."
         remove:
           description: "Retirer le flag d'une permission ou tous les flags de permission à un rôle."
