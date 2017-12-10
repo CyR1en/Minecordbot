@@ -1,6 +1,4 @@
-![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master)
-
-# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__
+# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us)
 ## A Powerful Way to Bridge Discord and Minecraft
 ### Configurable, Simple, Easy
 
@@ -18,7 +16,7 @@ __Supports:__ *BukkitAPI 1.8 - 1.12*  |  __Previous Version:__ *[MineCordBot 2.1
 * Capable of Explicit Configuration
 * Bind many channels, or one
 * Cross-server command execution
-* Localized in English, Polish, German, Romanian and Pirate *YARRRR!*
+* Localized in English, Polish, German, Romanian, French and Pirate *YARRRR!*
 * Compatibility with many other chat plugins
 * Sleek command response interface
 * Tab auto-completion for in-game mentions

@@ -316,7 +316,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         return tcs.contains(c);
     }
 
-    private boolean checkRoleBasedPerm(Member m) {
+    protected boolean checkRoleBasedPerm(Member m) {
         for (Role r : m.getRoles()) {
             if (exists(r))
                 if (!allowed(mcb.getMcbConfigsManager().getPermConfig().get(r.getId() + ".Permission").toString()))

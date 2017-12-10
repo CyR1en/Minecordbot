@@ -87,7 +87,7 @@ public class PermissionCmd extends MCBCommand {
                         }
                     }
                 }
-                if (!valid) {
+                if (!valid && !arg.equalsIgnoreCase("all")) {
                     s.remove(i);
                     i--;
                 }

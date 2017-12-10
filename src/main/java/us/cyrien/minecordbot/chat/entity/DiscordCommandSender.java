@@ -30,10 +30,10 @@ public class DiscordCommandSender implements CommandSender {
 
     @Override
     public void sendMessage(String[] strings) {
-        String message = "```\n";
+        StringBuilder message = new StringBuilder("```\n");
         for(String s : strings)
-            message += s + "\n";
-        e.getTextChannel().sendMessage(ChatColor.stripColor(message) + "```").queue();
+            message.append(s).append("\n");
+        e.getTextChannel().sendMessage(ChatColor.stripColor(message.toString()) + "```").queue();
     }
 
     @Override
