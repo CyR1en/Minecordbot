@@ -1,6 +1,10 @@
 package us.cyrien.minecordbot.prefix;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.utils.SRegex;
 
@@ -10,6 +14,38 @@ import java.util.regex.Pattern;
 public class PrefixParser {
 
     public static String parseDiscordPrefixes(String prefix, MessageReceivedEvent e) {
+        return parseDiscord(prefix, e);
+    }
+
+    /*
+    public static TextComponent parseDiscordPrefixesAsTC(String prefix, MessageReceivedEvent e) {
+        prefix = parseDiscord(prefix, e);
+        String regex = "(?:__|[*#])|\\[(.*?)](\\(.*?\\))";
+        String md = prefix.replaceAll(regex, "$0");
+        String g1 = md.replaceAll(regex, "$1");
+        String g2 = md.replaceAll(regex, "$2").replaceAll("[(|)]", "");
+        TextComponent tc = new TextComponent(g1);
+        tc.setHoverEvent(new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click here to join!").create()));
+        tc.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, g2));
+        TextComponent end = new TextComponent(prefix.replaceAll(regex, "").trim());
+        tc.addExtra(end);
+        return tc;
+    }
+     */
+
+    public static String parseMinecraftPrefix(String prefix, Player p) {
+        for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
+            s.init(p);
+            String pH = "{" + s.name().toLowerCase() + "}";
+            String pH0 ="\\{" + s.name().toLowerCase() + "}";
+            if (prefix.contains(pH)) {
+                prefix = prefix.replaceAll(pH0, s.toString());
+            }
+        }
+        return prefix.replaceAll("\\s", " ");
+    }
+
+    private static String parseDiscord(String prefix, MessageReceivedEvent e) {
         for(DiscordPlaceHolders s : DiscordPlaceHolders.values() ) {
             s.init(e);
             String pH = "{" + s.name().toLowerCase() + "}";
@@ -26,15 +62,5 @@ public class PrefixParser {
         return prefix;
     }
 
-    public static String parseMinecraftPrefix(String prefix, Player p) {
-        for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
-            s.init(p);
-            String pH = "{" + s.name().toLowerCase() + "}";
-            String pH0 ="\\{" + s.name().toLowerCase() + "}";
-            if (prefix.contains(pH)) {
-                prefix = prefix.replaceAll(pH0, s.toString());
-            }
-        }
-        return prefix.replaceAll("\\s", " ");
-    }
+
 }

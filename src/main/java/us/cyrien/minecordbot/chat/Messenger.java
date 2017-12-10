@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -33,6 +34,11 @@ public class Messenger {
     public void sendGlobalMessageToMC(String message) {
         for (Player p : Bukkit.getServer().getOnlinePlayers())
             p.sendMessage(message);
+    }
+
+    public void sendGlobalMessageToMC(TextComponent tc) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers())
+            p.spigot().sendMessage(tc);
     }
 
     //To Discord

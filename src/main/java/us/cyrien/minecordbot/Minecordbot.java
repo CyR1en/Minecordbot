@@ -140,7 +140,7 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new MentionListener(this));
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
-        if (broadcastAvailable())
+        if (supportNewFeat())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
             Logger.bukkitWarn("Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
@@ -185,7 +185,7 @@ public class Minecordbot extends JavaPlugin {
         upTimer = new UpTimer(this);
     }
 
-    private boolean broadcastAvailable() {
+    public boolean supportNewFeat() {
         String version = Bukkit.getServer().getClass().getPackage().getName();
         String formattedVersion = version.substring(version.lastIndexOf(46) + 1)
                 .replaceAll("(_)([A-Z])\\w+", "").replaceAll("v", "");

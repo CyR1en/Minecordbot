@@ -41,7 +41,8 @@ public enum MinecraftPlaceHolder {
     ENAME {
         @Override
         public String toString() {
-            return ChatColor.stripColor(p.getDisplayName());
+            String s = p.getCustomName() == null ? p.getDisplayName() : p.getCustomName();
+            return ChatColor.stripColor(s);
         }
     },
     ERANK {

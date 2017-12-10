@@ -1,6 +1,6 @@
-# ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us)
-## A Powerful Way to Bridge Discord and Minecraft
-### Configurable, Simple, Easy
+#  ![MineCordBot](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/logo.png)__MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://cyrien.us/donate)
+### A Powerful Way to Bridge Discord and Minecraft 
+##### Configurable, Simple, Easy 
 
 [![Download](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/button_download.png)](https://github.com/CyR1en/Minecordbot-v2/releases)
 [![Documentation](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot-v2/_imgs/button_documentation.png)](https://github.com/CyR1en/Minecordbot-v2/wiki)

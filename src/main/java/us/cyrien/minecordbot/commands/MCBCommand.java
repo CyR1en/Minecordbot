@@ -347,6 +347,13 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             if (perm.contains("{-" + lowerCat + "}"))
                 return false;
         }
+        for(String alias : aliases) {
+            String lowerAlias = alias.toLowerCase();
+            if (perm.contains("{" + lowerAlias + "}"))
+                return true;
+            if (perm.contains("{-" + lowerAlias + "}"))
+                return false;
+        }
         return !perm.contains("{-all}");
     }
 
