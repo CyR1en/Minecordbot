@@ -8,7 +8,7 @@ mcb:
   commands:
     perm:
       description: "Manage privileges fer categories."
-      invalid-sub: "% be not a sub command"
+      invalid-sub: "%s be not a sub command"
       no-role: "%s job doesn't exist on this port."
       sub:
         set:

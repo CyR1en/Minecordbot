@@ -8,7 +8,7 @@ mcb:
   commands:
     perm:
       description: "Gérer permissions pour les catégories."
-      invalid-sub: "% n'est une sous commande"
+      invalid-sub: "%s n'est une sous commande"
       no-role: "Le role %s n'existe pas dans cette guilde."
       sub:
         set:
