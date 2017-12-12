@@ -2,8 +2,6 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Bot;
@@ -11,7 +9,6 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
 
-import java.awt.*;
 
 public class InfoCmd extends MCBCommand {
 
@@ -32,8 +29,6 @@ public class InfoCmd extends MCBCommand {
         int voiceChannelCount = e.getGuild().getVoiceChannels().size();
         String clientID = configsManager.getBotConfig().getString("Bot_ID");
         String botName = e.getJDA().getSelfUser().getName();
-        Guild guild = e.getGuild();
-        Member member = guild.getMember(e.getJDA().getSelfUser());
         String nickName = (Locale.getCommandsMessage(path + "nonick").finish());
         if (e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname() != null)
             nickName = e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname();
@@ -44,7 +39,7 @@ public class InfoCmd extends MCBCommand {
         String botInfo = "\n" + Locale.getCommandsMessage(path + "clientid").finish() + ": " + clientID +
                 "\n" + Locale.getCommandsMessage(path + "botname").finish() + ": " + botName +
                 "\n" + Locale.getCommandsMessage(path + "botnick").finish() + ": " + nickName;
-        embedBuilder.setColor(new Color(114, 137, 218));
+        embedBuilder.setColor(Bot.BOT_COLOR);
         embedBuilder.setDescription("A Powerful Way to Bridge Minecraft and Discord");
         embedBuilder.setThumbnail("https://vectr.com/cyrien/k3vhJlcOMS.png?width=168&height=168&select=k3vhJlcOMSpage0");
         embedBuilder.setAuthor("Minecordbot", "https://www.spigotmc.org/resources/minecordbot.30725/", "https://vectr.com/cyrien/k3vhJlcOMS.png?width=168&height=168&select=k3vhJlcOMSpage0" );

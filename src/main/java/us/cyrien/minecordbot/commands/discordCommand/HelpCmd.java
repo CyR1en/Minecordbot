@@ -27,7 +27,7 @@ public class HelpCmd extends MCBCommand {
     protected void doCommand(CommandEvent e) {
         EmbedBuilder eb = new EmbedBuilder();
         JDA jda = getMcb().getBot().getJda();
-        Color color = new Color(114, 137, 218); //e.getGuild().getMember(jda.getSelfUser()).getColor()
+        Color color = Bot.BOT_COLOR; //e.getGuild().getMember(jda.getSelfUser()).getColor()
         eb.setColor(color);
         eb.setDescription(Locale.getCommandsMessage("help.more").f(e.getClient().getPrefix()));
         if (e.getArgs().isEmpty()) {

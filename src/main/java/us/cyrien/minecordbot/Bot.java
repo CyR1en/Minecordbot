@@ -20,10 +20,13 @@ import us.cyrien.minecordbot.handle.RoleNameChangeHandler;
 import us.cyrien.minecordbot.localization.Locale;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Bot {
+
+    public static final Color BOT_COLOR = new Color(114, 137, 218);
 
     private CommandClientBuilder cb;
     private EventWaiter eventWaiter;
