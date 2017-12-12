@@ -110,9 +110,9 @@ mcb:
       description: "tester le temps de réponse du bot."
     help:
       description: "lister les commandes/obtenir les infos sur une commande."
-      required: "Required arguments"
-      optional: "Optional arguments"
-      more: "For more detailed help, do %s<command> help."
+      required: "Arguments requis"
+      optional: "Arguments optionnels"
+      more: "Pour plus de détails, tape %s<command> help."
       too-much-args: "trop d'arguments."
       no-such-command: "La commande %s n'existe pas."
       list:
