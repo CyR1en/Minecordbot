@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.MetadataValue;
+import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.hooks.SuperVanishHook;
@@ -27,13 +28,18 @@ public class UserQuitJoinListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
-        System.out.println("Quit");
-        mcb.getBot().getUpdatables().get("list").update();
+        if(e == null) {
+            Logger.warn("PlayerQuitEvent is null and will not be processed");
+            return;
+        } else if (e.getQuitMessage() == null) {
+            Logger.warn("PlayerQuitEvent message is null and will not be processed");
+            return;
+        }
+        mcb.getBot().getUpdatableMap().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = ChatColor.stripColor(e.getQuitMessage());
         boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
         boolean seeQuit = configsManager.getModChannelConfig().getBoolean("See_Player_Quit");
-        System.out.println("seeQuit = " + seeQuit);
         if (seeQuit) {
             String m = msg;
             if (svHook != null) {
@@ -43,9 +49,7 @@ public class UserQuitJoinListener extends MCBListener {
             }
             messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
                     .setTitle(m, null).build());
-            System.out.println("Message sent to discord");
         }
-        System.out.println("isLeaveBroadcast = " + isLeaveBroadcast);
         if (isLeaveBroadcast) {
             if (e.getQuitMessage().equals("Fake")) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
@@ -54,15 +58,20 @@ public class UserQuitJoinListener extends MCBListener {
             } else if (check(e)) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
                         .setTitle(msg, null).build());
-                System.out.println("Message sent to discord");
             }
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        System.out.println("Join");
-        mcb.getBot().getUpdatables().get("list").update();
+        if(e == null) {
+            Logger.warn("PlayerJoinEvent is null and will not be processed");
+            return;
+        } else if (e.getJoinMessage() == null) {
+            Logger.warn("PlayerJoinEvent message is null and will not be processed");
+            return;
+        }
+        mcb.getBot().getUpdatableMap().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
         String msg = ChatColor.stripColor(e.getJoinMessage());
         boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");

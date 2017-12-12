@@ -317,6 +317,10 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
     }
 
     protected boolean checkRoleBasedPerm(Member m) {
+        if(m.getRoles().size() == 0) {
+            if(!allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default")))
+                return false;
+        }
         for (Role r : m.getRoles()) {
             if (exists(r))
                 if (!allowed(mcb.getMcbConfigsManager().getPermConfig().get(r.getId() + ".Permission").toString()))

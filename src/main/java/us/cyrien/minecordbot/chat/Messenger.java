@@ -36,10 +36,12 @@ public class Messenger {
             p.sendMessage(message);
     }
 
+    /*
     public void sendGlobalMessageToMC(TextComponent tc) {
         for (Player p : Bukkit.getServer().getOnlinePlayers())
             p.spigot().sendMessage(tc);
     }
+    */
 
     //To Discord
     public void sendMessage(MessageReceivedEvent e, String message, Consumer<Message> consumer) {
@@ -131,26 +133,20 @@ public class Messenger {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
-        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
-            msg.delete().queue();
-        }, duration, TimeUnit.SECONDS));
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> msg.delete().queue(), duration, TimeUnit.SECONDS));
     }
 
     public void sendTempMessageEmbedToDiscordByID(String id, MessageEmbed message, int duration) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
-        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
-            msg.delete().queue();
-        }, duration, TimeUnit.SECONDS));
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> msg.delete().queue(), duration, TimeUnit.SECONDS));
     }
 
     public void sendMessageToDM(User user, String message) {
         user.openPrivateChannel().queue(pc -> pc.sendMessage(message).queue(null, t -> {
             Logger.warn(ChatColor.stripColor(cannotSendCode()));
-        }), t -> {
-            Logger.warn(ChatColor.stripColor(cannotSendCode()));
-        });
+        }), t -> Logger.warn(ChatColor.stripColor(cannotSendCode())));
     }
 
 
