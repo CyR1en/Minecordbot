@@ -22,13 +22,13 @@ code, the more likely it will be included.
 ## Making Changes
 
 * Create a topic branch from where you want to base your work.
-  * This is usually the Development branch.
-  * Only target the Release branch if you are certain your fix must be on that
+  * This is usually based on the Development branch.
+  * Only target the Main branch if you are certain your fix must be on that
     branch. (ie: a hot-fix for a security vulnerability)
   * To quickly create a topic branch based on Development, run `git checkout -b
-    fix/development/my_contribution development`. Please avoid working directly on the
-    `development` branch.
-  * **Never work directly on Master**
+    fix/development/my_contribution development`. *Please avoid working directly on the
+    `development` branch*.
+  * **_Never_ work directly on Master**
 
 * Make commits of logical units.
 * Check for unnecessary white-space with `git diff --check` before committing.
@@ -62,6 +62,7 @@ When adding user-facing strings to your work, follow these guidelines:
 * Use full sentences. Strings built up out of concatenated bits are harder to translate.
 * Include your strings in **all** of the localization files
 * Include a notice in your Pull Request that the translation of your strings will be necessary.
+Note: We also advise that you target the lang-update branch when updating, modifying or expanding on a localization.
 
 It is the responsibility of contributors and code reviewers to ensure that all
 user-facing strings are marked in new PRs and that translators have been notified before merging.
@@ -84,7 +85,7 @@ You typically do not need to submit an Issue for these changes.
   weeks we may close the pull request if it isn't showing any activity.
 
 ## Revert Policy
-[INSERT REVERT POLICY]
+In case of a PR reversion, we will publicly announce them through the discord server. You may or may not be contacted to update or fix your reverted submissions.
 
 ### Summary
 
