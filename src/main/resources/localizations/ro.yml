@@ -8,7 +8,7 @@ mcb:
   commands:
     perm:
       description: "Manage permissions for categories."
-      invalid-sub: "% is not a sub command"
+      invalid-sub: "%s is not a sub command"
       no-role: "%s role does not exist in this guild."
       sub:
         set:
@@ -85,6 +85,8 @@ mcb:
       description: "JavaScript eval()"
     mcmd:
       description: "Execută comenzi de Minecraft prin Discord."
+      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
+      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
     setgame:
       description: "setează jocul discord bot-ului tău."
       changed: "Jocul setat la %s!"

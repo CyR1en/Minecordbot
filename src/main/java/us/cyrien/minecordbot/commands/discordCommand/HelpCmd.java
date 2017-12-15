@@ -10,6 +10,7 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,14 +27,16 @@ public class HelpCmd extends MCBCommand {
     protected void doCommand(CommandEvent e) {
         EmbedBuilder eb = new EmbedBuilder();
         JDA jda = getMcb().getBot().getJda();
-        eb.setColor(e.getGuild().getMember(jda.getSelfUser()).getColor());
+        Color color = Bot.BOT_COLOR; //e.getGuild().getMember(jda.getSelfUser()).getColor()
+        eb.setColor(color);
         eb.setDescription(Locale.getCommandsMessage("help.more").f(e.getClient().getPrefix()));
         if (e.getArgs().isEmpty()) {
-            eb.setAuthor("MineCordBot Commands", "https://dev.bukkit.org/projects/minecordbot-bukkit", "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
+            eb.setAuthor("Minecordbot Commands", null, null);
+            eb.setThumbnail("https://vectr.com/cyrien/k3vhJlcOMS.png?width=168&height=168&select=k3vhJlcOMSpage0");
             eb = listCommands(eb);
             User user = jda.getUserById("193970511615623168");
             if (user != null) {
-                eb.setFooter("For more help, contact " + user.getName() + "#" + user.getDiscriminator() + " or join [dev's guild](https://discord.gg/rEK5XmV)", user.getAvatarUrl());
+                eb.setFooter("Questions? contact " + user.getName() + "#" + user.getDiscriminator() + " or join https://discord.cyrien.us", user.getAvatarUrl());
                 respond(e, eb.build());
             }
         }

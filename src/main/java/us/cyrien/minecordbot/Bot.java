@@ -20,10 +20,13 @@ import us.cyrien.minecordbot.handle.RoleNameChangeHandler;
 import us.cyrien.minecordbot.localization.Locale;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Bot {
+
+    public static final Color BOT_COLOR = new Color(114, 137, 218);
 
     private CommandClientBuilder cb;
     private EventWaiter eventWaiter;
@@ -31,7 +34,7 @@ public class Bot {
     private JDA jda;
     private Minecordbot mcb;
 
-    private Map<String, Updatable> updatables;
+    private Map<String, Updatable> updatableMap;
 
     public static Command.Category ADMIN = new Command.Category("Admin", (CommandEvent e) -> {
         if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
@@ -78,7 +81,7 @@ public class Bot {
 
     public Bot(Minecordbot minecordbot, EventWaiter waiter) {
         this.mcb = minecordbot;
-        updatables = new HashMap<>();
+        updatableMap = new HashMap<>();
         eventWaiter = waiter;
         cb = new CommandClientBuilder();
         if (start()) {
@@ -131,7 +134,7 @@ public class Bot {
     public void registerDiscordCommandModule(Command... commands) {
         for (Command c : commands) {
             if (c instanceof Updatable)
-                updatables.put(c.getName(), (Updatable) c);
+                updatableMap.put(c.getName(), (Updatable) c);
             cb.addCommand(c);
         }
     }
@@ -191,8 +194,8 @@ public class Bot {
         jda.addEventListener(client);
     }
 
-    public Map<String, Updatable> getUpdatables() {
-        return updatables;
+    public Map<String, Updatable> getUpdatableMap() {
+        return updatableMap;
     }
 
     private static MessageEmbed embedMessage(CommandEvent event, MessageEmbed message) {

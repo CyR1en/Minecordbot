@@ -2,14 +2,13 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
+
 
 public class InfoCmd extends MCBCommand {
 
@@ -30,8 +29,6 @@ public class InfoCmd extends MCBCommand {
         int voiceChannelCount = e.getGuild().getVoiceChannels().size();
         String clientID = configsManager.getBotConfig().getString("Bot_ID");
         String botName = e.getJDA().getSelfUser().getName();
-        Guild guild = e.getGuild();
-        Member member = guild.getMember(e.getJDA().getSelfUser());
         String nickName = (Locale.getCommandsMessage(path + "nonick").finish());
         if (e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname() != null)
             nickName = e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname();
@@ -42,16 +39,17 @@ public class InfoCmd extends MCBCommand {
         String botInfo = "\n" + Locale.getCommandsMessage(path + "clientid").finish() + ": " + clientID +
                 "\n" + Locale.getCommandsMessage(path + "botname").finish() + ": " + botName +
                 "\n" + Locale.getCommandsMessage(path + "botnick").finish() + ": " + nickName;
-        embedBuilder.setColor(member.getColor());
-        embedBuilder.setThumbnail("https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png");
-        embedBuilder.setAuthor("MineCordBot", "https://dev.bukkit.org/projects/minecordbot-bukkit", "https://media-elerium.cursecdn.com/attachments/thumbnails/124/611/310/172/minecord.png" );
+        embedBuilder.setColor(Bot.BOT_COLOR);
+        embedBuilder.setDescription("A Powerful Way to Bridge Minecraft and Discord");
+        embedBuilder.setThumbnail("https://vectr.com/cyrien/k3vhJlcOMS.png?width=168&height=168&select=k3vhJlcOMSpage0");
+        embedBuilder.setAuthor("Minecordbot", "https://www.spigotmc.org/resources/minecordbot.30725/", "https://vectr.com/cyrien/k3vhJlcOMS.png?width=168&height=168&select=k3vhJlcOMSpage0" );
         //embedBuilder.addBlankField(false);
         embedBuilder.addField(Locale.getCommandsMessage(path + "generalinfo_header").finish(), mcbInfo, false);
         embedBuilder.addField(Locale.getCommandsMessage(path + "botinfo_header").finish(), botInfo, false);
         //embedBuilder.addBlankField(false);
         User user = mcb.getBot().getJda().getUserById("193970511615623168");
         if (user != null) {
-            embedBuilder.setFooter(user.getName(), user.getAvatarUrl());
+            embedBuilder.setFooter("Questions? contact " + user.getName() + "#" + user.getDiscriminator() + " or join https://discord.cyrien.us", user.getAvatarUrl());
         } else {
             embedBuilder.setFooter("- C Y R I \u039E N -", "https://yt3.ggpht.com/-uuXItiIhgcU/AAAAAAAAAAI/AAAAAAAAAAA/3xzbfTTz9oU/s88-c-k-no-mo-rj-c0xffffff/photo.jpg");
         }

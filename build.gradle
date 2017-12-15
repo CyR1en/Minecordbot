@@ -48,7 +48,6 @@ repositories {
 }
 
 dependencies {
-
     compile 'net.dv8tion:JDA:3.3.1_286'
     compile 'com.jagrosh:JDA-Utilities:1.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
@@ -59,10 +58,10 @@ dependencies {
     compile group: 'net.marfgamer', name: 'jraknet', version: '2.8.2'
     compile group: 'dnsjava', name: 'dnsjava', version: '2.1.1'
     compile group: 'gui.ava', name: 'html2image', version: '0.9'
-    //compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 
     compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
-    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
     compileOnly name: 'OnTime'
     compileOnly name: 'mv'

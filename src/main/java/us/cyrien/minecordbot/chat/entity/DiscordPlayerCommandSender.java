@@ -44,11 +44,13 @@ public class DiscordPlayerCommandSender implements Player {
 
     @Override
     public void sendMessage(String message) {
+        player.sendMessage(message);
         e.getTextChannel().sendMessage("`" + ChatColor.stripColor(message) + "`").queue();
     }
 
     @Override
     public void sendMessage(String[] messages) {
+        player.sendMessage(messages);
         for (String message : messages) {
             sendMessage(message);
         }
@@ -175,13 +177,13 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public boolean addPassenger(Entity passenger) {
-        return player.addPassenger(passenger);
+    public boolean addPassenger(Entity entity) {
+        return player.addPassenger(entity);
     }
 
     @Override
-    public boolean removePassenger(Entity passenger) {
-        return player.removePassenger(passenger);
+    public boolean removePassenger(Entity entity) {
+        return player.removePassenger(entity);
     }
 
     @Override
@@ -300,8 +302,8 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void setGravity(boolean gravity) {
-        player.setGravity(gravity);
+    public void setGravity(boolean b) {
+        player.setGravity(b);
     }
 
     @Override
@@ -310,8 +312,8 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void setPortalCooldown(int cooldown) {
-        player.setPortalCooldown(cooldown);
+    public void setPortalCooldown(int i) {
+        player.setPortalCooldown(i);
     }
 
     @Override
@@ -320,19 +322,20 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public boolean addScoreboardTag(String tag) {
-        return player.addScoreboardTag(tag);
+    public boolean addScoreboardTag(String s) {
+        return player.addScoreboardTag(s);
     }
 
     @Override
-    public boolean removeScoreboardTag(String tag) {
-        return player.removeScoreboardTag(tag);
+    public boolean removeScoreboardTag(String s) {
+        return player.removeScoreboardTag(s);
     }
 
     @Override
     public PistonMoveReaction getPistonMoveReaction() {
         return player.getPistonMoveReaction();
     }
+
 
     @Override
     public boolean isOnline() {
@@ -395,8 +398,8 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public InventoryView openMerchant(Merchant merchant, boolean force) {
-        return player.openMerchant(merchant, force);
+    public InventoryView openMerchant(Merchant merchant, boolean b) {
+        return player.openMerchant(merchant, b);
     }
 
     @Override
@@ -435,13 +438,13 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void setCooldown(Material material, int ticks) {
-        player.setCooldown(material, ticks);
+    public void setCooldown(Material material, int i) {
+        player.setCooldown(material, i);
     }
 
     @Override
     public boolean isSleeping() {
-        return false;
+        return player.isSleeping();
     }
 
     @Override
@@ -471,7 +474,7 @@ public class DiscordPlayerCommandSender implements Player {
 
     @Override
     public int getExpToLevel() {
-        return getExpToLevel();
+        return player.getExpToLevel();
     }
 
     @Override
@@ -498,6 +501,7 @@ public class DiscordPlayerCommandSender implements Player {
     public boolean isBanned() {
         return player.isBanned();
     }
+
 
     @Override
     public boolean isWhitelisted() {
@@ -670,13 +674,13 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void playSound(Location location, Sound sound, SoundCategory category, float volume, float pitch) {
-        player.playSound(location, sound, category, volume, pitch);
+    public void playSound(Location location, Sound sound, SoundCategory soundCategory, float v, float v1) {
+        player.playSound(location, sound, soundCategory, v, v1);
     }
 
     @Override
-    public void playSound(Location location, String sound, SoundCategory category, float volume, float pitch) {
-        player.playSound(location, sound, category, volume, pitch);
+    public void playSound(Location location, String s, SoundCategory soundCategory, float v, float v1) {
+        player.playSound(location, s, soundCategory, v, v1);
     }
 
     @Override
@@ -685,19 +689,20 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void stopSound(String sound) {
-        player.stopSound(sound);
+    public void stopSound(String s) {
+        player.stopSound(s);
     }
 
     @Override
-    public void stopSound(Sound sound, SoundCategory category) {
-        player.stopSound(sound, category);
+    public void stopSound(Sound sound, SoundCategory soundCategory) {
+        player.stopSound(sound, soundCategory);
     }
 
     @Override
-    public void stopSound(String sound, SoundCategory category) {
-        player.stopSound(sound, category);
+    public void stopSound(String s, SoundCategory soundCategory) {
+        player.stopSound(s, soundCategory);
     }
+
 
     @Override
     public void playEffect(Location loc, Effect effect, int data) {
@@ -986,7 +991,7 @@ public class DiscordPlayerCommandSender implements Player {
 
     @Override
     public void hidePlayer(Plugin plugin, Player player) {
-        DiscordPlayerCommandSender.player.hidePlayer(plugin, player);
+        player.hidePlayer(plugin, player);
     }
 
     @Override
@@ -996,8 +1001,9 @@ public class DiscordPlayerCommandSender implements Player {
 
     @Override
     public void showPlayer(Plugin plugin, Player player) {
-        DiscordPlayerCommandSender.player.showPlayer(plugin, player);
+        player.showPlayer(plugin, player);
     }
+
 
     @Override
     public boolean canSee(Player player) {
@@ -1045,9 +1051,10 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void setResourcePack(String url, byte[] hash) {
-        player.setResourcePack(url, hash);
+    public void setResourcePack(String s, byte[] bytes) {
+        player.setResourcePack(s, bytes);
     }
+
 
     @Override
     public Scoreboard getScoreboard() {
@@ -1095,9 +1102,10 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+    public void sendTitle(String s, String s1, int i, int i1, int i2) {
+        player.sendTitle(s, s1, i, i1, i2);
     }
+
 
     @Override
     public void resetTitle() {
@@ -1172,11 +1180,6 @@ public class DiscordPlayerCommandSender implements Player {
     @Override
     public String getLocale() {
         return player.getLocale();
-    }
-
-    @Override
-    public Spigot spigot() {
-        return player.spigot();
     }
 
     @Override
@@ -1269,6 +1272,7 @@ public class DiscordPlayerCommandSender implements Player {
         return player.getLineOfSight(transparent, maxDistance);
     }
 
+
     @Override
     public Block getTargetBlock(Set<Material> transparent, int maxDistance) {
         return player.getTargetBlock(transparent, maxDistance);
@@ -1355,8 +1359,8 @@ public class DiscordPlayerCommandSender implements Player {
     }
 
     @Override
-    public PotionEffect getPotionEffect(PotionEffectType type) {
-        return player.getPotionEffect(type);
+    public PotionEffect getPotionEffect(PotionEffectType potionEffectType) {
+        return player.getPotionEffect(potionEffectType);
     }
 
     @Override
@@ -1469,6 +1473,7 @@ public class DiscordPlayerCommandSender implements Player {
         player.setHealth(health);
     }
 
+
     @Override
     public double getMaxHealth() {
         return player.getMaxHealth();
@@ -1478,6 +1483,7 @@ public class DiscordPlayerCommandSender implements Player {
     public void setMaxHealth(double health) {
         player.setMaxHealth(health);
     }
+
 
     @Override
     public void resetMaxHealth() {

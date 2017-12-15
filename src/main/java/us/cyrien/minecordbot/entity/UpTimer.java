@@ -12,7 +12,7 @@ public class UpTimer{
     public UpTimer(Minecordbot mcb) {
         startTime = System.currentTimeMillis();
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(mcb, new Lag(), 100L, 1L);
-        mcb.getScheduler().scheduleWithFixedDelay(() -> mcb.getBot().getUpdatables()
+        mcb.getScheduler().scheduleWithFixedDelay(() -> mcb.getBot().getUpdatableMap()
                 .get("tps").update(), 0, 5, TimeUnit.SECONDS);
     }
 

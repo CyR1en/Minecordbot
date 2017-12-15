@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
@@ -38,6 +39,7 @@ public class EvalCmd extends MCBCommand {
         scriptEngine.put("guild", event.getGuild());
         scriptEngine.put("cfgMngr", mcb.getMcbConfigsManager());
         scriptEngine.put("channel", event.getTextChannel());
+        scriptEngine.put("server", Bukkit.getServer());
         StringBuilder builder = new StringBuilder();
         try {
             builder.append("**Result**: ").append(scriptEngine.eval(arg.trim()));

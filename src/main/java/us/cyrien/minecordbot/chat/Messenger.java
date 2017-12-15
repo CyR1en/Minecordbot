@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.api.IMessenger;
 import us.cyrien.minecordbot.chat.exception.IllegalTextChannelException;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class Messenger {
+public class Messenger implements IMessenger {
 
     private Minecordbot mcb;
 
@@ -34,6 +35,13 @@ public class Messenger {
         for (Player p : Bukkit.getServer().getOnlinePlayers())
             p.sendMessage(message);
     }
+
+    /*
+    public void sendGlobalMessageToMC(TextComponent tc) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers())
+            p.spigot().sendMessage(tc);
+    }
+    */
 
     //To Discord
     public void sendMessage(MessageReceivedEvent e, String message, Consumer<Message> consumer) {
@@ -125,26 +133,20 @@ public class Messenger {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
-        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
-            msg.delete().queue();
-        }, duration, TimeUnit.SECONDS));
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> msg.delete().queue(), duration, TimeUnit.SECONDS));
     }
 
     public void sendTempMessageEmbedToDiscordByID(String id, MessageEmbed message, int duration) throws IllegalTextChannelException {
         TextChannel tc = mcb.getBot().getJda().getTextChannelById(id);
         if (tc == null)
             throw new IllegalTextChannelException("Text channel " + id + " cannot be found");
-        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> {
-            msg.delete().queue();
-        }, duration, TimeUnit.SECONDS));
+        tc.sendMessage(message).queue(msg -> scheduler.schedule(() -> msg.delete().queue(), duration, TimeUnit.SECONDS));
     }
 
     public void sendMessageToDM(User user, String message) {
         user.openPrivateChannel().queue(pc -> pc.sendMessage(message).queue(null, t -> {
             Logger.warn(ChatColor.stripColor(cannotSendCode()));
-        }), t -> {
-            Logger.warn(ChatColor.stripColor(cannotSendCode()));
-        });
+        }), t -> Logger.warn(ChatColor.stripColor(cannotSendCode())));
     }
 
 

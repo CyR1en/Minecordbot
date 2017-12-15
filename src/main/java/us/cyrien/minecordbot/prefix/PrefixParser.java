@@ -10,6 +10,23 @@ import java.util.regex.Pattern;
 public class PrefixParser {
 
     public static String parseDiscordPrefixes(String prefix, MessageReceivedEvent e) {
+        return parseDiscord(prefix, e);
+    }
+
+
+    public static String parseMinecraftPrefix(String prefix, Player p) {
+        for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
+            s.init(p);
+            String pH = "{" + s.name().toLowerCase() + "}";
+            String pH0 ="\\{" + s.name().toLowerCase() + "}";
+            if (prefix.contains(pH)) {
+                prefix = prefix.replaceAll(pH0, s.toString());
+            }
+        }
+        return prefix.replaceAll("\\s", " ");
+    }
+
+    private static String parseDiscord(String prefix, MessageReceivedEvent e) {
         for(DiscordPlaceHolders s : DiscordPlaceHolders.values() ) {
             s.init(e);
             String pH = "{" + s.name().toLowerCase() + "}";
@@ -26,15 +43,5 @@ public class PrefixParser {
         return prefix;
     }
 
-    public static String parseMinecraftPrefix(String prefix, Player p) {
-        for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
-            s.init(p);
-            String pH = "{" + s.name().toLowerCase() + "}";
-            String pH0 ="\\{" + s.name().toLowerCase() + "}";
-            if (prefix.contains(pH)) {
-                prefix = prefix.replaceAll(pH0, s.toString());
-            }
-        }
-        return prefix.replaceAll("\\s", " ");
-    }
+
 }
