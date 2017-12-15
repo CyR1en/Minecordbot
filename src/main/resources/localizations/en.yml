@@ -87,6 +87,8 @@ mcb:
       description: "JavaScript eval().s"
     mcmd:
       description: "Execute Minecraft commands from Discord. In game account needs to be in game to execute commands as the in game account."
+      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
+      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
     setgame:
       description: "set your discord bot's game."
       changed: "Game set to %s!"

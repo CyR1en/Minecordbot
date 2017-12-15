@@ -85,6 +85,8 @@ mcb:
       description: "Javanese arithmatic"
     mcmd:
       description: "Fire th' ship's cannons, First Mate Minecord!."
+      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
+      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
     setgame:
       description: "Hoist the flag high!"
       changed: "Setting sail towards %s!"

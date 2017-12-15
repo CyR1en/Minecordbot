@@ -317,16 +317,24 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
     }
 
     protected boolean checkRoleBasedPerm(Member m) {
-        if(m.getRoles().size() == 0) {
-            if(!allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default")))
-                return false;
+        if (m.getRoles().size() == 0) {
+            System.out.println("Member's role size is 0");
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));
         }
-        for (Role r : m.getRoles()) {
-            if (exists(r))
-                if (!allowed(mcb.getMcbConfigsManager().getPermConfig().get(r.getId() + ".Permission").toString()))
-                    return false;
+        Role r = null;
+        boolean roleInDb = false;
+        for (Role r1 : m.getRoles()) {
+            if (exists(r1)) {
+                roleInDb = true;
+                r = r1;
+                break;
+            }
         }
-        return true;
+        if(roleInDb) {
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString(r.getId() + ".Permission"));
+        } else {
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));
+        }
     }
 
     private boolean exists(Role role) {
@@ -339,23 +347,30 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         if (perm == null || perm.isEmpty())
             return true;
         perm = perm.toLowerCase();
+        //check command targets
         String lowerName = name.toLowerCase();
-        if (perm.contains("{" + lowerName + "}"))
+        if (perm.contains("{+" + lowerName + "}"))
             return true;
         if (perm.contains("{-" + lowerName + "}"))
             return false;
+
+        //check alias targets
+        if(aliases.length > 0) {
+            for (String alias : aliases) {
+                String lowerAlias = alias.toLowerCase();
+                if (perm.contains("{+" + lowerAlias + "}"))
+                    return true;
+                if (perm.contains("{-" + lowerAlias + "}"))
+                    return false;
+            }
+        }
+
+        //check category target
         String lowerCat = category == null ? null : category.getName().toLowerCase();
         if (lowerCat != null) {
-            if (perm.contains("{" + lowerCat + "}"))
+            if (perm.contains("{+" + lowerCat + "}"))
                 return true;
             if (perm.contains("{-" + lowerCat + "}"))
-                return false;
-        }
-        for(String alias : aliases) {
-            String lowerAlias = alias.toLowerCase();
-            if (perm.contains("{" + lowerAlias + "}"))
-                return true;
-            if (perm.contains("{-" + lowerAlias + "}"))
                 return false;
         }
         return !perm.contains("{-all}");

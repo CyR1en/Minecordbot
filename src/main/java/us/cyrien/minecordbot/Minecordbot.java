@@ -2,6 +2,8 @@ package us.cyrien.minecordbot;
 
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,6 +50,22 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            start();
+        } catch (Exception e) {
+            sendErr(e);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if (bot != null) {
+            chatManager.clearCache();
+            bot.shutdown();
+        }
+    }
+
+    private void start() {
         initInstances();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             if (mcbConfigsManager.setupConfigurations()) {
@@ -64,14 +82,6 @@ public class Minecordbot extends JavaPlugin {
                 this.getServer().shutdown();
             }
         }, 1L);
-    }
-
-    @Override
-    public void onDisable() {
-        if (bot != null) {
-            chatManager.clearCache();
-            bot.shutdown();
-        }
     }
 
     public ChatManager getChatManager() {
@@ -257,5 +267,19 @@ public class Minecordbot extends JavaPlugin {
 
     public ConfigManager getCfgManager() {
         return cfgManager;
+    }
+
+    private void sendErr(Exception ex) {
+        if (getMcbConfigsManager() != null) {
+            User user = null;
+            String ownerID = getMcbConfigsManager().getBotConfig().getString("Owner_ID");
+            if (StringUtils.isNumeric(ownerID)) {
+                if (getBot() != null && getBot().getJda() != null)
+                    user = getBot().getJda().getUserById(Long.valueOf(ownerID));
+            }
+            if (user != null)
+                user.openPrivateChannel().queue(pc -> pc.sendMessage("An error occurred: " + ex.getClass().getSimpleName()).queue(),
+                        t -> Logger.warn("Cannot send warning"));
+        }
     }
 }

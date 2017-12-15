@@ -1,19 +1,22 @@
 package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.chat.entity.DiscordCommandSender;
-import us.cyrien.minecordbot.chat.entity.DiscordConsoleCommandSender;
-import us.cyrien.minecordbot.chat.entity.DiscordPlayerCommandSender;
+import us.cyrien.minecordbot.chat.entity.*;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.utils.FinderUtil;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class MCCommandCmd extends MCBCommand {
 
@@ -36,17 +39,42 @@ public class MCCommandCmd extends MCBCommand {
         String[] args = arg.split("\\s");
         Player p = FinderUtil.findPlayerInDatabase(e.getMember().getUser().getId());
         CommandSender commandSender;
-        boolean allowed = checkRoleBasedPerm(e.getMember())|| (PermissionUtil.checkPermission(e.getTextChannel(), e.getMember(), Permission.ADMINISTRATOR) ||
-                e.getAuthor().getId().equals(e.getClient().getOwnerId()));
+        boolean allowed = false;
+        if (checkRoleBasedPerm(e.getMember())) {
+            allowed = true;
+        } else if ((PermissionUtil.checkPermission(e.getTextChannel(), e.getMember(), Permission.ADMINISTRATOR))) {
+            allowed = true;
+        } else if (e.getAuthor().getId().equals(e.getClient().getOwnerId())) {
+            allowed = true;
+        }
         if (p == null && allowed) {
-            if (args[0].equalsIgnoreCase("help"))
-                commandSender = new DiscordCommandSender(e);
-            else
-                commandSender = new DiscordConsoleCommandSender(e);
-            Bukkit.getScheduler().runTaskLater(mcb,() -> Bukkit.getServer().dispatchCommand(commandSender, arg), 1L);
+            commandSender = new DiscordConsoleCommandSender(e);
+            Bukkit.getScheduler().runTaskLater(mcb, () -> Bukkit.getServer().dispatchCommand(commandSender, arg), 1L);
         } else if (p != null) {
-            DiscordPlayerCommandSender dcs = new DiscordPlayerCommandSender(p, e);
-            Bukkit.getScheduler().runTaskLater(mcb,() -> Bukkit.getServer().dispatchCommand(dcs, arg), 1L);
+            commandSender = new DiscordPlayerCommandSender(p, e);
+            Bukkit.getScheduler().runTaskLater(mcb, () -> {
+                try {
+                    Bukkit.getServer().dispatchCommand(commandSender, arg);
+                } catch (CommandException ex) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    ex.printStackTrace(pw);
+                    String ex1 = sw.toString();
+                    if (ex1.contains("Caused by: java.lang.ClassCastException:")) {
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setDescription(Locale.getCommandsMessage("mcmd.cannot-cast").finish());
+                        respond(e, embedMessage(e, eb.build(), ResponseLevel.LEVEL_3));
+                    } else {
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setDescription(Locale.getCommandsMessage("mcmd.error").finish());
+                        respond(e, embedMessage(e, eb.build(), ResponseLevel.LEVEL_3));
+                    }
+                } catch (Exception ex) {
+                    EmbedBuilder eb = new EmbedBuilder();
+                    eb.setDescription(Locale.getCommandsMessage("mcmd.error").finish());
+                    respond(e, embedMessage(e, eb.build(), ResponseLevel.LEVEL_3));
+                }
+            }, 1L);
         } else {
             respond(e, noPermissionMessageEmbed());
         }

@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.Messenger;

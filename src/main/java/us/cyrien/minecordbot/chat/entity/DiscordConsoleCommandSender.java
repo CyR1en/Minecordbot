@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -51,10 +50,6 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
         return e.getGuild().getName();
     }
 
-    @Override
-    public Spigot spigot() {
-        return null;
-    }
 
     @Override
     public boolean isPermissionSet(String s) {
@@ -122,11 +117,11 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
 
     @Override
     public void setOp(boolean b) {
-        throw new UnsupportedOperationException("Cannot change operator status of Minecord bot");
+        throw new UnsupportedOperationException("Cannot change operator status of Minecordbot");
     }
 
     public void sendRawMessage(String message) {
-        e.getTextChannel().sendMessage("`" + ChatColor.stripColor(message) + "`");
+        e.getTextChannel().sendMessage("`" + ChatColor.stripColor(message) + "`").queue();
     }
 
     public boolean beginConversation(Conversation conversation) {

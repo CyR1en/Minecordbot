@@ -5,12 +5,12 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.api.IMessenger;
 import us.cyrien.minecordbot.chat.exception.IllegalTextChannelException;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class Messenger {
+public class Messenger implements IMessenger {
 
     private Minecordbot mcb;
 

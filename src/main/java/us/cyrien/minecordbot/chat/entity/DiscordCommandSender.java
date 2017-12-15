@@ -47,12 +47,6 @@ public class DiscordCommandSender implements CommandSender {
     }
 
     @Override
-    public Spigot spigot() {
-        return null;
-    }
-
-
-    @Override
     public boolean isPermissionSet(String s) {
         return this.perm.isPermissionSet(s);
     }
@@ -112,12 +106,8 @@ public class DiscordCommandSender implements CommandSender {
         return true;
     }
 
-    public boolean isPlayer() {
-        return false;
-    }
-
     @Override
     public void setOp(boolean b) {
-        throw new UnsupportedOperationException("Cannot change operator status of Minecord bot");
+        throw new UnsupportedOperationException("Cannot change operator status of Minecordbot");
     }
 }
