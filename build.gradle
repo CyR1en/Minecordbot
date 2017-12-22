@@ -51,7 +51,8 @@ dependencies {
     compile 'net.dv8tion:JDA:3.3.1_286'
     compile 'com.jagrosh:JDA-Utilities:1.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.8.0-beta0'
+
 
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
@@ -63,12 +64,12 @@ dependencies {
     compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
     compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'com.github.TechFortress:GriefPrevention:16.7.1'
-    compileOnly name: 'OnTime'
     compileOnly name: 'mv'
     compileOnly name: 'PermissionsEx-1.23.4'
     compileOnly name: 'mcMMO'
     compileOnly name: 'EssentialsX'
     compileOnly name: 'SuperVanish'
+    compileOnly name: 'VentureChat'
 }
 
 jar {
