@@ -62,16 +62,13 @@ public class UserQuitJoinListener extends MCBListener {
     private boolean safeToProceed(PlayerEvent event) {
         boolean safe = false;
         if (event instanceof PlayerJoinEvent) {
-            if (((PlayerJoinEvent) event).getJoinMessage() != null && !((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
+            if (((PlayerJoinEvent) event).getJoinMessage() != null && !((PlayerJoinEvent) event).getJoinMessage().isEmpty())
                 safe = true;
-                Logger.warn("The previous PlayerJoinEvent message was missing!");
-            }
-        } else if (event instanceof PlayerQuitEvent) {
-            if (((PlayerQuitEvent) event).getQuitMessage() != null && !((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
+        } else if (event instanceof PlayerQuitEvent)
+            if (((PlayerQuitEvent) event).getQuitMessage() != null && !((PlayerQuitEvent) event).getQuitMessage().isEmpty())
                 safe = true;
-                Logger.warn("The previous PlayerQuitEvent message was missing!");
-            }
-        }
+        if(!safe)
+            Logger.warn("The previous " + event.getClass().getSimpleName() + " message was missing! No broadcast was sent to Discord.");
         return safe;
     }
 

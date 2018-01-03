@@ -24,6 +24,7 @@ import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
+import us.cyrien.minecordbot.reporters.*;
 import us.cyrien.minecordbot.utils.UUIDFetcher;
 
 import javax.annotation.Nullable;
@@ -74,6 +75,7 @@ public class Minecordbot extends JavaPlugin {
                 initDatabase();
                 initMCmds();
                 initPluginHooks();
+                initReporters();
                 Frame.main();
                 UUIDFetcher.init();
                 initMListener();
@@ -110,6 +112,10 @@ public class Minecordbot extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
+    public void registerReporter(Class reporter) {
+        Frame.addReporter(reporter);
+    }
+
 
     /**
      * Register a {@link us.cyrien.mcutils.hook.PluginHook PluginHook} that allow the hook to be
@@ -142,6 +148,15 @@ public class Minecordbot extends JavaPlugin {
         Database.load();
     }
 
+    private void initReporters() {
+        registerReporter(CfgReporter.class);
+        registerReporter(JReporter.class);
+        registerReporter(MemReporter.class);
+        registerReporter(OSReporter.class);
+        registerReporter(PlReporter.class);
+        Logger.info("- Reporters registered.");
+    }
+
     private void initMListener() {
         registerMinecraftEventModule(new BroadcastCommandListener(this));
         registerMinecraftEventModule(new ChatListener(this));
@@ -153,7 +168,8 @@ public class Minecordbot extends JavaPlugin {
         if (supportNewFeat())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
-            Logger.bukkitWarn("Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
+            Logger.bukkitWarn("- Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
+        Logger.info("- Initialized Minecraft listeners.");
     }
 
     private void initMCmds() {
@@ -162,6 +178,7 @@ public class Minecordbot extends JavaPlugin {
         registerModule(McbCommands.class);
         registerModule(DSync.class);
         registerModule(DConfirm.class);
+        Logger.info("- Bukkit commands registered.");
     }
 
     private void registerMCPluginHook(Class clazz) {
@@ -177,20 +194,22 @@ public class Minecordbot extends JavaPlugin {
         registerMCPluginHook(EssentialsHook.class);
         registerMCPluginHook(mcMMOHook.class);
         registerMCPluginHook(SuperVanishHook.class);
+        registerMCPluginHook(VentureChatHook.class);
+        Logger.info("- Plugin hooks registered.");
     }
 
     private void postInit() {
         if (HookContainer.getEssentialsHook() != null) {
             registerMinecraftEventModule(new HelpOpListener(this));
-            Logger.info("Successfully Hooked Essentials and now listening for events");
+            Logger.info("- Successfully Hooked Essentials and now listening for events.");
         }
         if (HookContainer.getSuperVanishHook() != null) {
             registerMinecraftEventModule(new SuperVanishListener(this));
-            Logger.info("Successfully Hooked SuperVanish and now listening for events");
+            Logger.info("- Successfully Hooked SuperVanish and now listening for events.");
         }
         if (HookContainer.getMcMMOHook() != null) {
             registerMinecraftEventModule(new McMMOListener(this));
-            Logger.info("Successfully Hooked mcMMO and now listening for events");
+            Logger.info("- Successfully Hooked mcMMO and now listening for events.");
         }
         upTimer = new UpTimer(this);
     }

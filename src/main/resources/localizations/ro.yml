@@ -125,8 +125,9 @@ mcb:
         special: "Comenzi Speciale"
     list:
       description: "arată o listă a tuturor jucătorilor activi pe Server-ul de Minecraft."
-      list:
-        header: "Jucători Activi pe Server-ul de Minecraft"
+      header: "Online Players"
+      no-players: "There are no players online..."
+      listing: "Listing players..."
     info:
       description: "Află informații despre MineCordBot și despre bot."
       minfo:

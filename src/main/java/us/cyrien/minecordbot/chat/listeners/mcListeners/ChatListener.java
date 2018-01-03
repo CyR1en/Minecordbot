@@ -107,6 +107,31 @@ public class ChatListener extends MCBListener {
                     if (seeAdmin)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
+                case VENTURECHAT_PARTY:
+                    boolean seeVParty = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Party_Chat");
+                    if (seeVParty)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_QUICKCHAT:
+                    boolean seeVQC = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Quick_Chats");
+                    if (seeVQC)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_PRIVATE:
+                    boolean seeVPrivate = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Private_Chat");
+                    if (seeVPrivate)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_CHANNEL:
+                    boolean seeVChannel = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Chats");
+                    if (seeVChannel)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_PRIVATE_MENTION:
+                    boolean seeVPM = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Private_Mention");
+                    if (seeVPM)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
                 case DEFAULT:
                     messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;

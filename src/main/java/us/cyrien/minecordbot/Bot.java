@@ -189,6 +189,7 @@ public class Bot {
                 new McUsernameCmd(mcb),
                 new SetTriggerCmd(mcb),
                 new TextChannelCmd(mcb),
+                new DiagnosticsCmd(mcb),
                 new McApiStatusCmd(mcb));
         client = cb.build();
         jda.addEventListener(client);

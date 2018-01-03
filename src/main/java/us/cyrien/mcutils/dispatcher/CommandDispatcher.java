@@ -80,7 +80,7 @@ public class CommandDispatcher {
                     args.forEach(a -> builder.append(a).append(" "));
                     params.add(builder.toString());
 
-                    break; // this is a bad move but yeah
+                    break;
                 } else {
                     params.add(args.pop());
                 }

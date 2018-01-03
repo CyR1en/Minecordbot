@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.2.0'
+version '2.2.1'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
@@ -51,8 +51,7 @@ dependencies {
     compile 'net.dv8tion:JDA:3.3.1_286'
     compile 'com.jagrosh:JDA-Utilities:1.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
-    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.8.0-beta0'
-
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
