@@ -20,6 +20,7 @@
     <orderEntry type="library" name="Gradle: net.marfgamer:jraknet:2.8.2" level="project" />
     <orderEntry type="library" name="Gradle: dnsjava:dnsjava:2.1.1" level="project" />
     <orderEntry type="library" name="Gradle: gui.ava:html2image:0.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.1" level="project" />

@@ -110,15 +110,21 @@ public class UserQuitJoinListener extends MCBListener {
     private boolean safeToProceed(PlayerEvent event) {
         boolean safe = true;
         if (event instanceof PlayerJoinEvent) {
-            if (((PlayerJoinEvent) event).getJoinMessage() == null && ((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
+            if (((PlayerJoinEvent) event).getJoinMessage() == null) {
                 safe = false;
+            } else if (((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
+                safe = false;
+            }
+            if(!safe)
                 Logger.warn("The previous PlayerJoinEvent message was missing!");
-            }
         } else if (event instanceof PlayerQuitEvent) {
-            if (((PlayerQuitEvent) event).getQuitMessage() == null && ((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
+            if (((PlayerQuitEvent) event).getQuitMessage() == null) {
                 safe = false;
-                Logger.warn("The previous PlayerQuitEvent message was missing!");
+            } else if (((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
+                safe = false;
             }
+            if(!safe)
+                Logger.warn("The previous PlayerQuitEvent message was missing!");
         }
         return safe;
     }
