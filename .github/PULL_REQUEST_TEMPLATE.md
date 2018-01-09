@@ -1,4 +1,4 @@
-<!---Using PR Template by @flexyford--->
+<!---Using PR Template by @flexyford, feel free to do something completely different.--->
 ## Purpose
 _Describe the problem or feature in addition to a link to the issues._
 
