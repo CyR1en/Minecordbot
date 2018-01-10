@@ -1,4 +1,4 @@
-# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0)__MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyrien.us/) 
+# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyrien.us/) 
 
 ### A Powerful Way to Bridge Discord and Minecraft 
 ##### Configurable, Simple, Easy 
@@ -32,5 +32,7 @@ You can learn more about MineCordBot by visiting the [official website](https://
 [![Discord](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/discord-d_16.png) Join the Discord](https://discord.gg/bETVHje) - Talk with the developers and other server admins  
 
 ---
+__License__  
+MineCordBot is licensed under the [GNU General Public License Version 3 (GPLv3)](https://github.com/CyR1en/Minecordbot/blob/master/LICENSE).  
 __Third-Party Licenses__  
 _MineCordBot relies on some third-party apps and libraries to provide certain functions. Their licenses are available in the [`/libs/licenses/` directory](https://github.com/CyR1en/Minecordbot/tree/master/libs/licenses)._
