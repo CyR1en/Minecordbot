@@ -6,12 +6,12 @@
 # * Captures the terminal window on finish, allowing users to read through the build log.
 # * Clears the terminal after it's completed.
 
-echo "This script will attempt to build Minecordbot for you."
+echo "This script will attempt to build MineCordBot for you."
 sleep 1s
 echo "You have 5 seconds to cancel this script with CTRL+C before we start building."
 sleep 5s
 echo
-echo "Starting to build Minecordbot."
+echo "Starting to build MineCordBot."
 sleep 1s
 echo #Start the build script
 sh gradlew.sh build
