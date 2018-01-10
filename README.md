@@ -28,7 +28,7 @@ You can learn more about MineCordBot by visiting the [official website](https://
 
 ## You can also...  
 [![Auri](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/auri_16.png) Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone  
-[![ExperiencedFlight](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/XpFly_16.png) Try ExperiencedFlight](https://github.com/CyR1en/ExperiencedFlight) - Allow your players to trade their levels for flight-time.  
+[:airplane: Try ExperiencedFlight](https://github.com/CyR1en/ExperiencedFlight) - Allow your players to trade their levels for flight-time.  
 [![Discord](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/discord-d_16.png) Join the Discord](https://discord.gg/bETVHje) - Talk with the developers and other server admins  
 
 ---
