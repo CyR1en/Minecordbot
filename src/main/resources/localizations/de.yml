@@ -1,7 +1,7 @@
 mcb:
   command:
-    no-perm-message: "Sorry you do not have access to this command."
-    invalid-arguments: "Invalid arguments."
+    no-perm-message: "Tut mir leid, aber Sie haben keinen Zugriff auf diesen Befehl. ."
+    invalid-arguments: "Ungültige Argumente."
     invalid-tc: "Invalid text channel for command."
     no-alias: "There are no other alias for this command"
     fatal-error: "A fatal error have occurred before %s command execution finishes."
@@ -139,7 +139,7 @@ mcb:
         botinfo_header: "=== Bot Information ==="
         clientid: "Bot Client ID"
         botname: "Bot Name"
-        botnick: "Bot Nickname"
+        botnick: "Bot Spitzname"
         footer: "=== More InfoCmd ==="
     textchannel:
       description: "add, remove, or list textchannels that's bound to Minecraft"
