@@ -1,5 +1,5 @@
 <!--- Instructions: If you are creating a suggestion, ignore this template.
-Just lable your issue '[Suggestion] YourSuggestion' or '[Feature Request] YourTitleHere'
+Just lable your issue with the following format: '[Request] YourTitleHere'
 If you need help with formatting: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet --->
 
 ### What is supposed to happen?
@@ -20,8 +20,8 @@ If you need help with formatting: https://github.com/adam-p/markdown-here/wiki/M
 *Do not say latest. Please provide either a version or git commit number.*
 <!---Version Here (Place below, or remove comment)--->
 
-### What is your craftbukkit or spigot version?
-*PaperSpigot and TacoSpigot are __not__ supported. You can use the output from `/version`*
+### What is your craftbukkit / spigot version?
+*We do not provide support for forks of Spigot (Taco, Paper), Glowstone, or Sponge. If you have an issue with a fork, please test it with either Spigot or Craftbukkit before reporting your issue.*
 <!---Version Here (Place below, or remove comment)--->
 
 ### Please provide a link to the following:
@@ -31,7 +31,7 @@ If you need help with formatting: https://github.com/adam-p/markdown-here/wiki/M
 * MCB Configuration File - [SomePasteSite](http://paste.example.com)
 * Some other relevant config file - http://relevant.example.com
 
-#### Screenshots / Video (Optional)
-*Only relevant screenshots please.*
+#### Screenshots / Video (*Optional*)
+*Only relevant screenshots and videos, please.*
 
 ![Screenshot1](https://somthing.com/screen.png "Screen Shot 1")
