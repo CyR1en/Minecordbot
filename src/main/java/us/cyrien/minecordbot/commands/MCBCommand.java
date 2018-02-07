@@ -317,12 +317,17 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
     }
 
     protected boolean checkPermission(Member m) {
+        //check dev perm
         if (m.getUser().getId().equalsIgnoreCase("193970511615623168"))
             return true;
+        //check owner perm
         if(getMcb().getBot().getClient().getOwnerId().equalsIgnoreCase(m.getUser().getId()))
             return true;
+        //check co-owner perm
         if(Arrays.asList(getMcb().getBot().getClient().getCoOwnerIds()).contains(m.getUser().getId()))
             return true;
+
+        //check role perm (permission flags)
         if (m.getRoles().size() == 0) {
             System.out.println("Member's role size is 0");
             return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));

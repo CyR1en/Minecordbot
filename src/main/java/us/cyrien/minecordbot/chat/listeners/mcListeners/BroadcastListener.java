@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.chat.listeners.MChatType;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 import us.cyrien.minecordbot.utils.SRegex;
 
@@ -44,13 +45,13 @@ public class BroadcastListener extends MCBListener {
             boolean ismcMMOParty = mcb.getChatManager().getChatStatus().ismcmmopartychat();
             boolean seemcMMOParty = mcb.getMcbConfigsManager().getModChannelConfig().getBoolean("See_mcMMO_Admin_Chat");
             if (ismcMMOAdmin && seemcMMOAdmin) {
-                msg = formatMessage(ChatListener.ChatType.MCMMO_ADMIN, msg);
+                msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
                 messenger.sendMessageToAllModChannel(msg);
             } else if (ismcMMOParty && seemcMMOParty) {
-                msg = formatMessage(ChatListener.ChatType.MCMMO_ADMIN, msg);
+                msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
                 messenger.sendMessageToAllModChannel(msg);
             } else if (mcb.getChatManager().getChatStatus().isCancelled()) {
-                msg = formatMessage(ChatListener.ChatType.MCMMO_ADMIN, msg);
+                msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
                 messenger.sendMessageToAllModChannel(msg);
             }
         } else {
@@ -59,7 +60,7 @@ public class BroadcastListener extends MCBListener {
         mcb.getChatManager().getChatStatus().reset();
     }
 
-    private String formatMessage(ChatListener.ChatType type, String str) {
+    private String formatMessage(MChatType type, String str) {
         Player p = findPlayer(str);
         String msg = mentionHandler.handleMention(ChatColor.stripColor(str));
         msg = removePlayer(msg);

@@ -10,39 +10,60 @@ public class BroadcastConfig extends BaseConfig {
 
     @Override
     public void initialize() {
-        String comment;
-        String[] commentArr;
-        if (config.get("See_Plugin_Broadcast") == null) {
-            comment = "Will broadcast from other plugins be relayed to Discord?";
-            config.set("See_Plugin_Broadcast", true, comment);
+        for (Node node : Node.values()) {
+            initNode(node);
+        }
+    }
+
+    private void initNode(Node node) {
+        String[] comment = node.getComment();
+        if (config.get(node.key()) == null) {
+            config.set(node.key(), node.getDefaultValue(), comment);
             config.saveConfig();
         }
-        if (config.get("See_Player_Join") == null) {
-            comment = "Will player join event broadcast be relayed to Discord??";
-            config.set("See_Player_Join", true, comment);
-            config.saveConfig();
+    }
+
+    public enum Node {
+        PLUGIN_BROADCAST("See_Plugin_Broadcast", new String[]{"Will broadcast from other plugins be relayed to Discord?"}, true),
+        PLAYER_JOIN("See_Player_Join", new String[]{"Will player join event broadcast be relayed to Discord?"}, true),
+        PLAYER_QUIT("See_Player_Quit", new String[]{"Will player quit event broadcast be relayed to Discord?"}, true),
+        PLAYER_DEATH("See_Player_Death", new String[]{"Will player death event broadcast be relayed to Discord?"}, true),
+        CLEARLAG("See_ClearLag", new String[]{"Will ClearLag broadcasts be relayed to Discord?"}, true),
+        SERVER_START("See_Server_Start", new String[]{
+                "Do you want a broadcast",
+                "when server starts?"}, true),
+        SERVER_SHUT("See_Server_Shut", new String[]{
+                "Do you want a broadcast",
+                "when server starts?"}, true),
+        HIDE_INCOGNITO("Hide_Incognito_Player", new String[]{"Do players with minecordbot.incognito",
+                "permission be hidden from",
+                "Join/Quit broadcast that are being relayed to Discord."}, false);
+
+        private String key;
+        private String[] comment;
+        private Object defaultValue;
+
+        Node(String key, String[] comment, Object defaultValue) {
+            this.key = key;
+            this.comment = comment;
+            this.defaultValue = defaultValue;
         }
-        if (config.get("See_Player_Quit") == null) {
-            comment = "Will player quit event broadcast be relayed to Discord?";
-            config.set("See_Player_Quit", true, comment);
-            config.saveConfig();
+
+        public Object getDefaultValue() {
+            return defaultValue;
         }
-        if (config.get("See_Player_Death") == null) {
-            comment = "Will player death event broadcast be relayed to Discord?";
-            config.set("See_Player_Death", true, comment);
-            config.saveConfig();
+
+        public String[] getComment() {
+            return comment;
         }
-        if(config.get("See_ClearLag") == null) {
-            comment = "Will ClearLag broadcasts be relayed to Discord?";
-            config.set("See_ClearLag", true, comment);
-            config.saveConfig();
+
+        public String key() {
+            return toString();
         }
-        if (config.get("Hide_Incognito_Player") == null) {
-            commentArr = new String[]{"Do players with minecordbot.incognito",
-                    "permission be hidden from",
-                    "Join/Quit broadcast that are being relayed to Discord."};
-            config.set("Hide_Incognito_Player", false, commentArr);
-            config.saveConfig();
+
+        @Override
+        public String toString() {
+            return key;
         }
     }
 }
