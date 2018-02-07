@@ -127,8 +127,9 @@ mcb:
         special: "Commandes spéciales"
     list:
       description: "lister les joueurs connectés sur Minecraft."
-      list:
-        header: "Joueurs Connectés au Serveur Minecraft"
+      header: "Joueurs Connectés au Serveur Minecraft"
+      no-players: " Il n'y a aucun joueur en ligne"
+      listing: "Liste des joueurs en cours de traitement..."
     info:
       description: "obtenir les informations sur MineCordBot et sur le bot"
       minfo:

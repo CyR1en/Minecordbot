@@ -62,5 +62,7 @@ public class MCBConfigsManager {
         return configs[4].getConfig();
     }
 
-
+    public BaseConfig[] getConfigs() {
+        return configs;
+    }
 }

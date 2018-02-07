@@ -85,5 +85,36 @@ public class ModChannelConfig extends BaseConfig {
             config.set("See_Broadcast", true, comment);
             config.saveConfig();
         }
+        if(config.get("See_VentureChat_Channel_Chats") == null) {
+            commentArr = new String[]{"Do you want to see VentureChat channel",
+                    "chats on Minecordbot Discord mod channel?"};
+            config.set("See_VentureChat_Channel_Chats", true, commentArr);
+            config.saveConfig();
+        }
+        if(config.get("See_VentureChat_Quick_Chats") == null) {
+            commentArr = new String[]{"Do you want to see VentureChat quick",
+                    "chats on Minecordbot Discord mod channel?"};
+            config.set("See_VentureChat_Quick_Chats", true, commentArr);
+            config.saveConfig();
+        }
+        if(config.get("See_VentureChat_Private_Mention") == null) {
+            commentArr = new String[]{"Do you want to see VentureChat private",
+                    "mention on Minecordbot Discord mod channel?",
+                    "These are messages that starts with @ + name"};
+            config.set("See_VentureChat_Private_Mention", true, commentArr);
+            config.saveConfig();
+        }
+        if(config.get("See_VentureChat_Channel_Party_Chat") == null) {
+            commentArr = new String[]{"Do you want to see VentureChat party",
+                    "chats on Minecordbot Discord mod channel?"};
+            config.set("See_VentureChat_Channel_Party_Chat", true, commentArr);
+            config.saveConfig();
+        }
+        if(config.get("See_VentureChat_Channel_Private_Chat") == null) {
+            commentArr = new String[]{"Do you want to see VentureChat private",
+                    "conversation on Minecordbot Discord mod channel?"};
+            config.set("See_VentureChat_Channel_Private_Chat", true, commentArr);
+            config.saveConfig();
+        }
     }
 }

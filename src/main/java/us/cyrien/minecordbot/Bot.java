@@ -189,6 +189,7 @@ public class Bot {
                 new McUsernameCmd(mcb),
                 new SetTriggerCmd(mcb),
                 new TextChannelCmd(mcb),
+                new DiagnosticsCmd(mcb),
                 new McApiStatusCmd(mcb));
         client = cb.build();
         jda.addEventListener(client);
@@ -196,6 +197,26 @@ public class Bot {
 
     public Map<String, Updatable> getUpdatableMap() {
         return updatableMap;
+    }
+
+    public void updateUpdatable(String s) {
+        for(Command c : getClient().getCommands()) {
+            if(c.getName().equals(s))
+                updateUpdatable(c);
+        }
+    }
+
+    public void updateUpdatable(Command command) {
+        if(command == null)
+            return;
+        if(command instanceof Updatable) {
+            Updatable updatable = updatableMap.get(command.getName());
+            if(updatable != null) {
+                updatable.update();
+            } else
+                Logger.err(command.getName() + " could not be found in " + updatableMap + ".");
+        } else
+            Logger.err("Could not update " + command.getName() + " because it's not an instance of Updatable.");
     }
 
     private static MessageEmbed embedMessage(CommandEvent event, MessageEmbed message) {

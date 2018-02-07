@@ -6,6 +6,8 @@ mcb:
     no-alias: "There are no other alias for this command"
     fatal-error: "A fatal error have occurred before %s command execution finishes."
   commands:
+    diagnostics:
+      description: "Send a full diagnosis to help troubleshooting."
     perm:
       description: "Manage permissions for categories."
       invalid-sub: "%s is not a sub command"
@@ -124,8 +126,9 @@ mcb:
         special: "Special Command"
     list:
       description: "List all online players on the minecraft server."
-      list:
-        header: "Online Players on Minecraft server"
+      header: "Online Players"
+      no-players: "There are no players online..."
+      listing: "Listing players..."
     info:
       description: "Know information about MineCordBot and the bot"
       minfo:

@@ -24,6 +24,6 @@ public class HelpTopicUtil {
 	public static void index() {
 		topics.forEach((parent, topics) -> Bukkit.getHelpMap().addTopic(new IndexTopic(parent, topics)));
 
-		Logger.info("HelpTopics registered.");
+		Logger.info("- HelpTopics indexed.");
 	}
 }

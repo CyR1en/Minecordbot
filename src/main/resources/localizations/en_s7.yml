@@ -122,8 +122,9 @@ mcb:
         special: "Navigator's Diptych Dial"
     list:
       description: "Take role, Mr. 'CordBot"
-      list:
-        header: "Mates On Board"
+      header: "Online Players"
+      no-players: "There are no players online..."
+      listing: "Listing players..."
     info:
       description: "Know thy First Mate"
       minfo:

