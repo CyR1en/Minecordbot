@@ -1,4 +1,7 @@
 mcb:
+  event:
+    start: "The server have successfully started!"
+    shut: "The server is shutting down!"
   command:
     no-perm-message: "Scuze dar nu ai acces la această comandă."
     invalid-arguments: "Argumente invalide."

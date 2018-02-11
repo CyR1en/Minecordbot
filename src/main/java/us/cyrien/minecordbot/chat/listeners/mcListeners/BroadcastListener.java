@@ -8,6 +8,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.listeners.MChatType;
+import us.cyrien.minecordbot.configuration.BroadcastConfig;
+import us.cyrien.minecordbot.configuration.ChatConfig;
+import us.cyrien.minecordbot.configuration.ModChannelConfig;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 import us.cyrien.minecordbot.utils.SRegex;
 
@@ -22,12 +25,12 @@ public class BroadcastListener extends MCBListener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBroadcastMessage(BroadcastMessageEvent event) {
         String msg = ChatColor.stripColor(event.getMessage());
-        boolean seeBc = configsManager.getModChannelConfig().getBoolean("See_Broadcast");
-        boolean seePlBc = configsManager.getBroadcastConfig().getBoolean("See_Plugin_Broadcast");
+        boolean seeBc = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_BROADCAST);
+        boolean seePlBc = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLUGIN_BROADCAST);
         boolean privateBroadcast = isPrivate(event);
-        boolean seeCL = configsManager.getBroadcastConfig().getBoolean("See_ClearLag");
+        boolean seeCL = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.CLEARLAG);
         if (!privateBroadcast && seePlBc) {
-            boolean isClearLag = msg.contains("[ClearLag]");
+            boolean isClearLag = msg.contains("[ClearLag]") || msg.contains("[Clearlag]") || msg.contains("[clearlag]");
             if (isClearLag && seeCL) {
                 messenger.sendMessageToAllBoundChannel("\uD83D\uDCE2 " + msg);
                 if (seeBc) {
@@ -41,9 +44,9 @@ public class BroadcastListener extends MCBListener {
             }
         } else if (privateBroadcast) {
             boolean ismcMMOAdmin = mcb.getChatManager().getChatStatus().isIsmcmmoAdminChat();
-            boolean seemcMMOAdmin = mcb.getMcbConfigsManager().getModChannelConfig().getBoolean("See_mcMMO_Admin_Chat");
+            boolean seemcMMOAdmin = mcb.getMcbConfigsManager().getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_MMO_ADMIN_CHAT);
             boolean ismcMMOParty = mcb.getChatManager().getChatStatus().ismcmmopartychat();
-            boolean seemcMMOParty = mcb.getMcbConfigsManager().getModChannelConfig().getBoolean("See_mcMMO_Admin_Chat");
+            boolean seemcMMOParty = mcb.getMcbConfigsManager().getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_MMO_PARTY_CHAT);
             if (ismcMMOAdmin && seemcMMOAdmin) {
                 msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
                 messenger.sendMessageToAllModChannel(msg);
@@ -64,7 +67,7 @@ public class BroadcastListener extends MCBListener {
         Player p = findPlayer(str);
         String msg = mentionHandler.handleMention(ChatColor.stripColor(str));
         msg = removePlayer(msg);
-        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString("Minecraft_Prefix"), p);
+        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString(ChatConfig.Nodes.MINECRAFT_PREFIX), p);
         return type.getChatPrefix() + "**" + prefix + "** " + msg;
     }
 

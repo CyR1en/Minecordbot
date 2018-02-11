@@ -3,6 +3,7 @@ package us.cyrien.minecordbot.localization;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.cyrien.mcutils.logger.Logger;
+import us.cyrien.minecordbot.configuration.BotConfig;
 import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class Locale {
     }
 
     private static YamlConfiguration getLocalization() {
-        String loc = configsManager.getBotConfig().getString("Localization");
+        String loc = configsManager.getBotConfig().getString(BotConfig.Nodes.LOCALICAZATION);
         File f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder() + "/localizations/" + loc + ".yml");
         if (!f.exists())
             f = new File(Bukkit.getPluginManager().getPlugin("MineCordBot").getDataFolder() + "localizations/en.yml");
@@ -30,6 +31,10 @@ public class Locale {
             return messagePath;
         }
         return getLocalization().getString(messagePath);
+    }
+
+    public static Formatter getEventMessage(String path) {
+        return new Formatter(getTranslatedMessage("mcb.event." + path));
     }
 
     public static Formatter getCommandMessage(String path) {

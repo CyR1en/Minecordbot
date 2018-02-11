@@ -1,4 +1,7 @@
 mcb:
+  event:
+    start: "The server have successfully started!"
+    shut: "The server is shutting down!"
   command:
     no-perm-message: "Ye can't yell out the order, it fo' d' captain!"
     invalid-arguments: "Invalid arguments."

@@ -26,12 +26,17 @@ public class LocalizationFiles {
         languages.put("de", new File(p.getDataFolder().toString() + "/localizations/de.yml"));
         languages.put("ro", new File(p.getDataFolder().toString() + "/localizations/ro.yml"));
         languages.put("fr", new File(p.getDataFolder().toString() + "/localizations/fr.yml"));
+        languages.put("custom", new File(p.getDataFolder().toString() + "/localization/custom.yml"));
         for (String key : languages.keySet()) {
             if (copy) {
                 saveResource(p, "localizations/" + key + ".yml", true);
             } else {
                 try {
-                    languages.get(key).createNewFile();
+                    if (key.equals("custom")) {
+                        if (!languages.get(key).exists())
+                            languages.get(key).createNewFile();
+                    } else
+                        languages.get(key).createNewFile();
                 } catch (IOException ex) {
                 }
             }

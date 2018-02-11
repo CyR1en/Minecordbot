@@ -20,7 +20,7 @@ public class McServerCmd extends MCBCommand {
         super(mcb);
         this.name = "mcserver";
         this.arguments = "<server ip>";
-        this.help = Locale.getCommandsMessage("mcskin.description").finish();
+        this.help = Locale.getCommandsMessage("mcserver.description").finish();
         this.category = Bot.INFO;
         this.type = Type.EMBED;
     }

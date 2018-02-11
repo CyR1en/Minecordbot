@@ -59,7 +59,8 @@ public class DiagnosticsImpl implements Diagnostics {
             if(r.reportHeader() != null) {
                 sb.append(r.reportHeader());
             }
-            sb.append(Diagnostics.LINE_SEPARATOR).append(r.report()).append(Diagnostics.LINE_SEPARATOR).append(Diagnostics.LINE_SEPARATOR);
+            sb.append(Diagnostics.LINE_SEPARATOR).append(r.report())
+                    .append(Diagnostics.DOUBLE_LINE_SEPARATOR);
         });
         return sb.toString();
     }

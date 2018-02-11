@@ -57,7 +57,7 @@ public class PermissionCmd extends MCBCommand {
     }
 
     private boolean exists(Role role) {
-        java.util.Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getKeys();
+        java.util.Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getConfig().getKeys();
         return keys.contains(role.getId());
     }
 
@@ -153,16 +153,16 @@ public class PermissionCmd extends MCBCommand {
             }
             String perm = formatList(permsList);
             if (exists(role)) {
-                mcb.getMcbConfigsManager().getPermConfig().set(role.getId() + ".Permission", perm);
-                configsManager.getPermConfig().saveConfig();
+                mcb.getMcbConfigsManager().getPermConfig().getConfig().set(role.getId() + ".Permission", perm);
+                configsManager.getPermConfig().getConfig().saveConfig();
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle(Locale.getCommandsMessage("perm.sub.set.success").f(role.getName()));
                 eb.setDescription(msg);
                 respond(e, embedMessage(e, eb.build(), ResponseLevel.LEVEL_1));
             } else {
-                mcb.getMcbConfigsManager().getPermConfig().set(role.getId() + ".RoleName", role.getName());
-                mcb.getMcbConfigsManager().getPermConfig().set(role.getId() + ".Permission", perm);
-                configsManager.getPermConfig().saveConfig();
+                mcb.getMcbConfigsManager().getPermConfig().getConfig().set(role.getId() + ".RoleName", role.getName());
+                mcb.getMcbConfigsManager().getPermConfig().getConfig().set(role.getId() + ".Permission", perm);
+                configsManager.getPermConfig().getConfig().saveConfig();
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle(Locale.getCommandsMessage("perm.sub.set.success").f(role.getName()));
                 eb.setDescription(msg);
@@ -188,7 +188,7 @@ public class PermissionCmd extends MCBCommand {
             Role role = FinderUtil.findRoles(e.getArgs(), e.getGuild()).size() > 0 ?
                     FinderUtil.findRoles(e.getArgs(), e.getGuild()).get(0) : null;
             if (role != null) {
-                String perms = mcb.getMcbConfigsManager().getPermConfig().getString(role.getId() + ".Permission");
+                String perms = mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(role.getId() + ".Permission");
                 if (perms != null) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setTitle(Locale.getCommandsMessage("perm.sub.check.success").f(role.getName()));
@@ -199,15 +199,15 @@ public class PermissionCmd extends MCBCommand {
                     respond(e, Locale.getCommandsMessage("perm.sub.check.role-no-perm").f("`" + role.getName() + "`"), ResponseLevel.LEVEL_2);
                 }
             } else if (e.getArgs().equalsIgnoreCase("all")) {
-                java.util.Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getKeys();
+                java.util.Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getConfig().getKeys();
                 if(keys.contains("RoleID"))
                     keys.remove("RoleID");
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setDescription(Locale.getCommandsMessage("perm.sub.check.").finish());
                 System.out.println(keys.toString());
                 for(String s : keys) {
-                    String roleName = mcb.getMcbConfigsManager().getPermConfig().getString(s + ".RoleName");
-                    String perms = mcb.getMcbConfigsManager().getPermConfig().getString(s + ".Permission");
+                    String roleName = mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(s + ".RoleName");
+                    String perms = mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(s + ".Permission");
                     eb.addField("**" + roleName + "**", "`" + perms + "`", false);
                 }
                 MessageEmbed formatted = embedMessage(e, eb.build(), ResponseLevel.DEFAULT, "Permissions");
@@ -243,7 +243,7 @@ public class PermissionCmd extends MCBCommand {
             }
             if (args.size() < 2) {
                 if (exists(role)) {
-                    String perms = mcb.getMcbConfigsManager().getPermConfig().getString(role.getId() + ".Permission");
+                    String perms = mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(role.getId() + ".Permission");
                     removeAll(role, e, perms);
                 }
                 respond(e, Locale.getCommandsMessage("perm.sub.set.flag-not-null").finish());
@@ -256,7 +256,7 @@ public class PermissionCmd extends MCBCommand {
                     perms = cleanConcat(ps).split("\\|");
                 }
                 ArrayList<String> permsList = new ArrayList<>(Arrays.asList(perms));
-                String savedPerm = mcb.getMcbConfigsManager().getPermConfig().getString(role.getId() + ".Permission");
+                String savedPerm = mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(role.getId() + ".Permission");
                 savedPerm = savedPerm.replaceAll(",\\s+", " ");
                 ArrayList<String> ignored = new ArrayList<>();
                 for (String s : permsList) {
@@ -277,16 +277,16 @@ public class PermissionCmd extends MCBCommand {
                     permsList = new ArrayList<>(Arrays.asList(perms));
                     String newPerm = formatList(permsList);
                     if (ignored.size() > 0) {
-                        mcb.getMcbConfigsManager().getPermConfig().set(role.getId() + ".Permission", newPerm);
-                        configsManager.getPermConfig().saveConfig();
+                        mcb.getMcbConfigsManager().getPermConfig().getConfig().set(role.getId() + ".Permission", newPerm);
+                        configsManager.getPermConfig().getConfig().saveConfig();
                         EmbedBuilder embedBuilder = new EmbedBuilder();
                         embedBuilder.setTitle(Locale.getCommandsMessage("perm.sub.remove.success-ignore").f(role.getName()));
                         embedBuilder.setDescription(Locale.getCommandsMessage("perm.sub.remove.success-ignore-detail").f(role.getName(), formatList(ignored)));
                         MessageEmbed formatted = embedMessage(e, embedBuilder.build(), ResponseLevel.LEVEL_1);
                         respond(e, formatted);
                     } else {
-                        mcb.getMcbConfigsManager().getPermConfig().set(role.getId() + ".Permission", newPerm);
-                        configsManager.getPermConfig().saveConfig();
+                        mcb.getMcbConfigsManager().getPermConfig().getConfig().set(role.getId() + ".Permission", newPerm);
+                        configsManager.getPermConfig().getConfig().saveConfig();
                         EmbedBuilder embedBuilder = new EmbedBuilder();
                         embedBuilder.setTitle(Locale.getCommandsMessage("perm.sub.remove.success-provided").f(role.getName()));
                         embedBuilder.setDescription(Locale.getCommandsMessage("perm.sub.remove.success-provided-detail").f(newPerm));
@@ -298,8 +298,8 @@ public class PermissionCmd extends MCBCommand {
         }
 
         private void removeAll(Role role, CommandEvent e, String removedPerms) {
-            mcb.getMcbConfigsManager().getPermConfig().removeKey(role.getId());
-            configsManager.getPermConfig().saveConfig();
+            mcb.getMcbConfigsManager().getPermConfig().getConfig().removeKey(role.getId());
+            configsManager.getPermConfig().getConfig().saveConfig();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(Locale.getCommandsMessage("perm.sub.remove.success-all").f(role.getName()));
             embedBuilder.setDescription(Locale.getCommandsMessage("perm.sub.remove.success-all-detail").f(removedPerms));

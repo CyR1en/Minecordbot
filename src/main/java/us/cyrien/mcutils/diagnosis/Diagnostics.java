@@ -9,6 +9,7 @@ import java.util.LinkedList;
 public interface Diagnostics {
 
     String LINE_SEPARATOR = "\r\n";
+    String DOUBLE_LINE_SEPARATOR = "\r\n\r\n";
 
     LinkedList<IReporter> getReporters();
 

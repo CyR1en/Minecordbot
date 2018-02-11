@@ -10,20 +10,12 @@ public class BroadcastConfig extends BaseConfig {
 
     @Override
     public void initialize() {
-        for (Node node : Node.values()) {
+        for (Nodes node : Nodes.values()) {
             initNode(node);
         }
     }
 
-    private void initNode(Node node) {
-        String[] comment = node.getComment();
-        if (config.get(node.key()) == null) {
-            config.set(node.key(), node.getDefaultValue(), comment);
-            config.saveConfig();
-        }
-    }
-
-    public enum Node {
+    public enum Nodes implements Node {
         PLUGIN_BROADCAST("See_Plugin_Broadcast", new String[]{"Will broadcast from other plugins be relayed to Discord?"}, true),
         PLAYER_JOIN("See_Player_Join", new String[]{"Will player join event broadcast be relayed to Discord?"}, true),
         PLAYER_QUIT("See_Player_Quit", new String[]{"Will player quit event broadcast be relayed to Discord?"}, true),
@@ -43,7 +35,7 @@ public class BroadcastConfig extends BaseConfig {
         private String[] comment;
         private Object defaultValue;
 
-        Node(String key, String[] comment, Object defaultValue) {
+        Nodes(String key, String[] comment, Object defaultValue) {
             this.key = key;
             this.comment = comment;
             this.defaultValue = defaultValue;

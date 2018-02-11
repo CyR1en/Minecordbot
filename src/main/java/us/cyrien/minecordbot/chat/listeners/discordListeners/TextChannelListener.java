@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.Messenger;
+import us.cyrien.minecordbot.configuration.ChatConfig;
 import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 
@@ -55,7 +56,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     public abstract void execute(MessageReceivedEvent event);
 
     protected boolean botIsBlocked(String id) {
-        List<String> blockedB = (List<String>) configsManager.getChatConfig().getList("Blocked_Bots");
+        List<String> blockedB = (List<String>) configsManager.getChatConfig().getList(ChatConfig.Nodes.BLOCKED_BOTS);
         if (mcb.getBot().getJda().getUserById(id) != null) {
             User user = mcb.getBot().getJda().getUserById(id);
             if (user.isBot()) {
@@ -69,7 +70,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     }
 
     protected boolean prefixIsBlocked(String message) {
-        List<String> blockedP = (List<String>) configsManager.getChatConfig().getList("Blocked_Prefix");
+        List<String> blockedP = (List<String>) configsManager.getChatConfig().getList(ChatConfig.Nodes.BLOCKED_PREFIX);
         for (String p : blockedP) {
             if (p.equals("{this}"))
                 p = mcb.getBot().getClient().getPrefix();
@@ -102,8 +103,8 @@ public abstract class TextChannelListener extends ListenerAdapter {
 
         }
          */
-        String prefix = PrefixParser.parseDiscordPrefixes(configsManager.getChatConfig().getString("Discord_Prefix"), event);
-        String format = configsManager.getChatConfig().getString("Message_Format");
+        String prefix = PrefixParser.parseDiscordPrefixes(configsManager.getChatConfig().getString(ChatConfig.Nodes.DISCORD_PREFIX), event);
+        String format = configsManager.getChatConfig().getString(ChatConfig.Nodes.MESSAGE_FORMAT);
         getMessenger().sendGlobalMessageToMC(ChatColor.translateAlternateColorCodes('&', prefix + " " + (format + msg)).trim());
     }
 

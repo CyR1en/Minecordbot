@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot;
 
 import com.jagrosh.jdautilities.waiter.EventWaiter;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang.StringUtils;
@@ -18,8 +19,14 @@ import us.cyrien.minecordbot.chat.ChatManager;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.chat.listeners.mcListeners.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
+import us.cyrien.minecordbot.configuration.BotConfig;
+import us.cyrien.minecordbot.configuration.BroadcastConfig;
+import us.cyrien.minecordbot.configuration.ChatConfig;
 import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 import us.cyrien.minecordbot.entity.UpTimer;
+import us.cyrien.minecordbot.events.StartEvent;
+import us.cyrien.minecordbot.events.listener.OnShut;
+import us.cyrien.minecordbot.events.listener.OnStart;
 import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.Locale;
@@ -60,6 +67,11 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        boolean broadcast = getMcbConfigsManager().getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.SERVER_SHUT);
+        if(broadcast) {
+            EmbedBuilder eb = new EmbedBuilder().setDescription(Locale.getEventMessage("shut").finish()).setColor(Bot.BOT_COLOR);
+            messenger.sendMessageEmbedToAllBoundChannel(eb.build());
+        }
         if (bot != null) {
             chatManager.clearCache();
             bot.shutdown();
@@ -80,6 +92,7 @@ public class Minecordbot extends JavaPlugin {
                 UUIDFetcher.init();
                 initMListener();
                 postInit();
+                Bukkit.getPluginManager().callEvent(new StartEvent(this));
             } else {
                 this.getServer().shutdown();
             }
@@ -149,6 +162,7 @@ public class Minecordbot extends JavaPlugin {
     }
 
     private void initReporters() {
+        registerReporter(InfoHeader.class);
         registerReporter(CfgReporter.class);
         registerReporter(JReporter.class);
         registerReporter(MemReporter.class);
@@ -165,6 +179,8 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new MentionListener(this));
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
+        registerMinecraftEventModule(new OnShut(this));
+        registerMinecraftEventModule(new OnStart(this));
         if (supportNewFeat())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
@@ -223,12 +239,16 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public List<TextChannel> getModChannels() {
-        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList("Mod_Channels");
+        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList(ChatConfig.Nodes.RELAY_CHANNELS);
+        if(tcID == null)
+            return new ArrayList<>();
         return findValidTextChannels(tcID);
     }
 
     public List<TextChannel> getRelayChannels() {
-        List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
+        List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList(ChatConfig.Nodes.RELAY_CHANNELS);
+        if(tcID == null)
+            return new ArrayList<>();
         return findValidTextChannels(tcID);
     }
 
@@ -291,7 +311,7 @@ public class Minecordbot extends JavaPlugin {
     private void sendErr(Exception ex) {
         if (getMcbConfigsManager() != null) {
             User user = null;
-            String ownerID = getMcbConfigsManager().getBotConfig().getString("Owner_ID");
+            String ownerID = getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.OWNER_ID);
             if (StringUtils.isNumeric(ownerID)) {
                 if (getBot() != null && getBot().getJda() != null)
                     user = getBot().getJda().getUserById(Long.valueOf(ownerID));

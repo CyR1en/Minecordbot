@@ -10,6 +10,7 @@ import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
+import us.cyrien.minecordbot.configuration.ChatConfig;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.utils.FinderUtil;
 
@@ -94,8 +95,8 @@ public class TextChannelCmd extends MCBCommand {
             }
             if (tc != null) {
                 tcArray.add(tc);
-                configsManager.getChatConfig().set("Relay_Channels", asStringList(tcArray));
-                configsManager.getChatConfig().saveConfig();
+                configsManager.getChatConfig().getConfig().set(ChatConfig.Nodes.RELAY_CHANNELS.key(), asStringList(tcArray));
+                configsManager.getChatConfig().getConfig().saveConfig();
             } else {
                 response = Locale.getCommandsMessage("textchannel.invalid-tc").finish();
                 respond(e, String.format(response, arg), ResponseLevel.LEVEL_3);
@@ -147,8 +148,8 @@ public class TextChannelCmd extends MCBCommand {
                 return;
             }
             tcArray.remove(mcb.getBot().getJda().getTextChannelById(tcID));
-            configsManager.getChatConfig().set("Relay_Channels", tcArray);
-            configsManager.getChatConfig().saveConfig();
+            configsManager.getChatConfig().getConfig().set(ChatConfig.Nodes.RELAY_CHANNELS.key(), tcArray);
+            configsManager.getChatConfig().getConfig().saveConfig();
             response = Locale.getCommandsMessage("textchannel.removed-tc").finish();
             respond(e, String.format(response, arg), ResponseLevel.LEVEL_1);
             Logger.info("Removed text channel " + arg);

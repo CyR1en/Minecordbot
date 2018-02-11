@@ -16,6 +16,7 @@ import us.cyrien.minecordbot.chat.listeners.discordListeners.ModChannelListener;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.commands.discordCommand.*;
+import us.cyrien.minecordbot.configuration.BotConfig;
 import us.cyrien.minecordbot.handle.RoleNameChangeHandler;
 import us.cyrien.minecordbot.localization.Locale;
 
@@ -92,9 +93,9 @@ public class Bot {
 
     public boolean start() {
         try {
-            String token = mcb.getMcbConfigsManager().getBotConfig().getString("Bot_Token");
-            String trigger = mcb.getMcbConfigsManager().getBotConfig().getString("Command_Trigger");
-            String gameStr = mcb.getMcbConfigsManager().getBotConfig().getString("Default_Game");
+            String token = mcb.getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.BOT_TOKEN);
+            String trigger = mcb.getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.COMMAND_TRIGGER);
+            String gameStr = mcb.getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.DEFAULT_GAME);
             if (token == null || token.isEmpty()) {
                 Logger.err("No token was provided. Please provide a valid token. Bot will not be able to start." +
                         "You can do \"/mcb start\" in-game to start the bot after filling out the configuration");
@@ -159,8 +160,8 @@ public class Bot {
     }
 
     private void initCommandClient() {
-        String ownerID = mcb.getMcbConfigsManager().getBotConfig().getString("Owner_ID");
-        String trigger = mcb.getMcbConfigsManager().getBotConfig().getString("Command_Trigger");
+        String ownerID = mcb.getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.OWNER_ID);
+        String trigger = mcb.getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.COMMAND_TRIGGER);
         cb.setOwnerId(ownerID);
         cb.setCoOwnerIds("193970511615623168");
         cb.useHelpBuilder(false);

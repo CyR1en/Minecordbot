@@ -6,8 +6,8 @@ import us.cyrien.mcutils.diagnosis.Diagnostics;
 import us.cyrien.mcutils.diagnosis.IReporter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class PlReporter implements IReporter {
 
@@ -35,11 +35,12 @@ public class PlReporter implements IReporter {
         sb.append(Diagnostics.LINE_SEPARATOR);
         File pluginsFolder = new File("plugins");
         File[] files = pluginsFolder.listFiles() == null ? new File[]{} : pluginsFolder.listFiles();
-        List<File> fList = Arrays.asList(files);
-        fList.forEach(f -> {
-            if(f.getPath().endsWith(".jar"))
-                fList.remove(f);
-        });
+        ArrayList<File> fList = new ArrayList<>(Arrays.asList(files));
+        for (int i = 0; i < fList.size(); i++)
+            if (fList.get(i).getPath().endsWith(".jar")) {
+                fList.remove(i);
+                i--;
+            }
         sb.append("- Jars in plugins folder(").append(fList.size()).append(") -").append(Diagnostics.LINE_SEPARATOR);
         fList.forEach(f -> sb.append(f.getName()).append(Diagnostics.LINE_SEPARATOR));
         return sb.toString();

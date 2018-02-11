@@ -6,6 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.listeners.MChatType;
+import us.cyrien.minecordbot.configuration.ChatConfig;
+import us.cyrien.minecordbot.configuration.ModChannelConfig;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 
 public class ChatListener extends MCBListener {
@@ -23,54 +25,54 @@ public class ChatListener extends MCBListener {
     }
 
     private void relay(RelayMessage relayMessage) {
-        boolean seeChatOnMod = configsManager.getModChannelConfig().getBoolean("See_Chat");
+        boolean seeChatOnMod = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_CHAT);
         if (relayMessage.getType() == MChatType.DEFAULT) {
             messenger.sendMessageToAllBoundChannel(relayMessage + "");
         }
         if (seeChatOnMod) {
             switch (relayMessage.getType()) {
                 case CANCELLED:
-                    boolean seeCancelled = configsManager.getModChannelConfig().getBoolean("See_Cancelled_Chat");
+                    boolean seeCancelled = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_CANCELLED_CHAT);
                     if (seeCancelled)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case GRIEF_PROTECTION_SOFT_MUTE:
-                    boolean seeGPSM = configsManager.getModChannelConfig().getBoolean("See_GriefPrevention_SoftMute");
+                    boolean seeGPSM = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_GP_SOFTMUTE);
                     if (seeGPSM)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case MCMMO_PARTY:
-                    boolean seeParty = configsManager.getModChannelConfig().getBoolean("See_mcMMO_Party_Chat");
+                    boolean seeParty = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_MMO_PARTY_CHAT);
                     if (seeParty)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case MCMMO_ADMIN:
-                    boolean seeAdmin = configsManager.getModChannelConfig().getBoolean("See_mcMMO_Admin_Chat");
+                    boolean seeAdmin = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_MMO_ADMIN_CHAT);
                     if (seeAdmin)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case VENTURECHAT_PARTY:
-                    boolean seeVParty = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Party_Chat");
+                    boolean seeVParty = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_VC_CHANNEL_PARTY_CHAT);
                     if (seeVParty)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case VENTURECHAT_QUICKCHAT:
-                    boolean seeVQC = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Quick_Chats");
+                    boolean seeVQC = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_VC_QUICK_CHAT);
                     if (seeVQC)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case VENTURECHAT_PRIVATE:
-                    boolean seeVPrivate = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Private_Chat");
+                    boolean seeVPrivate = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_VC_CHANNEL_PRIVATE_CHATS);
                     if (seeVPrivate)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case VENTURECHAT_CHANNEL:
-                    boolean seeVChannel = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Channel_Chats");
+                    boolean seeVChannel = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_VC_CHANNEL_CHAT);
                     if (seeVChannel)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
                 case VENTURECHAT_PRIVATE_MENTION:
-                    boolean seeVPM = configsManager.getModChannelConfig().getBoolean("See_VentureChat_Private_Mention");
+                    boolean seeVPM = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_VC_PRIVATE_MENTION);
                     if (seeVPM)
                         messenger.sendMessageToAllModChannel(relayMessage + "");
                     break;
@@ -83,7 +85,7 @@ public class ChatListener extends MCBListener {
 
     private String formatMessage(MChatType type, AsyncPlayerChatEvent e) {
         String msg = mentionHandler.handleMention(ChatColor.stripColor(e.getMessage()));
-        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString("Minecraft_Prefix"), e.getPlayer());
+        String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString(ChatConfig.Nodes.MINECRAFT_PREFIX), e.getPlayer());
         return type.getChatPrefix() + "**" + prefix + "** " + msg;
     }
 

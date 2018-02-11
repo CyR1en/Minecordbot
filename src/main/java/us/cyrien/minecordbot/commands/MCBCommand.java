@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.requests.RestAction;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.configuration.BotConfig;
 import us.cyrien.minecordbot.configuration.MCBConfigsManager;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.utils.SRegex;
@@ -45,7 +46,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
         this.botPermissions = setupPerms();
         configsManager = minecordbot.getMcbConfigsManager();
         type = Type.DEFAULT;
-        auto = configsManager.getBotConfig().getBoolean("Delete_Response");
+        auto = configsManager.getBotConfig().getBoolean(BotConfig.Nodes.DELETE_RESPONSE);
         scheduler = mcb.getScheduler();
         Locale.init(mcb.getMcbConfigsManager());
     }
@@ -329,8 +330,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
 
         //check role perm (permission flags)
         if (m.getRoles().size() == 0) {
-            System.out.println("Member's role size is 0");
-            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getConfig().getString("Default"));
         }
         Role r = null;
         boolean roleInDb = false;
@@ -342,14 +342,14 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             }
         }
         if(roleInDb) {
-            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString(r.getId() + ".Permission"));
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getConfig().getString(r.getId() + ".Permission"));
         } else {
-            return allowed(mcb.getMcbConfigsManager().getPermConfig().getString("Default"));
+            return allowed(mcb.getMcbConfigsManager().getPermConfig().getConfig().getString("Default"));
         }
     }
 
     private boolean exists(Role role) {
-        Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getKeys();
+        Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getConfig().getKeys();
         return keys.contains(role.getId());
     }
 

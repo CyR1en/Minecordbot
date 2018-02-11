@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.configuration.ModChannelConfig;
 
 import java.awt.*;
 
@@ -18,7 +19,7 @@ public class CommandListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        boolean seeCommands = configsManager.getModChannelConfig().getBoolean("See_Commands");
+        boolean seeCommands = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_COMMADS);
         CommandSender s = e.getPlayer();
         String msg = "**" + ChatColor.stripColor(s.getName()) + "**: " + e.getMessage();
         if (seeCommands) {
