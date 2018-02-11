@@ -1,7 +1,7 @@
 mcb:
   event:
-    start: "The server have successfully started!"
-    shut: "The server is shutting down!"
+    start: "Le serveur a démarré avec succès !"
+    shut: "Le serveur s'éteint !"
   command:
     no-perm-message: "Vous n'avez pas accès à cette commande."
     invalid-arguments: "Arguments invalides."
