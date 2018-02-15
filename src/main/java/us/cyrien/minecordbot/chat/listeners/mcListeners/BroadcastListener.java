@@ -14,6 +14,7 @@ import us.cyrien.minecordbot.configuration.ModChannelConfig;
 import us.cyrien.minecordbot.prefix.PrefixParser;
 import us.cyrien.minecordbot.utils.SRegex;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class BroadcastListener extends MCBListener {
@@ -51,10 +52,10 @@ public class BroadcastListener extends MCBListener {
                 msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
                 messenger.sendMessageToAllModChannel(msg);
             } else if (ismcMMOParty && seemcMMOParty) {
-                msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
+                msg = formatMessage(MChatType.MCMMO_PARTY, msg);
                 messenger.sendMessageToAllModChannel(msg);
             } else if (mcb.getChatManager().getChatStatus().isCancelled()) {
-                msg = formatMessage(MChatType.MCMMO_ADMIN, msg);
+                msg = formatMessage(MChatType.CANCELLED, msg);
                 messenger.sendMessageToAllModChannel(msg);
             }
         } else {
@@ -78,8 +79,9 @@ public class BroadcastListener extends MCBListener {
     private Player findPlayer(String msg) {
         SRegex sRegex = new SRegex(msg);
         sRegex.find(Pattern.compile("\\[.*?]"));
-        String playerName = sRegex.getResultsList().get(0).replaceAll("\\[", "").replaceAll("]", "");
-        return Bukkit.getPlayer(playerName);
+        List<String> results = sRegex.getResultsList();
+        String playerName = results.size() == 0 ? "" : sRegex.getResultsList().get(0).replaceAll("\\[", "").replaceAll("]", "");
+        return playerName.isEmpty() ? null : Bukkit.getPlayer(playerName);
     }
 
     private boolean isPrivate(BroadcastMessageEvent event) {

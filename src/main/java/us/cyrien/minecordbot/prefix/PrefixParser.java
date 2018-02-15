@@ -15,6 +15,8 @@ public class PrefixParser {
 
 
     public static String parseMinecraftPrefix(String prefix, Player p) {
+        if(p == null)
+            return "";
         for(MinecraftPlaceHolder s : MinecraftPlaceHolder.values()) {
             s.init(p);
             String pH = "{" + s.name().toLowerCase() + "}";

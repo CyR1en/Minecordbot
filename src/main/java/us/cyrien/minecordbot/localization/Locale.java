@@ -45,6 +45,10 @@ public class Locale {
         return new Formatter(getTranslatedMessage("mcb.commands." + path));
     }
 
+    public static Formatter getResponsLvlMsg(String path) {
+        return new Formatter(getTranslatedMessage("mcb.responselevel." + path));
+    }
+
     public static class Formatter {
         private String message;
 

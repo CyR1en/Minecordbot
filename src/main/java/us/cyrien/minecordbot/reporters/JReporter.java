@@ -1,5 +1,6 @@
 package us.cyrien.minecordbot.reporters;
 
+import us.cyrien.mcutils.diagnosis.Diagnostics;
 import us.cyrien.mcutils.diagnosis.IReporter;
 
 public class JReporter implements IReporter {
@@ -24,7 +25,7 @@ public class JReporter implements IReporter {
         String[] jProps = javaProperty.split(" ");
         String javaVersion = jProps[0];
         String buildNumber = jProps[1];
-        return "Java Version: " + javaVersion + "\n" +
+        return "Java Version: " + javaVersion + Diagnostics.LINE_SEPARATOR +
                 "Build: " + buildNumber;
     }
 

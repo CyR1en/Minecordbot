@@ -21,6 +21,7 @@ public class OnStart implements Listener {
         if(!event.isCancelled()) {
             EmbedBuilder eb = new EmbedBuilder().setDescription(Locale.getEventMessage("start").finish()).setColor(Bot.BOT_COLOR);
             mcb.getMessenger().sendMessageEmbedToAllBoundChannel(eb.build());
+            mcb.getMessenger().sendMessageEmbedToAllModChannel(eb.build());
         }
     }
 }

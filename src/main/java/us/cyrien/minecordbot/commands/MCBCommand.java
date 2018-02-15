@@ -398,7 +398,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             }
 
             public String getFooter() {
-                return "Success";
+                return Locale.getResponsLvlMsg("lvl1").finish();
             }
         }, LEVEL_2 {
             public Color getColor() {
@@ -406,7 +406,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             }
 
             public String getFooter() {
-                return "Warning";
+                return Locale.getResponsLvlMsg("lvl2").finish();
             }
         }, LEVEL_3 {
             public Color getColor() {
@@ -414,7 +414,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             }
 
             public String getFooter() {
-                return "Error";
+                return Locale.getResponsLvlMsg("lvl3").finish();
             }
         }, DEFAULT {
             public Color getColor() {
@@ -422,7 +422,7 @@ public abstract class MCBCommand extends Command implements Comparable<Command> 
             }
 
             public String getFooter() {
-                return "Response";
+                return Locale.getResponsLvlMsg("default").finish();
             }
         };
 

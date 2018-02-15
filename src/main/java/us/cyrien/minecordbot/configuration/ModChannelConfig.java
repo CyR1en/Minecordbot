@@ -15,7 +15,7 @@ public class ModChannelConfig extends BaseConfig {
     }
 
     public enum Nodes implements Node {
-        MOD_CHANNEL("Mod_Channels", new String[]{"ID of the text channel you want to make as a mod channel",
+        MOD_CHANNELS("Mod_Channels", new String[]{"ID of the text channel you want to make as a mod channel",
                 "Leave it blank if you don't want a mod channel"}, new String[]{"123123123", "123123123"}),
         ONE_WAY("One_Way", new String[]{"Do you want to prevent messages that",
                 "are being sent on the mod channel",

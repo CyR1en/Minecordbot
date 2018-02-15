@@ -19,10 +19,7 @@ import us.cyrien.minecordbot.chat.ChatManager;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.chat.listeners.mcListeners.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
-import us.cyrien.minecordbot.configuration.BotConfig;
-import us.cyrien.minecordbot.configuration.BroadcastConfig;
-import us.cyrien.minecordbot.configuration.ChatConfig;
-import us.cyrien.minecordbot.configuration.MCBConfigsManager;
+import us.cyrien.minecordbot.configuration.*;
 import us.cyrien.minecordbot.entity.UpTimer;
 import us.cyrien.minecordbot.events.StartEvent;
 import us.cyrien.minecordbot.events.listener.OnShut;
@@ -71,6 +68,7 @@ public class Minecordbot extends JavaPlugin {
         if(broadcast) {
             EmbedBuilder eb = new EmbedBuilder().setDescription(Locale.getEventMessage("shut").finish()).setColor(Bot.BOT_COLOR);
             messenger.sendMessageEmbedToAllBoundChannel(eb.build());
+            messenger.sendMessageEmbedToAllModChannel(eb.build());
         }
         if (bot != null) {
             chatManager.clearCache();
@@ -239,7 +237,7 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public List<TextChannel> getModChannels() {
-        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList(ChatConfig.Nodes.RELAY_CHANNELS);
+        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList(ModChannelConfig.Nodes.MOD_CHANNELS);
         if(tcID == null)
             return new ArrayList<>();
         return findValidTextChannels(tcID);

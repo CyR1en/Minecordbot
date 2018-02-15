@@ -10,6 +10,8 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
 
+import java.util.concurrent.TimeUnit;
+
 public class DiagnosticsCmd extends MCBCommand {
 
     public DiagnosticsCmd(Minecordbot minecordbot) {
@@ -27,6 +29,8 @@ public class DiagnosticsCmd extends MCBCommand {
         DiagnosticsBuilder dB = new DiagnosticsBuilder();
         dB = dB.setTypeDiagnosis(TypeDiagnosis.ALL);
         Diagnostics diagnostics = dB.build();
-        e.getTextChannel().sendFile(diagnostics.fullReport(), new MessageBuilder().append("Diagnostics report: ").build()).queue();
+        respond("Generating diagnostic report...", e).queue((msg) -> msg.delete().queueAfter(2, TimeUnit.SECONDS, (m) -> {
+            e.getTextChannel().sendFile(diagnostics.fullReport(), new MessageBuilder().append("Diagnostics report: ").build()).queue();
+        }));
     }
 }
