@@ -1,9 +1,9 @@
 mcb:
   responselevel:
-    lvl1: "Success"
-    lvl2: "Warning"
-    lvl3: "Error"
-    default: "Response"
+    lvl1: "Succès"
+    lvl2: "Attention"
+    lvl3: "Erreurr"
+    default: "Réponse"
   event:
     start: "Le serveur a démarré avec succès !"
     shut: "Le serveur s'éteint !"
