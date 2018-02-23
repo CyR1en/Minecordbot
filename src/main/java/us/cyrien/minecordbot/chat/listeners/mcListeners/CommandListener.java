@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.configuration.ModChannelConfig;
 
@@ -23,7 +24,8 @@ public class CommandListener extends MCBListener {
         CommandSender s = e.getPlayer();
         String msg = "**" + ChatColor.stripColor(s.getName()) + "**: " + e.getMessage();
         if (seeCommands) {
-            EmbedBuilder eb = new EmbedBuilder().setColor(new Color(60, 92, 243));
+            Color color = Bot.BOT_COLOR;
+            EmbedBuilder eb = new EmbedBuilder().setColor(color);
             eb.addField("Command-Event", msg, false);
             messenger.sendMessageEmbedToAllModChannel(eb.build());
         }
