@@ -1,4 +1,4 @@
-# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyrien.us/)
+# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyr1en.com/)
 
 ### A Powerful Way to Bridge Discord and Minecraft
 ##### Configurable, Simple, Easy
