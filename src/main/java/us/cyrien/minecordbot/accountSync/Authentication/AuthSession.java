@@ -30,6 +30,7 @@ public class AuthSession {
     private Status status;
     private AuthManager authManager;
     private ScheduledExecutorService scheduler;
+    private String messageID;
 
     private final String sessionID = RandomStringUtils.randomNumeric(6);
 

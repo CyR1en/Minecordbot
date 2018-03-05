@@ -1,4 +1,12 @@
 mcb:
+  responselevel:
+    lvl1: "Succès"
+    lvl2: "Attention"
+    lvl3: "Erreur"
+    default: "Réponse"
+  event:
+    start: "Le serveur a démarré avec succès !"
+    shut: "Le serveur s'éteint !"
   command:
     no-perm-message: "Vous n'avez pas accès à cette commande."
     invalid-arguments: "Arguments invalides."
@@ -127,8 +135,9 @@ mcb:
         special: "Commandes spéciales"
     list:
       description: "lister les joueurs connectés sur Minecraft."
-      list:
-        header: "Joueurs Connectés au Serveur Minecraft"
+      header: "Joueurs Connectés au Serveur Minecraft"
+      no-players: " Il n'y a aucun joueur en ligne"
+      listing: "Liste des joueurs en cours de traitement..."
     info:
       description: "obtenir les informations sur MineCordBot et sur le bot"
       minfo:

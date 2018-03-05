@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
+import us.cyrien.minecordbot.configuration.BotConfig;
 import us.cyrien.minecordbot.localization.Locale;
 
 
@@ -27,7 +28,7 @@ public class InfoCmd extends MCBCommand {
         String path = "info.minfo.";
         int textChannelCount = e.getGuild().getTextChannels().size();
         int voiceChannelCount = e.getGuild().getVoiceChannels().size();
-        String clientID = configsManager.getBotConfig().getString("Bot_ID");
+        String clientID = configsManager.getBotConfig().getString(BotConfig.Nodes.BOT_ID);
         String botName = e.getJDA().getSelfUser().getName();
         String nickName = (Locale.getCommandsMessage(path + "nonick").finish());
         if (e.getGuild().getMember(e.getJDA().getSelfUser()).getNickname() != null)

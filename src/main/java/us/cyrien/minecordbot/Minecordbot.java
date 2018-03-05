@@ -1,6 +1,7 @@
 package us.cyrien.minecordbot;
 
 import com.jagrosh.jdautilities.waiter.EventWaiter;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang.StringUtils;
@@ -18,12 +19,16 @@ import us.cyrien.minecordbot.chat.ChatManager;
 import us.cyrien.minecordbot.chat.Messenger;
 import us.cyrien.minecordbot.chat.listeners.mcListeners.*;
 import us.cyrien.minecordbot.commands.minecraftCommand.*;
-import us.cyrien.minecordbot.configuration.MCBConfigsManager;
+import us.cyrien.minecordbot.configuration.*;
 import us.cyrien.minecordbot.entity.UpTimer;
+import us.cyrien.minecordbot.events.StartEvent;
+import us.cyrien.minecordbot.events.listener.OnShut;
+import us.cyrien.minecordbot.events.listener.OnStart;
 import us.cyrien.minecordbot.handle.Metrics;
 import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
+import us.cyrien.minecordbot.reporters.*;
 import us.cyrien.minecordbot.utils.UUIDFetcher;
 
 import javax.annotation.Nullable;
@@ -59,6 +64,12 @@ public class Minecordbot extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        boolean broadcast = getMcbConfigsManager().getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.SERVER_SHUT);
+        if(broadcast) {
+            EmbedBuilder eb = new EmbedBuilder().setDescription(Locale.getEventMessage("shut").finish()).setColor(Bot.BOT_COLOR);
+            messenger.sendMessageEmbedToAllBoundChannel(eb.build());
+            messenger.sendMessageEmbedToAllModChannel(eb.build());
+        }
         if (bot != null) {
             chatManager.clearCache();
             bot.shutdown();
@@ -74,10 +85,12 @@ public class Minecordbot extends JavaPlugin {
                 initDatabase();
                 initMCmds();
                 initPluginHooks();
+                initReporters();
                 Frame.main();
                 UUIDFetcher.init();
                 initMListener();
                 postInit();
+                Bukkit.getPluginManager().callEvent(new StartEvent(this));
             } else {
                 this.getServer().shutdown();
             }
@@ -108,6 +121,10 @@ public class Minecordbot extends JavaPlugin {
 
     public void registerMinecraftEventModule(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, this);
+    }
+
+    public void registerReporter(Class reporter) {
+        Frame.addReporter(reporter);
     }
 
 
@@ -142,6 +159,16 @@ public class Minecordbot extends JavaPlugin {
         Database.load();
     }
 
+    private void initReporters() {
+        registerReporter(InfoHeader.class);
+        registerReporter(CfgReporter.class);
+        registerReporter(JReporter.class);
+        registerReporter(MemReporter.class);
+        registerReporter(OSReporter.class);
+        registerReporter(PlReporter.class);
+        Logger.info("- Reporters registered.");
+    }
+
     private void initMListener() {
         registerMinecraftEventModule(new BroadcastCommandListener(this));
         registerMinecraftEventModule(new ChatListener(this));
@@ -150,10 +177,13 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new MentionListener(this));
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
+        registerMinecraftEventModule(new OnShut(this));
+        registerMinecraftEventModule(new OnStart(this));
         if (supportNewFeat())
             registerMinecraftEventModule(new BroadcastListener(this));
         else
-            Logger.bukkitWarn("Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
+            Logger.bukkitWarn("- Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
+        Logger.info("- Initialized Minecraft listeners.");
     }
 
     private void initMCmds() {
@@ -162,6 +192,7 @@ public class Minecordbot extends JavaPlugin {
         registerModule(McbCommands.class);
         registerModule(DSync.class);
         registerModule(DConfirm.class);
+        Logger.info("- Bukkit commands registered.");
     }
 
     private void registerMCPluginHook(Class clazz) {
@@ -177,20 +208,22 @@ public class Minecordbot extends JavaPlugin {
         registerMCPluginHook(EssentialsHook.class);
         registerMCPluginHook(mcMMOHook.class);
         registerMCPluginHook(SuperVanishHook.class);
+        registerMCPluginHook(VentureChatHook.class);
+        Logger.info("- Plugin hooks registered.");
     }
 
     private void postInit() {
         if (HookContainer.getEssentialsHook() != null) {
             registerMinecraftEventModule(new HelpOpListener(this));
-            Logger.info("Successfully Hooked Essentials and now listening for events");
+            Logger.info("- Successfully Hooked Essentials and now listening for events.");
         }
         if (HookContainer.getSuperVanishHook() != null) {
             registerMinecraftEventModule(new SuperVanishListener(this));
-            Logger.info("Successfully Hooked SuperVanish and now listening for events");
+            Logger.info("- Successfully Hooked SuperVanish and now listening for events.");
         }
         if (HookContainer.getMcMMOHook() != null) {
             registerMinecraftEventModule(new McMMOListener(this));
-            Logger.info("Successfully Hooked mcMMO and now listening for events");
+            Logger.info("- Successfully Hooked mcMMO and now listening for events.");
         }
         upTimer = new UpTimer(this);
     }
@@ -204,12 +237,16 @@ public class Minecordbot extends JavaPlugin {
     }
 
     public List<TextChannel> getModChannels() {
-        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList("Mod_Channels");
+        List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList(ModChannelConfig.Nodes.MOD_CHANNELS);
+        if(tcID == null)
+            return new ArrayList<>();
         return findValidTextChannels(tcID);
     }
 
     public List<TextChannel> getRelayChannels() {
-        List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList("Relay_Channels");
+        List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList(ChatConfig.Nodes.RELAY_CHANNELS);
+        if(tcID == null)
+            return new ArrayList<>();
         return findValidTextChannels(tcID);
     }
 
@@ -272,7 +309,7 @@ public class Minecordbot extends JavaPlugin {
     private void sendErr(Exception ex) {
         if (getMcbConfigsManager() != null) {
             User user = null;
-            String ownerID = getMcbConfigsManager().getBotConfig().getString("Owner_ID");
+            String ownerID = getMcbConfigsManager().getBotConfig().getString(BotConfig.Nodes.OWNER_ID);
             if (StringUtils.isNumeric(ownerID)) {
                 if (getBot() != null && getBot().getJda() != null)
                     user = getBot().getJda().getUserById(Long.valueOf(ownerID));

@@ -6,6 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.configuration.BroadcastConfig;
+import us.cyrien.minecordbot.configuration.ModChannelConfig;
 
 public class DeathListener extends MCBListener {
 
@@ -15,8 +17,8 @@ public class DeathListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        boolean isDeathBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Death");
-        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
+        boolean isDeathBroadCast = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_DEATH);
+        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.HIDE_INCOGNITO);
         if (isDeathBroadCast) {
             if (allowIncog) {
                 if (!event.getEntity().hasPermission("minecordbot.incognito")) {
@@ -30,7 +32,7 @@ public class DeathListener extends MCBListener {
     private void sendDeathMessage(PlayerDeathEvent event) {
         if(!safeToSend(event))
             return;
-        boolean bc = configsManager.getModChannelConfig().getBoolean("See_Player_Death");
+        boolean bc = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_DEATH);
         String msg = ChatColor.stripColor(event.getDeathMessage());
         messenger.sendMessageToAllBoundChannel("```css" + "\n[" + msg + "]\n```");
         if (bc)

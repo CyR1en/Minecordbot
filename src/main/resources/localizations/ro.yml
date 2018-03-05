@@ -1,83 +1,91 @@
 mcb:
+  responselevel:
+    lvl1: "Success"
+    lvl2: "Warning"
+    lvl3: "Error"
+    default: "Response"
+  event:
+    start: "The server have successfully started!"
+    shut: "The server is shutting down!"
   command:
     no-perm-message: "Scuze dar nu ai acces la această comandă."
     invalid-arguments: "Argumente invalide."
     invalid-tc: "Canal de text invalid pentru comandă."
     no-alias: "Nu mai sunt alte denumiri pentru aceasta comandă."
-    fatal-error: "A fatal error have occurred before %s command execution finishes."
+    fatal-error: "O eroare fatală s-a întâmplat înainte ca comanda %s să se termine de executat."
   commands:
     perm:
-      description: "Manage permissions for categories."
-      invalid-sub: "%s is not a sub command"
-      no-role: "%s role does not exist in this guild."
+      description: "Administrează permisiunile pentru categorii."
+      invalid-sub: "%s nu este o subcomandă."
+      no-role: "Rolul %s nu există în acest guild."
       sub:
         set:
-          description: "Set a role for certain categories. \nUsage: {+} to allow {-} to prevent. \nFlags: {-<command|category|all>} or {+<command|category|all}. \nie: {-tps} | {+info}"
-          invalid-flag: "%s is an invalid flag."
-          flag-not-null: "You must provide a flag(s)!"
-          all-invalid-flags: "All provided flags are invalid."
-          success: "Successfully set permissions for %s"
-          omitted-flags: "The following flag(s) is/are invalid and have been omitted: %s"
-          added: "The following have been added: %s"
+          description: "Setează rolul pentru anumite categorii. \nFolosire: {+} pentru a permite {-} pentru a preveni. \nIndicatoare: {-<comandă|categorie|toate(=all)>} or {+<comandă|categorie|toate(=all)}. \nex: {-tps} | {+info}"
+          invalid-flag: "%s este un indicator invalid."
+          flag-not-null: "Trebuie sa furnizezi indicatoare!"
+          all-invalid-flags: "Toate indicatoarele furnizate sunt invalide."
+          success: "Permisiunile setate cu succes pentru %s"
+          omitted-flags: "Următoarele indicatoare sunt invalide sau au fost omise: %s"
+          added: "Următoarele au fost adăugate: %s"
         check:
-          description: "Check the current permission flags of a role."
-          all-description: "All roles that have permission flags and their corresponding flags"
-          success: "%s permission flags."
-          role-no-perm: "%s does not have any permission flags."
+          description: "Verifică indicatoarele de permisiune curente a unui rol."
+          all-description: "Toate rolurile care au indicatoare de permisiune și indicatoarele corespondente lor"
+          success: "%s indicatoare de permisiune."
+          role-no-perm: "%s nu are niciun indicator de permisiune."
         remove:
-          description: "Remove a permission flag or all flags of a role."
-          success-single: "%s permission flag have been removed from %s."
-          success-ignore: "Successfully removed permission flags from %s"
-          success-ignore-detail: "%s doesn't have the following flags and have been ignored: %s"
-          success-provided: "Successfully removed permission flags from %s"
-          success-provided-detail: "New permission: %s"
-          success-all: "All permission flag have been removed from %s"
-          success-all-detail: "Removed: %s"
-          role-no-perm: "%s does not have any permission flags."
-          role-no-specific-perm: "%s does not have the following permission flag(s): %s."
+          description: "Șterge un indicator de permisiune sau toate indicatoarele a unui rol."
+          success-single: "Indicatorul de permisiune %s a fost șters de la %s."
+          success-ignore: "Indicatoarele de permisiune au fost șterse cu succes de la %s"
+          success-ignore-detail: "%s nu are următoarele indicatoare și a fost ignorat: %s"
+          success-provided: "Indicatoarele de permisiune au fost șterse cu succes de la %s"
+          success-provided-detail: "Permisiune nouă: %s"
+          success-all: "Toate indicatoarele de permisiune au fost șterse de la %s"
+          success-all-detail: "Șterse: %s"
+          role-no-perm: "%s nu are niciun indicator de permisiune."
+          role-no-specific-perm: "%s nu are următoarele indicatoare de permisiune: %s."
     mcserver:
-      description: "Look up server's information."
-      cannot-find: "Cannot ping server."
-      error: "There was an error pinging the server."
+      description: "Se uită despre informațiile serverlor."
+      cannot-find: "Nu se poate da ping la server."
+      error: "A fost o eroare când s-a dat ping la server."
     mcskin:
-      description: "Look up someone's skin."
-      cannot-find: "Cannot find player's skin."
-      error: "There was an error processing your request."
+      description: "Se uită despre înfățișarea cuiva."
+      cannot-find: "Nu se poate găsi înfățișarea jucătorului."
+      error: "A fost o eroare când s-a procesat cererea."
     tps:
-      description: "Check your server's tps and other stats."
-      title: "Server ticks every second and memory usage."
+      description: "Verifică tps a unui server și alte informații."
+      title: "Tick-urile serverului în fiecare secundă și utilizarea memoriei."
     mcusername:
-      description: "Get username of a uuid."
-      cannot-find: "Cannot find username for uuid! does this player have a premium account?"
-      error: "Could not process request. Is Mojang down?"
+      description: "Caută numele utilizatorului pe baza unui uuid."
+      cannot-find: "Nu se poate găsi numele utilizatorului pentru acest uuid! Are acest jucător un cont premium?"
+      error: "Nu s-a putut procesa cererea. Este serverul Mojang căzut?"
     mcuuid:
-      description: "Get uuid of a player."
-      cannot-find: "Cannot find player! does this player have a premium account?"
-      error: "Could not process request. Is Mojang down?"
+      description: "Caută uuid a unui jucător."
+      cannot-find: "Nu se poate găsi jucătorul! Are acest jucător un cont premium?"
+      error: "Nu s-a putut procesa cererea. Este serverul Mojang căzut?"
     mcstat:
-      description: "Show all Mojang service status"
+      description: "Arată stările serviciilor Mojang"
     start:
-      description: "start the bod."
-      starting: "Starting bot...."
+      description: "pornește bot-ul."
+      starting: "Se pornește bot-ul...."
     spoiler:
-      description: "creates a spoiler gif"
-      includeText: "please provide a text for the spoiler"
-      tooManyLines: "there's too many lines. Cannot be greater than 8"
-      spoilerPreview: "[ Hover to see spoiler ]"
-      failedToGenerate: "failed to generate spoiler image"
+      description: "creează un spoiler gif"
+      includeText: "te rog furnizează text pentru spoiler"
+      tooManyLines: "sunt prea multe linii. Nu pot fi mai multe decât 8"
+      --==--spoilerPreview: "[ Ține cursorul pentru a vedea spoiler-ul ]"
+      failedToGenerate: "generarea imaginii de spoiler a eșuat"
     purge:
-      description: "delete up to 100 previous messages"
-      invalidNum: "invalid number, must be 1 to 100"
-      deleting: "deleting messages..."
-      failedToRetrieve: "failed to retrieve messages"
-      couldNotRetrieve: "could not retrieve messages"
+      description: "șterge până la 100 de mesaje anterioare"
+      invalidNum: "număr invalid, trebuie să fie de la 1 până la 100"
+      deleting: "se șterg mesajele..."
+      failedToRetrieve: "returnarea mesajelor a eșuat"
+      couldNotRetrieve: "nu s-au putut returna mesajele"
     poll:
-      description: "make a poll"
+      description: "face un sondaj"
     settrigger:
       description: "setează un nou mecanism de declanșare pentru bot."
     shutdown:
       description: "închide bot-ul."
-      shutting: "Shutting down..."
+      shutting: "Se închide..."
     reload:
       description: "reîncarcă configurația pentru MineCordBot."
       reloaded: "Configurația pentru Minecordbot a fost reîncărcată!"
@@ -85,24 +93,24 @@ mcb:
       description: "JavaScript eval()"
     mcmd:
       description: "Execută comenzi de Minecraft prin Discord."
-      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
-      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
+      cannot-cast: "Comanda aceea nu poate fi executată de Discord pentru că DiscordPlayerCommandSender personalizat nu poate fi transformat în CraftPlayer. \n\nExecută comandă în joc."
+      error: "Comanda nu poate fi trimisă de Discord. Te rog înregistrează-te în joc pentru a executa comanda"
     setgame:
       description: "setează jocul discord bot-ului tău."
       changed: "Jocul setat la %s!"
-      notplaying: "%s no longer playing anything"
-      playing: "%s now playing"
+      notplaying: "%s nu se mai joacă nimic"
+      playing: "%s se joacă acum"
     setavatar:
       description: "setează poza de profil a discord bot-ului tău."
       changed: "Poza de profil a bot-ului a fost schimbată!"
-      invalid: "invalid or missing URL"
-      failed: "failed to set avatar"
-      couldNotLoad: "could not load image from provided URL"
+      invalid: "invalid sau fără URL"
+      failed: "Setarea avatarului a eșuat"
+      couldNotLoad: "nu se poate încărca imaginea de la URL furnizat"
     setusername:
       description: "setează numele de utilizator a discord bot-ului tău."
       changed: "Numele de utilizator a fost schimbat!"
-      limit: "username can only be changed twice per hour"
-      invalid: "username is invalid"
+      limit: "numele de utilizator se poate schimba de două ori pe oră"
+      invalid: "numele de utilizator este invalid"
     setnickname:
       description: "setează porecla discord bot-ului tău."
       changed: "Porecla a fost schimbată!"
@@ -110,9 +118,9 @@ mcb:
       description: "verifică timpul de răspuns al bot-ului."
     help:
       description: "Arată o listă a comenzilor și arată utilizarea fiecareia dintre comenzi."
-      required: "Required arguments"
-      optional: "Optional arguments"
-      more: "For more detailed help, do %s<command> help."
+      required: "Argumente necesaree"
+      optional: "Argumente opționale"
+      more: "Pentru ajutor mai detaliat, fă %s<command> help."
       too-much-args: "ai pus prea multe argumente."
       no-such-command: "Nu există comanda %s."
       list:
@@ -125,8 +133,9 @@ mcb:
         special: "Comenzi Speciale"
     list:
       description: "arată o listă a tuturor jucătorilor activi pe Server-ul de Minecraft."
-      list:
-        header: "Jucători Activi pe Server-ul de Minecraft"
+      header: "Jucători Activi"
+      no-players: "Nu este niciun jucător online..."
+      listing: "Se face o listă a jucătorilor..."
     info:
       description: "Află informații despre MineCordBot și despre bot."
       minfo:
@@ -154,11 +163,11 @@ mcb:
         channel_name: "Numele Canalului"
       subcommand:
         list:
-          description: "lists all bound text channels"
+          description: "arată o listă a toate canalele de text legate"
         add:
-          description: "add a new bound channel"
+          description: "adaugă un nou canal legat"
         remove:
-          description: "remove bound channel"
+          description: "șterge un canal legat"
   messenger:
     no-player: "Jucătorul {player} nu poate fi găsit."
     

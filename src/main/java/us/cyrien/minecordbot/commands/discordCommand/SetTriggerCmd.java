@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
+import us.cyrien.minecordbot.configuration.BotConfig;
 import us.cyrien.minecordbot.localization.Locale;
 
 public class SetTriggerCmd extends MCBCommand{
@@ -26,8 +27,8 @@ public class SetTriggerCmd extends MCBCommand{
             respond(e, Locale.getCommandsMessage("settrigger.invalid").finish());
             return;
         }
-        configsManager.getBotConfig().set("Command_Trigger", trigger);
-        configsManager.getBotConfig().saveConfig();
+        configsManager.getBotConfig().getConfig().set(BotConfig.Nodes.COMMAND_TRIGGER.key(), trigger);
+        configsManager.getBotConfig().getConfig().saveConfig();
         respond(e, Locale.getCommandsMessage("settrigger.changed").finish());
     }
 }

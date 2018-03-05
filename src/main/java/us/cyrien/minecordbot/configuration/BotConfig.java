@@ -10,46 +10,48 @@ public class BotConfig extends BaseConfig {
 
     @Override
     public void initialize() {
-        String comment;
-        String[] commentArr;
-        if (config.get("Bot_Token") == null) {
-            commentArr = new String[]{"Bot token can be found on your", "Discord application page."};
-            config.set("Bot_Token", "sample.token", commentArr);
-            config.saveConfig();
+        for (Nodes node : Nodes.values())
+            initNode(node);
+    }
+
+    public enum Nodes implements Node {
+        BOT_TOKEN("Bot_Token", new String[]{"Bot token can be found on your", "Discord application page."}, "sample.token"),
+        BOT_ID("Bot_ID", new String[]{"Bot ID, this is also known as Client ID", "on your Discord application page."}, "12345"),
+        OWNER_ID("Owner_ID", new String[]{"Owner ID of the owner of the bot, server, or guild.",
+                "You can easily get your id by right", "clicking your self and copy id.",
+                "This only works when developer mode is enabled.",
+                "Go to settings>appearance and enable developer mode"}, "12345"),
+        COMMAND_TRIGGER("Command_Trigger", new String[]{"Set of character that distinguish if it's a command."}, "!!"),
+        DELETE_RESPONSE("Delete_Response", new String[]{"Should bot's command responses be deleted after 5 minutes?"}, false),
+        LOCALICAZATION("Localization", new String[]{"What language should the bot respond with"}, "en"),
+        DEFAULT_GAME("Default_Game", new String[]{"This will be the game of the bot", "and will be shown under the name",
+                "of the bot as \"Playing <Default_Game>\""}, "default");
+
+        private String key;
+        private String[] comment;
+        private Object defaultValue;
+
+        Nodes(String key, String[] comment, Object defaultValue) {
+            this.key = key;
+            this.comment = comment;
+            this.defaultValue = defaultValue;
         }
-        if (config.get("Bot_ID") == null) {
-            commentArr = new String[]{"Bot ID, this is also known as Client ID", "on your Discord application page."};
-            config.set("Bot_ID", "123123123123", commentArr);
-            config.saveConfig();
+
+        public Object getDefaultValue() {
+            return defaultValue;
         }
-        if (config.get("Owner_ID") == null) {
-            commentArr = new String[]{"Owner ID of the owner of the bot, server, or guild.",
-                    "You can easily get your id by right", "clicking your self and copy id.",
-                    "This only works when developer mode is enabled.",
-                    "Go to settings>appearance and enable developer mode"};
-            config.set("Owner_ID", "12312312312313", commentArr);
-            config.saveConfig();
+
+        public String[] getComment() {
+            return comment;
         }
-        if (config.get("Command_Trigger") == null) {
-            comment = "Set of character that distinguish if it's a command.";
-            config.set("Command_Trigger", "!!", comment);
-            config.saveConfig();
+
+        public String key() {
+            return toString();
         }
-        if (config.get("Delete_Response") == null) {
-            comment = "Should bot's command responses be deleted after 5 minutes?";
-            config.set("Delete_Response", false, comment);
-            config.saveConfig();
-        }
-        if (config.get("Localization") == null) {
-            commentArr = new String[]{"What language should the bot respond with"};
-            config.set("Localization", "en", commentArr);
-            config.saveConfig();
-        }
-        if (config.get("Default_Game") == null) {
-            commentArr = new String[]{"This will be the game of the bot", "and will be shown under the name",
-                    "of the bot as \"Playing <Default_Game>\""};
-            config.set("Default_Game", "default", commentArr);
-            config.saveConfig();
+
+        @Override
+        public String toString() {
+            return key;
         }
     }
 }

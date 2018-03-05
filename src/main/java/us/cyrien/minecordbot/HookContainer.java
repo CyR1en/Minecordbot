@@ -21,9 +21,15 @@ public class HookContainer {
     private static VaultHook vaultHook;
     @Hook
     private static SuperVanishHook superVanishHook;
+    @Hook
+    private static VentureChatHook ventureChatHook;
 
     public static SuperVanishHook getSuperVanishHook() {
         return superVanishHook;
+    }
+
+    public static VentureChatHook getVentureChatHook() {
+        return ventureChatHook;
     }
 
     public static GriefPreventionHook getGriefPreventionHook() {

@@ -5,6 +5,7 @@ import us.cyrien.mcutils.config.ConfigManager;
 import us.cyrien.mcutils.logger.Logger;
 
 import java.io.File;
+import java.util.List;
 
 public abstract class BaseConfig {
 
@@ -15,6 +16,14 @@ public abstract class BaseConfig {
     public BaseConfig(ConfigManager configManager, String[] header) {
         this.configManager = configManager;
         this.header = header;
+    }
+
+    void initNode(Node node) {
+        String[] comment = node.getComment();
+        if (config.get(node.key()) == null) {
+            config.set(node.key(), node.getDefaultValue(), comment);
+            config.saveConfig();
+        }
     }
 
     public boolean init() {
@@ -29,6 +38,22 @@ public abstract class BaseConfig {
         config = configManager.getNewConfig(this.getClass().getSimpleName() + ".yml", header);
         initialize();
         return true;
+    }
+
+    public String getString(Node node) {
+        return config.getString(node.key());
+    }
+
+    public boolean getBoolean(Node node) {
+        return config.getBoolean(node.key());
+    }
+
+    public int getInt(Node node) {
+        return config.getInt(node.key());
+    }
+
+    public List getList(Node node) {
+        return config.getList(node.key());
     }
 
     public abstract void initialize();

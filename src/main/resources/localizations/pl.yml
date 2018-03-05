@@ -1,4 +1,12 @@
 mcb:
+  responselevel:
+    lvl1: "Success"
+    lvl2: "Warning"
+    lvl3: "Error"
+    default: "Response"
+  event:
+    start: "The server have successfully started!"
+    shut: "The server is shutting down!"
   command:
     no-perm-message: "Nie masz dostępu do tej komendy."
     invalid-arguments: "błędny arguments."
@@ -130,8 +138,9 @@ mcb:
         special: "Specjalne Komendy"
     list:
       description: "Lista wszysystkich graczy online."
-      list:
-        header: "Gracze Online"
+      header: "Online Players"
+      no-players: "There are no players online..."
+      listing: "Listing players..."
     info:
       description: "Informacje o bocie"
       minfo:

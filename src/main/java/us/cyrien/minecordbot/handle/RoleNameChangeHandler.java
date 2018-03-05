@@ -19,14 +19,14 @@ public class RoleNameChangeHandler extends ListenerAdapter {
     public void onRoleUpdateName(RoleUpdateNameEvent event) {
         super.onRoleUpdateName(event);
         if (exists(event.getRole())) {
-            mcb.getMcbConfigsManager().getPermConfig().set(event.getRole().getId() + ".RoleName", event.getRole().getName());
-            mcb.getMcbConfigsManager().getPermConfig().saveConfig();
+            mcb.getMcbConfigsManager().getPermConfig().getConfig().set(event.getRole().getId() + ".RoleName", event.getRole().getName());
+            mcb.getMcbConfigsManager().getPermConfig().getConfig().saveConfig();
             mcb.getMcbConfigsManager().reloadAllConfig();
         }
     }
 
     private boolean exists(Role role) {
-        Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getKeys();
+        Set<String> keys = mcb.getMcbConfigsManager().getPermConfig().getConfig().getKeys();
         return keys.contains(role.getId());
     }
 }

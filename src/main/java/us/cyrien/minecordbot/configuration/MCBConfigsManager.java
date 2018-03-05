@@ -1,6 +1,5 @@
 package us.cyrien.minecordbot.configuration;
 
-import us.cyrien.mcutils.config.Config;
 import us.cyrien.mcutils.config.ConfigManager;
 
 
@@ -42,25 +41,27 @@ public class MCBConfigsManager {
         return manager;
     }
 
-    public Config getBotConfig() {
-        return configs[0].getConfig();
+    public BotConfig getBotConfig() {
+        return (BotConfig) configs[0];
     }
 
-    public Config getChatConfig() {
-        return configs[1].getConfig();
+    public ChatConfig getChatConfig() {
+        return (ChatConfig) configs[1];
     }
 
-    public Config getBroadcastConfig() {
-        return configs[2].getConfig();
+    public BroadcastConfig getBroadcastConfig() {
+        return (BroadcastConfig) configs[2];
     }
 
-    public Config getModChannelConfig() {
-        return configs[3].getConfig();
+    public ModChannelConfig getModChannelConfig() {
+        return (ModChannelConfig) configs[3];
     }
 
-    public Config getPermConfig() {
-        return configs[4].getConfig();
+    public PermissionConfig getPermConfig() {
+        return (PermissionConfig) configs[4];
     }
 
-
+    public BaseConfig[] getConfigs() {
+        return configs;
+    }
 }

@@ -40,7 +40,7 @@ public class MCCommandCmd extends MCBCommand {
         Player p = FinderUtil.findPlayerInDatabase(e.getMember().getUser().getId());
         CommandSender commandSender;
         boolean allowed = false;
-        if (checkRoleBasedPerm(e.getMember())) {
+        if (checkPermission(e.getMember())) {
             allowed = true;
         } else if ((PermissionUtil.checkPermission(e.getTextChannel(), e.getMember(), Permission.ADMINISTRATOR))) {
             allowed = true;

@@ -14,7 +14,6 @@ import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.commands.Updatable;
 import us.cyrien.minecordbot.localization.Locale;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,13 +30,13 @@ public class ListCmd extends MCBCommand implements Updatable {
 
     @Override
     protected void doCommand(CommandEvent e) {
-        respond("Listing....", e).queue(m -> {
+        respond(Locale.getCommandsMessage("list.listing").finish(), e).queue(m -> {
             mcb.getChatManager().addSavedList(m, e);
             update();
         });
     }
 
-    private MessageEmbed generateList(@Nullable Message message) {
+    private MessageEmbed generateList(Message message) {
         StringBuilder out;
         EmbedBuilder eb = new EmbedBuilder();
         Guild guild = message != null ? message.getGuild() : null;
@@ -45,9 +44,9 @@ public class ListCmd extends MCBCommand implements Updatable {
             eb.setColor(guild.getMember(mcb.getBot().getJda().getSelfUser()).getColor());
         List<Player> playerList = (List<Player>) Bukkit.getServer().getOnlinePlayers();
         if (playerList == null || playerList.size() == 0) {
-            eb.setTitle("There are no players online...", null);
+            eb.setTitle(Locale.getCommandsMessage("list.no-players").finish(), null);
         } else if (playerList.size() == 1 && isVanished(playerList.get(0))) {
-            eb.setTitle("There are no players online...", null);
+            eb.setTitle(Locale.getCommandsMessage("list.no-players").finish(), null);
         } else if (isModChannel(message.getTextChannel())) {
             out = new StringBuilder();
             int counter = 1;
@@ -57,7 +56,7 @@ public class ListCmd extends MCBCommand implements Updatable {
                 else
                     out.append(counter++).append(". ").append(p.getName()).append("\n");
             }
-            eb.addField("Online Players on Minecraft", out.toString(), false);
+            eb.addField(Locale.getCommandsMessage("list.header").finish(), out.toString(), false);
         } else {
             out = new StringBuilder();
             int counter = 1;
@@ -65,7 +64,7 @@ public class ListCmd extends MCBCommand implements Updatable {
                 if (!isVanished(p))
                     out.append(counter++).append(". ").append(p.getName()).append("\n");
             }
-            eb.addField("Online Players on Minecraft", out.toString(), false);
+            eb.addField(Locale.getCommandsMessage("list.header").finish(), out.toString(), false);
         }
         return eb.build();
     }

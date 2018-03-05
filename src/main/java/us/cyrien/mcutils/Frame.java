@@ -3,6 +3,7 @@ package us.cyrien.mcutils;
 
 import us.cyrien.mcutils.config.ConfigurationBuilder;
 import us.cyrien.mcutils.config.ConfigurationInjector;
+import us.cyrien.mcutils.diagnosis.ReportLoader;
 import us.cyrien.mcutils.dispatcher.help.HelpTopicUtil;
 import us.cyrien.mcutils.events.BukkitEventsInjector;
 import us.cyrien.mcutils.hook.HookInjector;
@@ -16,15 +17,14 @@ import us.cyrien.mcutils.module.ModuleLoader;
 
 public class Frame {
     public static void main() {
-        Logger.info("Start Frame initialization.");
+        Logger.info("- Starting plugin framework initialization.");
 
         // Build configurations
         try {
             ConfigurationBuilder.buildAwaiting();
         } catch (Exception e) {
-            Logger.err("Error building configurations!");
+            Logger.err("- Error building configurations!");
             Logger.err(e.getMessage());
-
             e.printStackTrace();
         }
 
@@ -35,10 +35,9 @@ public class Frame {
                 .injector(new ConfigurationInjector())
                 .injector(new BukkitEventsInjector())
                 .injectAll();
-
         HelpTopicUtil.index();
 
-        Logger.info("Finished Frame initialization.");
+        Logger.info("- Finished plugin framework initialization.");
     }
 
     /*
@@ -47,10 +46,20 @@ public class Frame {
 
     /**
      * Register and load your module into Frame
+     *
      * @param clazz Class containing your module
      */
     public static void addModule(Class clazz) {
         ModuleLoader.add(clazz);
+    }
+
+    /**
+     * Register and load diagnostics reporter into Frame
+     *
+     * @param clazz Class that implements {@link IPluginHook}
+     */
+    public static void addReporter(Class clazz) {
+        ReportLoader.addReporter(clazz);
     }
 
     public static void addConfiguration(Class clazz) {
@@ -59,6 +68,7 @@ public class Frame {
 
     /**
      * Register specified hook in Frame
+     *
      * @param clazz Class that implements {@link IPluginHook}
      */
     public static void addHook(Class<? extends IPluginHook> clazz) {

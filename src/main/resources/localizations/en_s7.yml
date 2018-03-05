@@ -1,7 +1,15 @@
 mcb:
+  responselevel:
+    lvl1: "Success"
+    lvl2: "Warning"
+    lvl3: "Error"
+    default: "Retort"
+  event:
+    start: "Weigh anch'r, we be leaving harbor, men!"
+    shut: "The ship has run aground!"
   command:
     no-perm-message: "Ye can't yell out the order, it fo' d' captain!"
-    invalid-arguments: "Invalid arguments."
+    invalid-arguments: "Snoody n'sults, lass."
     invalid-tc: "Yer usin' th' wrong chat."
     no-alias: "Ya betta' use me propper name, boy!"
     fatal-error: "A fatal blow twas struck while %s was being loaded in the 68-pounder."
@@ -85,8 +93,8 @@ mcb:
       description: "Javanese arithmatic"
     mcmd:
       description: "Fire th' ship's cannons, First Mate Minecord!."
-      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
-      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
+      cannot-cast: "Ye order's weren't relayed from the pub. DiscordPlayerCommandSender shant be casted to CraftPlayer wilst drunk. \n\nMake 'em walk the plank once we be over rough water."
+      error: "Tis unwise to command from the pub, captain... Consider doing so from yer ship instead?"
     setgame:
       description: "Hoist the flag high!"
       changed: "Setting sail towards %s!"
@@ -107,8 +115,8 @@ mcb:
       description: "How long till we reach land?"
     help:
       description: "Convey all o' the captain's orders and tell th' quartermaster."
-      required: "Required details"
-      optional: "Optional details"
+      required: "Necessities"
+      optional: "Niceties"
       more: "Fer more detailed help, do %s<command> help."
       too-much-args: "Too much liqour. Sober up a bit, Captain."
       no-such-command: "Captain, %s is not an order."
@@ -122,8 +130,9 @@ mcb:
         special: "Navigator's Diptych Dial"
     list:
       description: "Take role, Mr. 'CordBot"
-      list:
-        header: "Mates On Board"
+      header: "Online Players"
+      no-players: "There are no players online..."
+      listing: "Listing players..."
     info:
       description: "Know thy First Mate"
       minfo:

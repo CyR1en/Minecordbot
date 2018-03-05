@@ -13,6 +13,8 @@ import org.bukkit.metadata.MetadataValue;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.Minecordbot;
+import us.cyrien.minecordbot.configuration.BroadcastConfig;
+import us.cyrien.minecordbot.configuration.ModChannelConfig;
 import us.cyrien.minecordbot.hooks.SuperVanishHook;
 
 import java.awt.*;
@@ -32,12 +34,12 @@ public class UserQuitJoinListener extends MCBListener {
             mcb.getBot().getUpdatableMap().get("list").update();
             SuperVanishHook svHook = HookContainer.getSuperVanishHook();
             String msg = ChatColor.stripColor(e.getQuitMessage());
-            boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean("See_Player_Quit");
-            boolean seeQuit = configsManager.getModChannelConfig().getBoolean("See_Player_Quit");
+            boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_QUIT);
+            boolean seeQuit = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_QUIT);
             if (seeQuit) {
                 String m = msg;
                 if (svHook != null) {
-                    boolean seeSV = configsManager.getModChannelConfig().getBoolean("See_SV");
+                    boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
                     if (VanishAPI.isInvisible(e.getPlayer()) || e.getQuitMessage().equals("Fake") && seeSV)
                         m = "(Vanish) " + m;
                 }
@@ -63,12 +65,12 @@ public class UserQuitJoinListener extends MCBListener {
             mcb.getBot().getUpdatableMap().get("list").update();
             SuperVanishHook svHook = HookContainer.getSuperVanishHook();
             String msg = ChatColor.stripColor(e.getJoinMessage());
-            boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean("See_Player_Join");
-            boolean seeJoin = configsManager.getModChannelConfig().getBoolean("See_Player_Join");
+            boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_JOIN);
+            boolean seeJoin = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_JOIN);
             if (seeJoin) {
                 String m = msg;
                 if (svHook != null) {
-                    boolean seeSV = configsManager.getModChannelConfig().getBoolean("See_SV");
+                    boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
                     if (VanishAPI.isInvisible(e.getPlayer()) || e.getJoinMessage().equals("Fake") && seeSV)
                         m = "(Vanish) " + m;
                 }
@@ -89,7 +91,7 @@ public class UserQuitJoinListener extends MCBListener {
     }
 
     private boolean check(PlayerEvent e) {
-        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean("Hide_Incognito_Player");
+        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.HIDE_INCOGNITO);
         if (isVanished(e.getPlayer())) {
             return false;
         } else if (allowIncog) {
@@ -110,15 +112,21 @@ public class UserQuitJoinListener extends MCBListener {
     private boolean safeToProceed(PlayerEvent event) {
         boolean safe = true;
         if (event instanceof PlayerJoinEvent) {
-            if (((PlayerJoinEvent) event).getJoinMessage() == null && ((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
+            if (((PlayerJoinEvent) event).getJoinMessage() == null) {
                 safe = false;
+            } else if (((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
+                safe = false;
+            }
+            if(!safe)
                 Logger.warn("The previous PlayerJoinEvent message was missing!");
-            }
         } else if (event instanceof PlayerQuitEvent) {
-            if (((PlayerQuitEvent) event).getQuitMessage() == null && ((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
+            if (((PlayerQuitEvent) event).getQuitMessage() == null) {
                 safe = false;
-                Logger.warn("The previous PlayerQuitEvent message was missing!");
+            } else if (((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
+                safe = false;
             }
+            if(!safe)
+                Logger.warn("The previous PlayerQuitEvent message was missing!");
         }
         return safe;
     }

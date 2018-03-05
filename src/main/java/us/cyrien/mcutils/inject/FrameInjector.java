@@ -1,5 +1,6 @@
 package us.cyrien.mcutils.inject;
 
+import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.mcutils.module.ModuleLoader;
 
 import java.util.ArrayList;
@@ -18,5 +19,6 @@ public class FrameInjector {
 
 	        injectors.forEach(i -> i.inject(clazz, instance));
         }
+        Logger.info("- Module classes injected.");
     }
 }

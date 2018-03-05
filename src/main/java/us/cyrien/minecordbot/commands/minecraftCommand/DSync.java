@@ -61,8 +61,8 @@ public class DSync {
 
     private String verificationCode(AuthToken token) {
         return "**MCBSync Verification Code**: \n ```" + token.toString() + "``` \n" + "Copy the verification code above and do __**/syncconfirm <verification code>**__ in-game \n\n" +
-                "_by syncing accounts you agree that your account data(username, id) will be stored to the resource folder of the sync plugin. \n" +
-                "If you don't give the consent to store your data press the cancel button bellow._";
+                "_by syncing accounts, you agree that your account data(username, id) will be stored to the resource folder of MineCordBot. \n" +
+                "If you don't give consent to store your data, press the cancel button bellow._";
     }
 
     private String cannotSendCode() {
