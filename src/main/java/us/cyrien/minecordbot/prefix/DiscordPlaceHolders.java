@@ -44,6 +44,7 @@ public enum DiscordPlaceHolders {
 
         private Role getPrimaryRole(Member member) {
            List<Role> roles = member.getRoles();
+           if(roles == null) return null;
            if(roles.size() == 0) return null;
            Role role = roles.get(0);
            for(Role r : roles)
