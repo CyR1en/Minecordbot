@@ -1,4 +1,4 @@
-# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyrien.us/)
+# ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ ![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyrien.us) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyr1en.com/)
 
 ### A Powerful Way to Bridge Discord and Minecraft
 ##### Configurable, Simple, Easy
@@ -24,7 +24,7 @@ __Supports:__ *BukkitAPI 1.8 - 1.12.2*  |  __Previous Version:__ *[MineCordBot 2
 *   Four levels of permissions
 
 ## Learn More
-You can learn more about MineCordBot by visiting the [official website](https://minecordbot.cyrien.us) or by visiting the wiki [here](https://github.com/CyR1en/Minecordbot/wiki)
+You can learn more about MineCordBot by visiting the [official website](https://minecordbot.cyr1en.com) or by visiting the wiki [here](https://github.com/CyR1en/Minecordbot/wiki)
 
 ## You can also...  
 [![Auri](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/auri_16.png) Check out Auri](https://github.com/CyR1en/Project-Auri) - A MusicBot you can run with Minecraft or Standalone  
