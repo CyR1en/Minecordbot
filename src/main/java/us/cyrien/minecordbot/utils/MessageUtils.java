@@ -91,7 +91,7 @@ public class MessageUtils {
      */
     public static void sendException(Exception e, MessageReceivedEvent evt) {
         e.printStackTrace();
-        sendMessage("Error running command: `" + evt.getMessage().getRawContent() + "`:\n`" + e.getClass().getCanonicalName() + "`", evt.getTextChannel());
+        sendMessage("Error running command: `" + evt.getMessage().getContentRaw() + "`:\n`" + e.getClass().getCanonicalName() + "`", evt.getTextChannel());
     }
 
     /**

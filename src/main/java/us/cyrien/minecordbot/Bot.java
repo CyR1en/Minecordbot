@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import us.cyrien.mcutils.logger.Logger;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.DiscordRelayListener;
 import us.cyrien.minecordbot.chat.listeners.discordListeners.ModChannelListener;
@@ -108,18 +107,15 @@ public class Bot {
             JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
             Game game;
             if (gameStr != null && !gameStr.equals("default") && !gameStr.isEmpty()) {
-                game = Game.of(gameStr);
+                game = Game.playing(gameStr);
             } else {
-                game = Game.of("Type " + trigger + "help");
+                game = Game.playing("Type " + trigger + "help");
             }
             builder.setGame(game);
             cb.setGame(game);
             jda = builder.buildAsync();
         } catch (LoginException e) {
             Logger.err("The provided bot token was invalid");
-            return false;
-        } catch (RateLimitedException e) {
-            Logger.err(e.getMessage());
             return false;
         }
         return true;

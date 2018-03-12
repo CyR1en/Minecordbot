@@ -31,7 +31,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         boolean self = event.getAuthor().equals(mcb.getBot().getJda().getSelfUser());
-        boolean blocked = prefixIsBlocked(event.getMessage().getContent()) || botIsBlocked(event.getAuthor().getId());
+        boolean blocked = prefixIsBlocked(event.getMessage().getContentRaw()) || botIsBlocked(event.getAuthor().getId());
         if (self || blocked)
             return;
         switch (channelType) {
@@ -91,7 +91,7 @@ public abstract class TextChannelListener extends ListenerAdapter {
     }
 
     protected void relayMessage(MessageReceivedEvent event) {
-        String msg = event.getMessage().getContent();
+        String msg = event.getMessage().getContentRaw();
         /*
         if (mcb.supportNewFeat() && isSpigot()) {
             TextComponent all = PrefixParser.parseDiscordPrefixesAsTC(configsManager.getChatConfig().getString("Discord_Prefix"), event);
