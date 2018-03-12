@@ -1,6 +1,8 @@
-<!--- Instructions: If you are creating a suggestion, ignore this template.
-Just lable your issue with the following format: '[Request] YourTitleHere'
+<!--- Instructions: If you are writing up a normal issue use the form below.
+If you are creating a suggestion, remove this template's text - write your suggestion,
+and lable your issue with the following format: '[Request] YourTitleHere'
 If you need help with formatting: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet --->
+<!--- Reminder: Please check for pre-existing, open issues before creating a new one. This reduces the time it takes us marking duplicates. --->
 
 ### What is supposed to happen?
 *Describe how you expected it to output or perform*

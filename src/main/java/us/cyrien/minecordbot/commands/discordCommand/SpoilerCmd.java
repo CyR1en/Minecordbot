@@ -72,7 +72,7 @@ public class SpoilerCmd extends MCBCommand {
             e.addFrame(text);
             e.setDelay(60000);
             e.finish();
-            event.getChannel().sendFile(new File("spoiler.gif"), null).queue();
+            event.getChannel().sendFile(new File("spoiler.gif"), "").queue();
             textG.dispose();
             hoverG.dispose();
         } catch (Exception e) {

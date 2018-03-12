@@ -40,7 +40,7 @@ public class DSync {
             EventWaiter eventWaiter = Minecordbot.getInstance().getEventWaiter();
             dUser.openPrivateChannel().queue(pc -> pc.sendMessage(verificationCode(token)).queue(m -> {
                 m.addReaction(CANCEL).complete();
-                eventWaiter.waitForEvent(MessageReactionAddEvent.class, e -> e.getReaction().getEmote().getName().equals(CANCEL) && e.getMessageId().equals(m.getId()) && !e.getUser().isBot(), a -> {
+                eventWaiter.waitForEvent(MessageReactionAddEvent.class, e -> e.getReaction().getReactionEmote().getName().equals(CANCEL) && e.getMessageId().equals(m.getId()) && !e.getUser().isBot(), a -> {
                     a.getReaction().removeReaction().queue();
                     authSession.cancel();
                 }, AuthSession.SYNC_TIMEOUT, TimeUnit.MINUTES, authSession::cancel);
