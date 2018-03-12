@@ -95,8 +95,8 @@ mcb:
       description: "JavaScript eval()"
     mcmd:
       description: "executer une commande Minecraft depuis Discord."
-      cannot-cast: "That command cannot be executed from Discord because the custom DiscordPlayerCommandSender cannot be casted to CraftPlayer. \n\nExecute the command in-game."
-      error: "The command cannot be dispatched from Discord. Please login in-game to execute the command"
+      cannot-cast: "Cette commande ne peut pas être exécutée à partir de Discord car le DiscordPlayerCommandSender personnalisé ne peut pas être casté vers CraftPlayer. \ n \ nExécutez la commande dans le jeu."
+      error: "La commande ne peut pas être envoyée à partir de Discord. Veuillez vous connecter dans le jeu pour exécuter la commande"
     setgame:
       description: "définir le jeu du bot Discord."
       changed: "Jeu défini : %s !"
