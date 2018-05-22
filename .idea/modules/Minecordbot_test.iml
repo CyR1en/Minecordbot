@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="Minecordbot:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="us.cyrien.minecordbot" external.system.module.type="sourceSet" external.system.module.version="2.2.1" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="Minecordbot:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="us.cyrien.minecordbot" external.system.module.type="sourceSet" external.system.module.version="2.2.2" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../src/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../src/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Minecordbot_main" />
-    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.3.1_286" level="project" />
-    <orderEntry type="library" name="Gradle: com.jagrosh:JDA-Utilities:1.8" level="project" />
+    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.5.1_347" level="project" />
+    <orderEntry type="library" name="Gradle: com.jagrosh:JDA-Utilities:1.9" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.6" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />

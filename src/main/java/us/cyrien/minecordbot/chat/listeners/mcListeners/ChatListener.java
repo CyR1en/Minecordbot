@@ -86,7 +86,7 @@ public class ChatListener extends MCBListener {
     private String formatMessage(MChatType type, AsyncPlayerChatEvent e) {
         String msg = mentionHandler.handleMention(ChatColor.stripColor(e.getMessage()));
         String prefix = PrefixParser.parseMinecraftPrefix(configsManager.getChatConfig().getString(ChatConfig.Nodes.MINECRAFT_PREFIX), e.getPlayer());
-        return type.getChatPrefix() + "**" + prefix + "** " + msg;
+        return type.getChatPrefix() + prefix + msg;
     }
 
     private class RelayMessage {
