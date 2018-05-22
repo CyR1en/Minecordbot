@@ -37,10 +37,10 @@ public class HelpCmd extends MCBCommand {
             User user = jda.getUserById("193970511615623168");
             if (user != null) {
                 eb.setFooter("Questions? contact " + user.getName() + "#" + user.getDiscriminator() + " or join https://discord.cyrien.us", user.getAvatarUrl());
-                respond(e, eb.build());
             } else {
                 eb.setFooter("- C Y R I \u039E N -", "https://yt3.ggpht.com/-uuXItiIhgcU/AAAAAAAAAAI/AAAAAAAAAAA/3xzbfTTz9oU/s88-c-k-no-mo-rj-c0xffffff/photo.jpg");
             }
+            respond(e, eb.build());
         }
     }
 
