@@ -13,7 +13,8 @@
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
-    <orderEntry type="library" name="Gradle: net.marfgamer:jraknet:2.8.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.whirvis:jraknet:2.9.6" level="project" />
+    <orderEntry type="library" name="Gradle: joda-time:joda-time:2.9.9" level="project" />
     <orderEntry type="library" name="Gradle: dnsjava:dnsjava:2.1.1" level="project" />
     <orderEntry type="library" name="Gradle: gui.ava:html2image:0.9" level="project" />
     <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1" level="project" />
@@ -25,15 +26,14 @@
     <orderEntry type="library" name="Gradle: net.java.dev.jna:jna:4.4.0" level="project" />
     <orderEntry type="library" name="Gradle: com.neovisionaries:nv-websocket-client:2.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.8.1" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.16.Final" level="project" />
-    <orderEntry type="library" name="Gradle: joda-time:joda-time:2.9.9" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.24.Final" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:3.8.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.13.0" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.16.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.16.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.16.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.16.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.16.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.24.Final" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="Minecordbot_main" />
 </module>

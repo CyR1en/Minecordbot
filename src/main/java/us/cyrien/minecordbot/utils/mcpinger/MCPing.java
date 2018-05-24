@@ -16,8 +16,8 @@
 
 package us.cyrien.minecordbot.utils.mcpinger;
 
-import net.marfgamer.jraknet.identifier.Identifier;
-import net.marfgamer.jraknet.util.RakNetUtils;
+import com.whirvis.jraknet.identifier.Identifier;
+import com.whirvis.jraknet.util.RakNetUtils;
 import us.cyrien.minecordbot.utils.mcpinger.pcping.MinecraftPing;
 import us.cyrien.minecordbot.utils.mcpinger.pcping.MinecraftPingReply;
 
