@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'us.cyrien.minecordbot'
-version '2.2.2'
+version '2.2.3_b2'
 mainClassName = 'us.cyrien.minecordbot.main.Minecordbot'
 
 sourceCompatibility = 1.8
