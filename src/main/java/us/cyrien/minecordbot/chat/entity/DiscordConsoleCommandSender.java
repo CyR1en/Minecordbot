@@ -30,7 +30,6 @@ public class DiscordConsoleCommandSender implements ConsoleCommandSender {
     @Override
     public void sendMessage(String s) {
         e.getTextChannel().sendMessage("`" + ChatColor.stripColor(s) + "`").queue();
-
     }
 
     @Override

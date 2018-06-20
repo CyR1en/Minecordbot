@@ -28,64 +28,60 @@ public class UserQuitJoinListener extends MCBListener {
         super(mcb);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent e) {
         if (safeToProceed(e)) {
-            mcb.getBot().getUpdatableMap().get("list").update();
-            SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-            String msg = ChatColor.stripColor(e.getQuitMessage());
-            boolean isLeaveBroadcast = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_QUIT);
-            boolean seeQuit = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_QUIT);
-            if (seeQuit) {
-                String m = msg;
-                if (svHook != null) {
-                    boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
-                    if (VanishAPI.isInvisible(e.getPlayer()) || e.getQuitMessage().equals("Fake") && seeSV)
-                        m = "(Vanish) " + m;
-                }
-                messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                        .setTitle(m, null).build());
-            }
-            if (isLeaveBroadcast) {
-                if (e.getQuitMessage().equals("Fake")) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                            .setTitle(msg, null).build());
-                    e.setQuitMessage("");
-                } else if (check(e)) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(LEAVE_COLOR)
-                            .setTitle(msg, null).build());
-                }
-            }
+            processEvent(e);
+        } else {
+            e.setQuitMessage(e.getPlayer().getName() + " left the game");
+            processEvent(e);
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
         if (safeToProceed(e)) {
-            mcb.getBot().getUpdatableMap().get("list").update();
-            SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-            String msg = ChatColor.stripColor(e.getJoinMessage());
-            boolean isJoinBroadCast = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_JOIN);
-            boolean seeJoin = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_JOIN);
-            if (seeJoin) {
-                String m = msg;
-                if (svHook != null) {
-                    boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
-                    if (VanishAPI.isInvisible(e.getPlayer()) || e.getJoinMessage().equals("Fake") && seeSV)
-                        m = "(Vanish) " + m;
-                }
-                messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                        .setTitle(m, null).build());
+            processEvent(e);
+        } else {
+            e.setJoinMessage(e.getPlayer().getName() + " joined the game");
+            processEvent(e);
+        }
+    }
+
+    private void processEvent(PlayerEvent event) {
+        boolean j = event instanceof PlayerJoinEvent;
+        Color c = j ? JOIN_COLOR : LEAVE_COLOR;
+        mcb.getBot().getUpdatableMap().get("list").update();
+        SuperVanishHook svHook = HookContainer.getSuperVanishHook();
+        String msg = j ? ChatColor.stripColor(((PlayerJoinEvent) event).getJoinMessage()) :
+                ChatColor.stripColor(((PlayerQuitEvent) event).getQuitMessage());
+        boolean isBroadCast = j ? configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_JOIN) :
+                configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_QUIT);
+        boolean see = j ? configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_JOIN) :
+                configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_QUIT);
+        if (see) {
+            String m = msg;
+            if (svHook != null) {
+                boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
+                String message = j ? ((PlayerJoinEvent) event).getJoinMessage() : ((PlayerQuitEvent) event).getQuitMessage();
+                if (VanishAPI.isInvisible(event.getPlayer()) || message.equals("Fake") && seeSV)
+                    m = "(Vanish) " + m;
             }
-            if (isJoinBroadCast) {
-                if (e.getJoinMessage().equals("Fake")) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                            .setTitle(msg, null).build());
-                    e.setJoinMessage("");
-                } else if (check(e)) {
-                    messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(JOIN_COLOR)
-                            .setTitle(msg, null).build());
-                }
+            messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(c)
+                    .setTitle(m, null).build());
+        }
+        if (isBroadCast) {
+            String message = j ? ((PlayerJoinEvent) event).getJoinMessage() : ((PlayerQuitEvent) event).getQuitMessage();
+            if (message.equals("Fake")) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(c)
+                        .setTitle(msg, null).build());
+                if (j)
+                    ((PlayerJoinEvent) event).setJoinMessage("");
+                else
+                    ((PlayerQuitEvent) event).setQuitMessage("");
+            } else if (check(event)) {
+                messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(c)
+                        .setTitle(msg, null).build());
             }
         }
     }
@@ -95,9 +91,7 @@ public class UserQuitJoinListener extends MCBListener {
         if (isVanished(e.getPlayer())) {
             return false;
         } else if (allowIncog) {
-            if (e.getPlayer().hasPermission("minecordbot.incognito")) {
-                return false;
-            }
+            return !e.getPlayer().hasPermission("minecordbot.incognito");
         }
         return true;
     }
@@ -110,24 +104,26 @@ public class UserQuitJoinListener extends MCBListener {
     }
 
     private boolean safeToProceed(PlayerEvent event) {
-        boolean safe = true;
         if (event instanceof PlayerJoinEvent) {
             if (((PlayerJoinEvent) event).getJoinMessage() == null) {
-                safe = false;
+                Logger.warn("The previous PlayerJoinEvent message was null! Changing message to default.");
+                return false;
             } else if (((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
-                safe = false;
+                Logger.warn("The previous PlayerJoinEvent message was missing! Changing message to default.");
+                return false;
+            } else {
+                return true;
             }
-            if(!safe)
-                Logger.warn("The previous PlayerJoinEvent message was missing!");
-        } else if (event instanceof PlayerQuitEvent) {
+        } else {
             if (((PlayerQuitEvent) event).getQuitMessage() == null) {
-                safe = false;
+                Logger.warn("The previous PlayerQuitEvent message was null! Changing message to default.");
+                return false;
             } else if (((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
-                safe = false;
+                Logger.warn("The previous PlayerQuitEvent message was missing! Changing message to default.");
+                return false;
+            } else {
+                return true;
             }
-            if(!safe)
-                Logger.warn("The previous PlayerQuitEvent message was missing!");
         }
-        return safe;
     }
 }

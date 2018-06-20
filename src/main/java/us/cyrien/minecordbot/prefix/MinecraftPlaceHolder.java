@@ -7,7 +7,6 @@ import net.milkbowl.vault.chat.Chat;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 import us.cyrien.mcutils.annotations.Hook;
@@ -15,6 +14,8 @@ import us.cyrien.minecordbot.HookContainer;
 import us.cyrien.minecordbot.hooks.MVHook;
 import us.cyrien.minecordbot.hooks.PermissionsExHook;
 import us.cyrien.minecordbot.hooks.VaultHook;
+
+import java.util.ArrayList;
 
 public enum MinecraftPlaceHolder {
     WORLD {
@@ -41,8 +42,15 @@ public enum MinecraftPlaceHolder {
     ENAME {
         @Override
         public String toString() {
-            String s = p.getCustomName() == null ? p.getDisplayName() : p.getCustomName();
-            return ChatColor.stripColor(s);
+            ArrayList<String> prefixes = new ArrayList<>();
+            prefixes.add(ERANK.toString());
+            prefixes.add(RANK_GROUP.toString());
+            prefixes.add(RANK_PREFIX.toString());
+            String displayName = p.getCustomName() == null ? p.getDisplayName() : p.getCustomName();
+            for (String prefix : prefixes) {
+                displayName = displayName.replaceAll(prefix, "").trim();
+            }
+            return ChatColor.stripColor(displayName);
         }
     },
     ERANK {

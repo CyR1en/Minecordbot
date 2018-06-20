@@ -18,7 +18,7 @@ public class OnStart implements Listener {
 
     @EventHandler
     public void onStart(StartEvent event) {
-        if(!event.isCancelled()) {
+        if (!event.isCancelled()) {
             EmbedBuilder eb = new EmbedBuilder().setDescription(Locale.getEventMessage("start").finish()).setColor(Bot.BOT_COLOR);
             mcb.getMessenger().sendMessageEmbedToAllBoundChannel(eb.build());
             mcb.getMessenger().sendMessageEmbedToAllModChannel(eb.build());

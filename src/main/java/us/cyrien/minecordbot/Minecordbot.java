@@ -90,11 +90,13 @@ public class Minecordbot extends JavaPlugin {
                 UUIDFetcher.init();
                 initMListener();
                 postInit();
-                Bukkit.getPluginManager().callEvent(new StartEvent(this));
             } else {
                 this.getServer().shutdown();
             }
         }, 1L);
+        Bukkit.getScheduler().runTaskLater(this, () ->
+                Bukkit.getPluginManager().callEvent(new StartEvent(this)), 20L);
+
     }
 
     public ChatManager getChatManager() {
@@ -174,15 +176,20 @@ public class Minecordbot extends JavaPlugin {
         registerMinecraftEventModule(new ChatListener(this));
         registerMinecraftEventModule(new CommandListener(this));
         registerMinecraftEventModule(new DeathListener(this));
-        registerMinecraftEventModule(new MentionListener(this));
         registerMinecraftEventModule(new UserConnectionListener());
         registerMinecraftEventModule(new UserQuitJoinListener(this));
         registerMinecraftEventModule(new OnShut(this));
         registerMinecraftEventModule(new OnStart(this));
-        if (supportNewFeat())
+        if (supportNewFeat()) {
             registerMinecraftEventModule(new BroadcastListener(this));
-        else
+        } else
             Logger.bukkitWarn("- Broadcast Listener is unsupported with " + Bukkit.getBukkitVersion());
+
+        if (supportNewFeat()) {
+            registerMinecraftEventModule(new MentionListener(this));
+        } else
+            Logger.bukkitWarn("- Mention Listener is unsupported with " + Bukkit.getBukkitVersion());
+
         Logger.info("- Initialized Minecraft listeners.");
     }
 

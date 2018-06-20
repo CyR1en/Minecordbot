@@ -14,6 +14,8 @@ mcb:
     no-alias: "Il n'y a pas d'autre alias pour cette commande."
     fatal-error: "Une erreur fatale a été détectée avant que l'éxécution de la commande %s soit finie."
   commands:
+    diagnostics:
+      description: "Envoie un diagnostique pour aider à localiser une panne ou anomalie!"
     perm:
       description: "Gérer permissions pour les catégories."
       invalid-sub: "%s n'est une sous commande"

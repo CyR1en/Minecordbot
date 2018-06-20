@@ -5,7 +5,7 @@ mcb:
     lvl3: "Error"
     default: "Response"
   event:
-    start: "The server have successfully started!"
+    start: "The server has successfully started!"
     shut: "The server is shutting down!"
   command:
     no-perm-message: "Sorry you do not have access to this command."
