@@ -48,7 +48,7 @@ public enum MinecraftPlaceHolder {
             prefixes.add(RANK_PREFIX.toString());
             String displayName = p.getCustomName() == null ? p.getDisplayName() : p.getCustomName();
             for (String prefix : prefixes) {
-                displayName = displayName.replaceAll(prefix, "").trim();
+                displayName = displayName.replace(prefix, "").trim();
             }
             return ChatColor.stripColor(displayName);
         }

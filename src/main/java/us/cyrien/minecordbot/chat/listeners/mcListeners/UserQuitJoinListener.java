@@ -30,22 +30,12 @@ public class UserQuitJoinListener extends MCBListener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (safeToProceed(e)) {
-            processEvent(e);
-        } else {
-            e.setQuitMessage(e.getPlayer().getName() + " left the game");
-            processEvent(e);
-        }
+        processEvent(e);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (safeToProceed(e)) {
-            processEvent(e);
-        } else {
-            e.setJoinMessage(e.getPlayer().getName() + " joined the game");
-            processEvent(e);
-        }
+        processEvent(e);
     }
 
     private void processEvent(PlayerEvent event) {
@@ -53,26 +43,23 @@ public class UserQuitJoinListener extends MCBListener {
         Color c = j ? JOIN_COLOR : LEAVE_COLOR;
         mcb.getBot().getUpdatableMap().get("list").update();
         SuperVanishHook svHook = HookContainer.getSuperVanishHook();
-        String msg = j ? ChatColor.stripColor(((PlayerJoinEvent) event).getJoinMessage()) :
-                ChatColor.stripColor(((PlayerQuitEvent) event).getQuitMessage());
-        boolean isBroadCast = j ? configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_JOIN) :
+        String msg = getMessage(j, event);
+        boolean isBroadcast = j ? configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_JOIN) :
                 configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.PLAYER_QUIT);
-        boolean see = j ? configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_JOIN) :
+        boolean seeInModChannel = j ? configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_JOIN) :
                 configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_PLAYER_QUIT);
-        if (see) {
+        if (seeInModChannel && !event.getPlayer().hasPermission("minecordbot.incognito")) {
             String m = msg;
             if (svHook != null) {
                 boolean seeSV = configsManager.getModChannelConfig().getBoolean(ModChannelConfig.Nodes.SEE_SV);
-                String message = j ? ((PlayerJoinEvent) event).getJoinMessage() : ((PlayerQuitEvent) event).getQuitMessage();
-                if (VanishAPI.isInvisible(event.getPlayer()) || message.equals("Fake") && seeSV)
+                if (VanishAPI.isInvisible(event.getPlayer()) || m.equals("Fake") && seeSV)
                     m = "(Vanish) " + m;
             }
             messenger.sendMessageEmbedToAllModChannel(new EmbedBuilder().setColor(c)
                     .setTitle(m, null).build());
         }
-        if (isBroadCast) {
-            String message = j ? ((PlayerJoinEvent) event).getJoinMessage() : ((PlayerQuitEvent) event).getQuitMessage();
-            if (message.equals("Fake")) {
+        if (isBroadcast) {
+            if (msg.equals("Fake")) {
                 messenger.sendMessageEmbedToAllBoundChannel(new EmbedBuilder().setColor(c)
                         .setTitle(msg, null).build());
                 if (j)
@@ -86,11 +73,20 @@ public class UserQuitJoinListener extends MCBListener {
         }
     }
 
+    public String getMessage(boolean isJoinEvent, PlayerEvent event) {
+        if(safeToProceed(event))
+            return isJoinEvent ? ChatColor.stripColor(((PlayerJoinEvent) event).getJoinMessage()) :
+                    ChatColor.stripColor(((PlayerQuitEvent) event).getQuitMessage());
+        else
+            return isJoinEvent ? event.getPlayer().getName() + " joined the game" :
+                    event.getPlayer().getName() + " left the game";
+    }
+
     private boolean check(PlayerEvent e) {
-        boolean allowIncog = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.HIDE_INCOGNITO);
+        boolean hideIncog = configsManager.getBroadcastConfig().getBoolean(BroadcastConfig.Nodes.HIDE_INCOGNITO);
         if (isVanished(e.getPlayer())) {
             return false;
-        } else if (allowIncog) {
+        } else if (hideIncog) {
             return !e.getPlayer().hasPermission("minecordbot.incognito");
         }
         return true;
@@ -104,22 +100,23 @@ public class UserQuitJoinListener extends MCBListener {
     }
 
     private boolean safeToProceed(PlayerEvent event) {
+        String msg = "The previous %s message was %s. Relaying default message.";
         if (event instanceof PlayerJoinEvent) {
             if (((PlayerJoinEvent) event).getJoinMessage() == null) {
-                Logger.warn("The previous PlayerJoinEvent message was null! Changing message to default.");
+                Logger.info(String.format(msg, event.getClass().getSimpleName(), "null"));
                 return false;
             } else if (((PlayerJoinEvent) event).getJoinMessage().isEmpty()) {
-                Logger.warn("The previous PlayerJoinEvent message was missing! Changing message to default.");
+                Logger.info(String.format(msg, event.getClass().getSimpleName(), "empty"));
                 return false;
             } else {
                 return true;
             }
         } else {
             if (((PlayerQuitEvent) event).getQuitMessage() == null) {
-                Logger.warn("The previous PlayerQuitEvent message was null! Changing message to default.");
+                Logger.info(String.format(msg, event.getClass().getSimpleName(), "null"));
                 return false;
             } else if (((PlayerQuitEvent) event).getQuitMessage().isEmpty()) {
-                Logger.warn("The previous PlayerQuitEvent message was missing! Changing message to default.");
+                Logger.info(String.format(msg, event.getClass().getSimpleName(), "empty"));
                 return false;
             } else {
                 return true;
