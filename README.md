@@ -7,7 +7,7 @@
 [![Documentation](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/button_documentation.png)](https://github.com/CyR1en/Minecordbot/wiki)
 [![Bug Tracker](https://raw.githubusercontent.com/wiki/CyR1en/Minecordbot/_imgs/button_bug-tracker.png)](https://github.com/CyR1en/Minecordbot/issues)
 
-__Supports:__ *BukkitAPI 1.8 - 1.12.2*  |  __Previous Version:__ *[MineCordBot 2.2.4](https://github.com/CyR1en/Minecordbot/releases/tag/v2.2.4)*  | __Current Version:__ *[MineCordBot 2.2.5](https://github.com/CyR1en/Minecordbot/releases/tag/v2.2.5)*
+__Supports:__ *BukkitAPI 1.8 - 1.12.2*  |  __Previous Version:__ *[MineCordBot 2.2.4](https://github.com/CyR1en/Minecordbot/releases/tag/v2.2.4)*  | __Current Version:__ *[MineCordBot 2.2.5](https://github.com/CyR1en/Minecordbot/releases/tag/2.2.5)*
 
 ---
 ## Features
