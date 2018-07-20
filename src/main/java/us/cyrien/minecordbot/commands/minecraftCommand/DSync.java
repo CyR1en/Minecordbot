@@ -14,7 +14,7 @@ import us.cyrien.mcutils.annotations.Sender;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthSession;
 import us.cyrien.minecordbot.accountSync.Authentication.AuthToken;
-import us.cyrien.minecordbot.utils.FinderUtil;
+import us.cyrien.minecordbot.utils.SearchUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +32,7 @@ public class DSync {
             return;
         }
         if (dUser == null)
-            dUser = (FinderUtil.findMember(discordID) == null) ? null : FinderUtil.findMember(discordID).getUser();
+            dUser = (SearchUtil.findMember(discordID) == null) ? null : SearchUtil.findMember(discordID).getUser();
         if (dUser != null) {
             AuthSession authSession = new AuthSession((Player) commandSender, dUser);
             AuthToken token = authSession.getAuthToken();

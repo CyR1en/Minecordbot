@@ -6,10 +6,7 @@ import us.cyrien.minecordbot.Bot;
 import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
-import us.cyrien.minecordbot.utils.OtherUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
+import us.cyrien.minecordbot.utils.ImageUtil;
 
 public class SetAvatarCmd extends MCBCommand {
 
@@ -34,21 +31,16 @@ public class SetAvatarCmd extends MCBCommand {
                 url = null;
         else
             url = event.getArgs();
-        InputStream s = OtherUtil.imageFromUrl(url);
-        if (s == null) {
-            respond(event, event.getClient().getError() +
-                " " + Locale.getCommandsMessage("setavatar.invalid").finish());
-        } else {
-            try {
-                event.getSelfUser().getManager().setAvatar(Icon.from(s)).queue(
-                        v -> respond(event, event.getClient().getSuccess() + " " +
-                                Locale.getCommandsMessage("setavatar.changed").finish()),
-                        t -> respond(event,event.getClient().getError() + " " +
-                                Locale.getCommandsMessage("setavatar.failed").finish()));
-            } catch (IOException e) {
-                respond(event, event.getClient().getError() + " " +
-                        Locale.getCommandsMessage("setavatar.couldNotLoad").finish());
-            }
-        }
+        Icon icon = ImageUtil.getIcon(url);
+        if (icon == null)
+            respond(event, event.getClient().getError() + " " + Locale.getCommandsMessage("setavatar.invalid").finish());
+        else
+            event.getSelfUser().getManager().setAvatar(icon).queue(
+                    v -> respond(event, event.getClient().getSuccess() + " " +
+                            Locale.getCommandsMessage("setavatar.changed").finish()),
+                    t -> respond(event, event.getClient().getError() + " " +
+                            Locale.getCommandsMessage("setavatar.failed").finish()));
+
+
     }
 }

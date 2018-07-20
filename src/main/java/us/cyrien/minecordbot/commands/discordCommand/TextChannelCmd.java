@@ -2,6 +2,7 @@ package us.cyrien.minecordbot.commands.discordCommand;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.utils.FinderUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -12,7 +13,6 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.configuration.ChatConfig;
 import us.cyrien.minecordbot.localization.Locale;
-import us.cyrien.minecordbot.utils.FinderUtil;
 
 import java.util.ArrayList;
 
@@ -90,7 +90,7 @@ public class TextChannelCmd extends MCBCommand {
             if (withID) {
                 tc = e.getJDA().getTextChannelById(arg);
             } else {
-                java.util.List<TextChannel> result = FinderUtil.findTextChannel(arg, e.getGuild());
+                java.util.List<TextChannel> result = FinderUtil.findTextChannels(arg, e.getGuild());
                 tc = result.size() > 0 ? result.get(0) : null;
             }
             if (tc != null) {
@@ -136,7 +136,7 @@ public class TextChannelCmd extends MCBCommand {
             String response;
             boolean withID = StringUtils.isNumeric(arg);
             java.util.List<TextChannel> tcArray = mcb.getRelayChannels();
-            String tcID = withID ? arg : FinderUtil.findTextChannel(arg, e.getGuild()).get(0).getId();
+            String tcID = withID ? arg : FinderUtil.findTextChannels(arg, e.getGuild()).get(0).getId();
             if (!containsID(tcID)) {
                 response = Locale.getCommandsMessage("textchannel.tc-not-bound").finish();
                 respond(e, String.format(response, arg), ResponseLevel.LEVEL_2);

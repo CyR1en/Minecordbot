@@ -175,7 +175,6 @@ public class Bot {
                 new McSkinCmd(mcb),
                 new ReloadCmd(mcb),
                 new McUUIDCmd(mcb),
-                new SpoilerCmd(mcb),
                 new SetGameCmd(mcb),
                 new SetNameCmd(mcb),
                 new McServerCmd(mcb),
@@ -184,7 +183,6 @@ public class Bot {
                 new SetAvatarCmd(mcb),
                 new PermissionCmd(mcb),
                 new McUsernameCmd(mcb),
-                new SetTriggerCmd(mcb),
                 new TextChannelCmd(mcb),
                 new DiagnosticsCmd(mcb),
                 new McApiStatusCmd(mcb));

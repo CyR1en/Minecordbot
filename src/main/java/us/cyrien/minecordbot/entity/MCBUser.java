@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.bukkit.entity.Player;
 import us.cyrien.minecordbot.Minecordbot;
-import us.cyrien.minecordbot.utils.FinderUtil;
+import us.cyrien.minecordbot.utils.SearchUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class MCBUser {
     }
 
     public Player parseAsPlayer() {
-        return FinderUtil.findPlayerInDatabase(this.ID);
+        return SearchUtil.findPlayerInDatabase(this.ID);
     }
 
     public User getUser() {

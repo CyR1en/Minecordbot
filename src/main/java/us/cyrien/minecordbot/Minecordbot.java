@@ -29,6 +29,7 @@ import us.cyrien.minecordbot.hooks.*;
 import us.cyrien.minecordbot.localization.Locale;
 import us.cyrien.minecordbot.localization.LocalizationFiles;
 import us.cyrien.minecordbot.reporters.*;
+import us.cyrien.minecordbot.utils.SearchUtil;
 import us.cyrien.minecordbot.utils.UUIDFetcher;
 
 import javax.annotation.Nullable;
@@ -247,26 +248,14 @@ public class Minecordbot extends JavaPlugin {
         List<String> tcID = (List<String>) getMcbConfigsManager().getModChannelConfig().getList(ModChannelConfig.Nodes.MOD_CHANNELS);
         if(tcID == null)
             return new ArrayList<>();
-        return findValidTextChannels(tcID);
+        return SearchUtil.findValidTextChannels(tcID);
     }
 
     public List<TextChannel> getRelayChannels() {
         List<String> tcID = (List<String>) getMcbConfigsManager().getChatConfig().getList(ChatConfig.Nodes.RELAY_CHANNELS);
         if(tcID == null)
             return new ArrayList<>();
-        return findValidTextChannels(tcID);
-    }
-
-    private List<TextChannel> findValidTextChannels(List<String> tcID) {
-        List<TextChannel> out = new ArrayList<>();
-        tcID.forEach((s) -> {
-            if (!s.isEmpty() && bot.getJda() != null) {
-                TextChannel tc = bot.getJda().getTextChannelById(s);
-                if (tc != null)
-                    out.add(tc);
-            }
-        });
-        return out;
+        return SearchUtil.findValidTextChannels(tcID);
     }
 
     public ScheduledExecutorService getScheduler() {

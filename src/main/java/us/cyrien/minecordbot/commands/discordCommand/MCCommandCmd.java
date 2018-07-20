@@ -13,7 +13,7 @@ import us.cyrien.minecordbot.Minecordbot;
 import us.cyrien.minecordbot.chat.entity.*;
 import us.cyrien.minecordbot.commands.MCBCommand;
 import us.cyrien.minecordbot.localization.Locale;
-import us.cyrien.minecordbot.utils.FinderUtil;
+import us.cyrien.minecordbot.utils.SearchUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -37,7 +37,7 @@ public class MCCommandCmd extends MCBCommand {
         }
         String arg = e.getArgs();
         String[] args = arg.split("\\s");
-        Player p = FinderUtil.findPlayerInDatabase(e.getMember().getUser().getId());
+        Player p = SearchUtil.findPlayerInDatabase(e.getMember().getUser().getId());
         CommandSender commandSender;
         boolean allowed = false;
         if (checkPermission(e.getMember())) {
