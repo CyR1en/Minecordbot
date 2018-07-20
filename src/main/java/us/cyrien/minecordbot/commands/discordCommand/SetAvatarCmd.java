@@ -23,24 +23,14 @@ public class SetAvatarCmd extends MCBCommand {
 
     @Override
     protected void doCommand(CommandEvent event) {
-        String url;
-        if (event.getArgs().isEmpty())
-            if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage())
-                url = event.getMessage().getAttachments().get(0).getUrl();
-            else
-                url = null;
-        else
-            url = event.getArgs();
+        String url = event.getArgs();
         Icon icon = ImageUtil.getIcon(url);
-        if (icon == null)
+        if (icon == null) {
             respond(event, event.getClient().getError() + " " + Locale.getCommandsMessage("setavatar.invalid").finish());
-        else
-            event.getSelfUser().getManager().setAvatar(icon).queue(
-                    v -> respond(event, event.getClient().getSuccess() + " " +
-                            Locale.getCommandsMessage("setavatar.changed").finish()),
-                    t -> respond(event, event.getClient().getError() + " " +
-                            Locale.getCommandsMessage("setavatar.failed").finish()));
-
-
+            return;
+        }
+        event.getSelfUser().getManager().setAvatar(icon).queue(
+                v -> respond(event, embedMessage(event, Locale.getCommandsMessage("setavatar.changed").finish(), ResponseLevel.LEVEL_1)),
+                t -> respond(event, embedMessage(event, Locale.getCommandsMessage("setavatar.failed").finish(), ResponseLevel.LEVEL_3)));
     }
 }
