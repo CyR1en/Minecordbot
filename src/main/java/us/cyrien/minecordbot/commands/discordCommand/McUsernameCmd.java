@@ -36,7 +36,7 @@ public class McUsernameCmd extends MCBCommand{
         String s = null;
         try {
             s = HTTPUtils.performGetRequest(HTTPUtils.constantURL
-                    ("https://sessionserver.mojang.com/session/minecraft/profile/" + UUIDFetcher.removeDescriminant(e.getArgs())));
+                    ("https://sessionserver.mojang.com/session/minecraft/profile/" + UUIDFetcher.removeDiscriminant(e.getArgs())));
         } catch (IOException ex) {
             respond(MCBCommand.ResponseLevel.LEVEL_3, "Error getting player's Username: `java.io.IOException`", e).queue();
             return;
