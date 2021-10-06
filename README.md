@@ -1,5 +1,8 @@
 # ![MineCordBot](https://vectr.com/cyrien/k3vhJlcOMS.png?width=65&height=65&select=k3vhJlcOMSpage0) __MineCordBot__ [![CI](https://travis-ci.org/CyR1en/Minecordbot.svg?branch=master)](https://travis-ci.org/CyR1en/Minecordbot) [![Discord](https://img.shields.io/discord/253637961776627712.svg)](https://discord.cyr1en.com) [![Donate](https://img.shields.io/badge/Support-Me!-blue.svg)](https://donate.cyr1en.com/)
 
+
+## This project is abandoned and support for this plugin will no longer be provided
+
 ### A Powerful Way to Bridge Discord and Minecraft
 ##### Configurable, Simple, Easy
 
